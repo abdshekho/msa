@@ -1,0 +1,10 @@
+{
+    "server-component": {
+        "welcome": "مرحبا"
+    },
+    "counter": {
+        "increment": "زيادة",
+        "decrement": "نقصان"
+    },
+    "dashboard": "لوحة القيادة"
+}
