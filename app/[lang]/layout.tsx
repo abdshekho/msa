@@ -1,8 +1,8 @@
-import { useParams  } from "next/navigation";
+// import { useParams  } from "next/navigation";
 import { i18n, type Locale } from "../../i18n-config";
 import "./globals.css";
 import { ThemeModeScript } from 'flowbite-react';
-import Navbar from "@/components/Navigation/Navbar";
+import NavbarMain from "@/components/Navigation/Navbar";
 export const metadata = {
   title: "i18n within app router - Vercel Examples",
   description: "How to do i18n in Next.js 15 within app router",
@@ -16,9 +16,9 @@ export default async function Root(props: {
   children: React.ReactNode;
   params: Promise<{ lang: Locale }>;
 }) {
-  const router = useParams();
+  // const router = useParams();
 
-  console.log('🚀 ~ layout.tsx ~ router:', router);
+  // console.log('🚀 ~ layout.tsx ~ router:', router);
 
   // const { pathname } = router
   // // Define paths where the Navbar should NOT be shown
@@ -35,6 +35,7 @@ export default async function Root(props: {
         <ThemeModeScript />
       </head>
       <body className="min-h-screen">
+        <NavbarMain />
         {/* { showNavbar && <Navbar /> } */}
         { children }
       </body>

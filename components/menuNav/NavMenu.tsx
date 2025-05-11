@@ -1,5 +1,6 @@
+//@ts-nocheck
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './NavMenu.module.css';
 import MainMenuItem from './MainMenuItem';
 
@@ -27,21 +28,34 @@ interface ParentCategory {
 }
 
 const NavMenu = () => {
-    const [openMain, setOpenMain] = useState(false);
+    const [visible, setVisible] = useState(false);
     const [categories, setCategories] = useState<ParentCategory[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef2 = useRef<NodeJS.Timeout | null>(null);
+    const handleMouseEnter = () => {
+        if (timeoutRef.current) { clearTimeout(timeoutRef.current); }
+        if (timeoutRef2.current) { clearTimeout(timeoutRef2.current); }
+        setVisible(true)
+    };
+    const handleMouseLeave = () => {
 
+        timeoutRef2.current = setTimeout(() => {
+            console.log("🚀 ~ NavMenu.ts", document.getElementsByClassName('dropDown_Product')[0].style.animationName = 'BottomToTop');
+        }, 400);
+        timeoutRef.current = setTimeout(() => {
+            setVisible(false);
+        }, 500);
+    };
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 setLoading(true);
                 const response = await fetch('/api/categories?nested=true&withProducts=true');
-                
                 if (!response.ok) {
                     throw new Error('Failed to fetch categories');
                 }
-                
                 const data = await response.json();
                 setCategories(data);
             } catch (err) {
@@ -56,28 +70,29 @@ const NavMenu = () => {
     }, []);
 
     return (
-        <div className={styles.menu}
-            onMouseEnter={() => setOpenMain(true)}
-            onMouseLeave={() => { setOpenMain(false); }}
-        >
-            <span>Product ▾</span>
-            {openMain && (
-                <div className={styles.dropdown}>
-                    {loading ? (
-                        <div>Loading...</div>
-                    ) : error ? (
-                        <div>Error: {error}</div>
-                    ) : (
-                        categories.map((item) => (
-                            <MainMenuItem item={item} key={item.id} />
-                        ))
-                    )}
-                </div>
-            )}
-            {/* <div>
+        <div>
+            { !loading && (
+
+                <div className={ styles.menu }
+                    onMouseEnter={ handleMouseEnter }
+                    onMouseLeave={ handleMouseLeave }
+                >
+                    <span>Product ▾</span>
+                    { visible && (
+                        <div className={ 'dropDown_Product' }>
+                            { categories.map((item) => (
+                                <MainMenuItem item={ item } key={ item.id } />
+                            )) }
+                        </div>
+                    ) }
+
+
+                    {/* <div>
                 <img src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e' width={70} height={70} />
             </div> */}
-        </div>
+                </div>
+            ) }
+        </div >
     );
 };
 
@@ -124,9 +139,9 @@ const mockProducts2 = [
                 id: 12,
                 name: "lithemo UPS4",
                 items: [
-                    { id: 221, name: "four2", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"  },
-                    { id: 222, name: "five2", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
-                    { id: 223, name: "six2",image: "https://images.unsplash.com/photo-1517914309068-744e9195997c" },
+                    { id: 221, name: "four2", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e" },
+                    { id: 222, name: "five2", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" },
+                    { id: 223, name: "six2", image: "https://images.unsplash.com/photo-1517914309068-744e9195997c" },
                 ]
             }
         ]

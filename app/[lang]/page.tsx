@@ -4,6 +4,7 @@ import { Locale } from "../../i18n-config";
 import Counter from "../../components/counter";
 import LocaleSwitcher from "../../components/locale-switcher";
 import NavMenu from "../../components/menuNav/NavMenu";
+import CarouselMain from "@/components/Home/CarouselMain";
 
 
 export default async function IndexPage(props: { params: Promise<{ lang: Locale }> }) {
@@ -15,7 +16,8 @@ export default async function IndexPage(props: { params: Promise<{ lang: Locale 
 
 
   return (
-    <div>
+    <div className="relative">
+      <CarouselMain />
       <LocaleSwitcher />
       <div>
         <p>Current locale2: { lang }</p>
