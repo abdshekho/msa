@@ -426,6 +426,9 @@ export default function TableEditor({
 
             const result = await response.json();
 
+            console.log('🚀 ~ TableEditor.tsx ~ saveTemplate ~ result:', result);
+
+
             if (!response.ok) {
                 throw new Error(result.error || 'Failed to save template');
             }

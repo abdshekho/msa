@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from "react";
 import styles from './ProductTable.module.css';
-const ProductTable2 = ({tableDataProps}) => {
+const ProductTable2 = ({ tableDataProps }) => {
 
     console.log('🚀 ~ ProductTabel2.tsx ~ ProductTable2 ~ tableDataProps:', tableDataProps);
 
-    
+
     function findEmptyValues(arr) {
         //  ["40-60", "", "", "", "", ""]
         const emptyPositions = arr.map((value, index) => {
@@ -13,10 +13,10 @@ const ProductTable2 = ({tableDataProps}) => {
                 return index;
             }
         }).filter(index => index !== undefined);
-        return  emptyPositions.length
+        return emptyPositions.length
     }
-    function analyzeEmptySequences(arr: string[]) {
-        const sequences: Record<string, number> = {};
+    function analyzeEmptySequences(arr) {
+        const sequences = {};
 
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] !== '') {
@@ -26,14 +26,14 @@ const ProductTable2 = ({tableDataProps}) => {
                     emptyCount++;
                     j++;
                 }
-                sequences[arr[i]] = emptyCount;
+                sequences[i] = emptyCount; // استخدام الموقع كمفتاح بدلاً من القيمة
             }
         }
 
         return sequences;
     }
     return (
-        <div className="overflow-x-auto max-w-6xl m-auto">
+        <div className="overflow-x-auto max-w-7xl m-auto">
             <table className={ styles.productTable }>
                 <thead>
                     <tr>
@@ -41,7 +41,7 @@ const ProductTable2 = ({tableDataProps}) => {
                         { tableDataProps.headers.map((header, index) => (
                             <th
                                 key={ index }
-                                className="border p-2 bg-gray-100 font-semibold text-center"
+                                className="border p-2 font-semibold text-center"
                                 rowSpan={ index === 0 ? 2 : 1 }
                             >
                                 { header }
@@ -67,7 +67,7 @@ const ProductTable2 = ({tableDataProps}) => {
                             // صف عادي
                             return (
                                 <tr key={ rowIndex }>
-                                    <td className="border p-2 font-medium">{ row.parameter }</td>
+                                    <td className={ `border p-2 font-medium bg-blue-50` }>{ row.parameter }</td>
                                     { row.values.map((value, colIndex) => {
                                         const hasEmptyValues = findEmptyValues(row.values) !== 0;
                                         const sequences = analyzeEmptySequences(row.values);
@@ -75,9 +75,9 @@ const ProductTable2 = ({tableDataProps}) => {
                                         if (hasEmptyValues && value) {
                                             return (
                                                 <td
-                                                    colSpan={ sequences[value] ? sequences[value] + 1 : 1 }
+                                                    colSpan={ sequences[colIndex] ? sequences[colIndex] + 1 : 1 }
                                                     key={ colIndex }
-                                                    className="border p-2 text-center"
+                                                    className={ `border p-2 text-center ${rowIndex % 2 === 0 ? "bg-amber-50" : ""}` }
                                                 >
                                                     { value }
                                                 </td>
@@ -88,7 +88,7 @@ const ProductTable2 = ({tableDataProps}) => {
                                             return (
                                                 <td
                                                     key={ colIndex }
-                                                    className="border p-2 text-center"
+                                                    className={ `border p-2 text-center ${rowIndex % 2 === 0 ? "bg-amber-50" : ""}` }
                                                 >
                                                     { value }
                                                 </td>
