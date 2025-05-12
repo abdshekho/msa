@@ -1,8 +1,11 @@
 // @ts-nocheck
 import React from "react";
-// import { tableData } from "../data/productsTable";
 import styles from './ProductTable.module.css';
-const ProductTable2 = () => {
+const ProductTable2 = ({tableDataProps}) => {
+
+    console.log('🚀 ~ ProductTabel2.tsx ~ ProductTable2 ~ tableDataProps:', tableDataProps);
+
+    
     function findEmptyValues(arr) {
         //  ["40-60", "", "", "", "", ""]
         const emptyPositions = arr.map((value, index) => {
@@ -30,12 +33,12 @@ const ProductTable2 = () => {
         return sequences;
     }
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-w-6xl m-auto">
             <table className={ styles.productTable }>
                 <thead>
                     <tr>
                         {/* العناوين الرئيسية */ }
-                        { tableData.headers.map((header, index) => (
+                        { tableDataProps.headers.map((header, index) => (
                             <th
                                 key={ index }
                                 className="border p-2 bg-gray-100 font-semibold text-center"
@@ -47,13 +50,13 @@ const ProductTable2 = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    { tableData.rows.map((row, rowIndex) => {
+                    { tableDataProps.rows.map((row, rowIndex) => {
                         if (row.isSectionHeader) {
                             // عنوان قسم (يمتد على كل الأعمدة)
                             return (
                                 <tr key={ rowIndex } className="bg-gray-50">
                                     <td
-                                        colSpan={ tableData.headers.length }
+                                        colSpan={ tableDataProps.headers.length }
                                         className={ styles.sectionHeader }
                                     >
                                         { row.parameter }

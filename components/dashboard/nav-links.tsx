@@ -13,8 +13,8 @@ import { FaBeer,FaHome } from 'react-icons/fa';
 const links = [
   { name: 'Home', href: '/dashboard', icon: FaHome },
   {
-    name: 'Product',
-    href: '/dashboard/Product',
+    name: 'products',
+    href: '/dashboard/products',
     icon: FaBeer,
   },
   { name: 'categories', href: '/dashboard/categories', icon: FaBeer },

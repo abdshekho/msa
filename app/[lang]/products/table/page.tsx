@@ -5,7 +5,7 @@ import ProductTable from '../../../../components/products/ProductTabel'
 export default function TablePage() {
     return (
         <div>
-            <ProductTable2 />
+            {/* <ProductTable2 tableDataProps={''}/> */}
             <div className='h-50'></div>
             <ProductTable />
         </div>

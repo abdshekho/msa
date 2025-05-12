@@ -4,6 +4,7 @@ import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Product from '@/app/lib/models/Product';
 import mongoose from 'mongoose';
 import Image from 'next/image';
+import ProductTable2 from '@/components/products/ProductTabel2';
 
 // Define a type for the product
 interface ProductType {
@@ -41,6 +42,10 @@ async function ProductPage(
 
     // Fetch the product
     const product = await Product.findById(id).lean() as any;
+
+    console.log('🚀 ~ page.tsx ~ product:', product);
+
+    
     // If product not found, show 404
     if (!product) {
         notFound();
@@ -70,6 +75,7 @@ async function ProductPage(
 
                 {/* Add more product details as needed */ }
             </div>
+            <ProductTable2 tableDataProps={product.table}/>
         </div>
     );
 }

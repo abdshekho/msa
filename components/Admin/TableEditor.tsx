@@ -2,20 +2,21 @@
 'use client';
 
 import { Checkbox, Tooltip } from 'flowbite-react';
-import { useEffect, useState, useMemo, useCallback, memo } from 'react';
+import { useEffect, useState, useMemo, useCallback, memo, useRef, useTransition } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import dynamic from 'next/dynamic';
 
-// Define types for table data
-type TableRow = {
+// Define proper TypeScript types
+interface TableRow {
     parameter: string;
     values: string[];
     isSectionHeader?: boolean;
-};
+}
 
-type TableData = {
+interface TableData {
     headers: string[];
     rows: TableRow[];
-};
+}
 
 interface TableEditorProps {
     // For standalone usage
@@ -31,7 +32,14 @@ interface TableEditorProps {
     showSaveControls?: boolean;
 }
 
-const defaultModel = {
+interface BatchUpdate {
+    rowIndex: number;
+    colIndex?: number;
+    value: string;
+    type: 'parameter' | 'cell';
+}
+
+const defaultModel: TableData = {
     headers: ['Model', "Model Ar"],
     rows: [
         {
@@ -42,7 +50,7 @@ const defaultModel = {
     ],
 };
 
-// Memoized row component
+// Memoized row component with optimized updates
 const TableRow = memo(({
     row,
     rowIndex,
@@ -68,14 +76,14 @@ const TableRow = memo(({
         (value) => {
             updateParameter(rowIndex, value);
         },
-        500 // 300ms delay
+        1000 // 500ms delay
     );
 
     const debouncedUpdateCell = useDebouncedCallback(
         (colIndex, value) => {
             updateRow(rowIndex, colIndex, value);
         },
-        500 // 300ms delay
+        1000 // 500ms delay
     );
 
     const handleParameterChange = (e) => {
@@ -139,6 +147,9 @@ const TableRow = memo(({
     );
 });
 
+// Ensure display name is set for memo components
+TableRow.displayName = 'TableRow';
+
 // Memoized header component
 const TableHeader = memo(({ headers, updateHeader, removeHeader }) => {
     // Local state for immediate UI feedback
@@ -154,7 +165,7 @@ const TableHeader = memo(({ headers, updateHeader, removeHeader }) => {
         (index, value) => {
             updateHeader(index, value);
         },
-        500 // 300ms delay
+        1000 // 500ms delay
     );
 
     const handleHeaderChange = (index, e) => {
@@ -192,6 +203,9 @@ const TableHeader = memo(({ headers, updateHeader, removeHeader }) => {
     );
 });
 
+// Ensure display name is set for memo components
+TableHeader.displayName = 'TableHeader';
+
 export default function TableEditor({
     initialData,
     onSave,
@@ -207,6 +221,11 @@ export default function TableEditor({
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [templatesLoaded, setTemplatesLoaded] = useState(false);
+    const [isPending, startTransition] = useTransition();
+
+    // Batch updates for better performance
+    const batchedUpdates = useRef<BatchUpdate[]>([]);
 
     // Determine if component is controlled externally
     const isControlled = externalTableData !== undefined && setExternalTableData !== undefined;
@@ -217,23 +236,30 @@ export default function TableEditor({
         ? setExternalTableData
         : setInternalTableData;
 
-    // Load available templates
-    useEffect(() => {
-        if (showTemplateControls) {
+    // Lazy load templates only when needed
+    const loadTemplates = useCallback(async () => {
+        if (!templatesLoaded && showTemplateControls) {
             setIsLoading(true);
-            fetch('/api/templates')
-                .then((res) => res.json())
-                .then((data) => {
-                    setAvailableTemplates(data || []);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    console.error('Error loading templates:', err);
-                    setError('Failed to load templates');
-                    setIsLoading(false);
-                });
+            try {
+                const response = await fetch('/api/templates');
+                const data = await response.json();
+                setAvailableTemplates(data || []);
+                setTemplatesLoaded(true);
+            } catch (err) {
+                console.error('Error loading templates:', err);
+                setError('Failed to load templates');
+            } finally {
+                setIsLoading(false);
+            }
         }
-    }, [showTemplateControls]);
+    }, [templatesLoaded, showTemplateControls]);
+
+    // Load templates when template controls are shown
+    useEffect(() => {
+        if (showTemplateControls && !templatesLoaded) {
+            loadTemplates();
+        }
+    }, [showTemplateControls, templatesLoaded, loadTemplates]);
 
     // Clear messages after 3 seconds
     useEffect(() => {
@@ -246,54 +272,93 @@ export default function TableEditor({
         }
     }, [error, successMessage]);
 
+    // Flush batched updates
+    const flushUpdates = useCallback(() => {
+        if (batchedUpdates.current.length > 0) {
+            startTransition(() => {
+                setData(prevData => {
+                    const updatedData = { ...prevData, rows: [...prevData.rows] };
+
+                    batchedUpdates.current.forEach(update => {
+                        if (update.type === 'parameter') {
+                            updatedData.rows[update.rowIndex] = {
+                                ...updatedData.rows[update.rowIndex],
+                                parameter: update.value
+                            };
+                        } else if (update.type === 'cell' && update.colIndex !== undefined) {
+                            const updatedValues = [...updatedData.rows[update.rowIndex].values];
+                            updatedValues[update.colIndex] = update.value;
+                            updatedData.rows[update.rowIndex] = {
+                                ...updatedData.rows[update.rowIndex],
+                                values: updatedValues
+                            };
+                        }
+                    });
+
+                    batchedUpdates.current = [];
+                    return updatedData;
+                });
+            });
+        }
+    }, [setData]);
+
     // Memoize event handlers with useCallback
     const updateHeader = useCallback((index: number, value: string) => {
-        const updated = [...data.headers];
-        updated[index] = value;
-        setData({ ...data, headers: updated });
-    }, [data, setData]);
+        startTransition(() => {
+            setData(prevData => {
+                const updated = [...prevData.headers];
+                updated[index] = value;
+                return { ...prevData, headers: updated };
+            });
+        });
+    }, [setData]);
 
     const addHeader = useCallback(() => {
-        setData({
-            ...data,
-            headers: [...data.headers, ''],
-            rows: data.rows.map((row) => ({ ...row, values: [...row.values, ''] })),
+        startTransition(() => {
+            setData(prevData => ({
+                ...prevData,
+                headers: [...prevData.headers, ''],
+                rows: prevData.rows.map((row) => ({
+                    ...row,
+                    values: [...row.values, '']
+                })),
+            }));
         });
-    }, [data, setData]);
+    }, [setData]);
 
     const removeHeader = useCallback((index: number) => {
-        const newHeaders = [...data.headers];
-        newHeaders.splice(index, 1);
-        const newRows = data.rows.map((row) => {
-            const newValues = [...row.values];
-            newValues.splice(index - 1, 1);
-            return { ...row, values: newValues };
+        startTransition(() => {
+            setData(prevData => {
+                const newHeaders = [...prevData.headers];
+                newHeaders.splice(index, 1);
+                const newRows = prevData.rows.map((row) => {
+                    const newValues = [...row.values];
+                    newValues.splice(index - 1, 1);
+                    return { ...row, values: newValues };
+                });
+                return { headers: newHeaders, rows: newRows };
+            });
         });
-        setData({ headers: newHeaders, rows: newRows });
-    }, [data, setData]);
+    }, [setData]);
 
     const updateRow = useCallback((rowIndex: number, colIndex: number, value: string) => {
-        setData(prevData => {
-            const updatedRows = [...prevData.rows];
-            updatedRows[rowIndex] = {
-                ...updatedRows[rowIndex],
-                values: [...updatedRows[rowIndex].values]
-            };
-            updatedRows[rowIndex].values[colIndex] = value;
-            return { ...prevData, rows: updatedRows };
+        batchedUpdates.current.push({
+            rowIndex,
+            colIndex,
+            value,
+            type: 'cell'
         });
-    }, [setData]);
+        flushUpdates();
+    }, [flushUpdates]);
 
     const updateParameter = useCallback((rowIndex: number, value: string) => {
-        setData(prevData => {
-            const updatedRows = [...prevData.rows];
-            updatedRows[rowIndex] = {
-                ...updatedRows[rowIndex],
-                parameter: value
-            };
-            return { ...prevData, rows: updatedRows };
+        batchedUpdates.current.push({
+            rowIndex,
+            value,
+            type: 'parameter'
         });
-    }, [setData]);
+        flushUpdates();
+    }, [flushUpdates]);
 
     const addRowBelow = useCallback((rowIndex: number) => {
         const newRow = {
@@ -302,35 +367,40 @@ export default function TableEditor({
             isSectionHeader: false,
         };
 
-        // Handle the case when rows array is empty or rowIndex is invalid
-        if (data.rows.length === 0 || rowIndex < 0) {
-            setData(prevData => ({ ...prevData, rows: [...prevData.rows, newRow] }));
-            return;
-        }
+        startTransition(() => {
+            setData(prevData => {
+                // Handle the case when rows array is empty or rowIndex is invalid
+                if (prevData.rows.length === 0 || rowIndex < 0) {
+                    return { ...prevData, rows: [...prevData.rows, newRow] };
+                }
 
-        setData(prevData => {
-            const updated = [...prevData.rows];
-            updated.splice(rowIndex + 1, 0, newRow);
-            return { ...prevData, rows: updated };
+                const updated = [...prevData.rows];
+                updated.splice(rowIndex + 1, 0, newRow);
+                return { ...prevData, rows: updated };
+            });
         });
-    }, [data.headers.length, data.rows.length, setData]);
+    }, [data.headers.length, setData]);
 
     const deleteRow = useCallback((rowIndex: number) => {
-        setData(prevData => {
-            const updated = [...prevData.rows];
-            updated.splice(rowIndex, 1);
-            return { ...prevData, rows: updated };
+        startTransition(() => {
+            setData(prevData => {
+                const updated = [...prevData.rows];
+                updated.splice(rowIndex, 1);
+                return { ...prevData, rows: updated };
+            });
         });
     }, [setData]);
 
     const toggleSectionHeader = useCallback((index: number) => {
-        setData(prevData => {
-            const updated = [...prevData.rows];
-            updated[index] = {
-                ...updated[index],
-                isSectionHeader: !updated[index].isSectionHeader
-            };
-            return { ...prevData, rows: updated };
+        startTransition(() => {
+            setData(prevData => {
+                const updated = [...prevData.rows];
+                updated[index] = {
+                    ...updated[index],
+                    isSectionHeader: !updated[index].isSectionHeader
+                };
+                return { ...prevData, rows: updated };
+            });
         });
     }, [setData]);
 
@@ -386,7 +456,9 @@ export default function TableEditor({
                 const { headers, rows } = selectedTemplate;
 
                 // Update the table data
-                setData({ headers, rows });
+                startTransition(() => {
+                    setData({ headers, rows });
+                });
                 setSuccessMessage('Template loaded successfully!');
             } else {
                 throw new Error('Template not found');
@@ -442,6 +514,9 @@ export default function TableEditor({
     const memoizedHeaders = useMemo(() => data.headers, [data.headers]);
     const memoizedRows = useMemo(() => data.rows, [data.rows]);
 
+    // Determine if we should use virtualization
+    const shouldVirtualize = memoizedRows.length > 20;
+
     return (
         <div className="p-4 space-y-4 pl-[100px]">
             {/* Status Messages */ }
@@ -457,12 +532,19 @@ export default function TableEditor({
                 </div>
             ) }
 
+            <div className="p-3 bg-blue-50 text-blue-700 rounded h-[48px]">
+                {/* Loading indicator */ }
+                { (isLoading || isPending) && (
+                    <span>Processing...</span>
+                ) }
+            </div>
+
             {/* Controls */ }
             <div className="flex gap-2 flex-wrap">
                 <button
                     onClick={ addHeader }
                     className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    disabled={ isLoading }
+                    disabled={ isLoading || isPending }
                 >
                     + Add Column
                 </button>
@@ -472,7 +554,7 @@ export default function TableEditor({
                         <button
                             onClick={ saveTemplate }
                             className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600"
-                            disabled={ isLoading }
+                            disabled={ isLoading || isPending }
                         >
                             💾 Save as Template
                         </button>
@@ -481,14 +563,17 @@ export default function TableEditor({
                             value={ selectedTemplate }
                             onChange={ (e) => loadTemplate(e.target.value) }
                             className="border px-2 py-1 rounded"
-                            disabled={ isLoading || availableTemplates.length === 0 }
+                            disabled={ isLoading || isPending || availableTemplates.length === 0 }
+                            onClick={ () => !templatesLoaded && loadTemplates() }
                         >
                             <option value="">Select Template</option>
-                            { availableTemplates && availableTemplates?.length && (availableTemplates?.map((template: any) => (
-                                <option key={ template._id } value={ template._id }>
-                                    { template.name }
-                                </option>
-                            ))) }
+                            { availableTemplates && availableTemplates.length > 0 && (
+                                availableTemplates.map((template: any) => (
+                                    <option key={ template._id } value={ template._id }>
+                                        { template.name }
+                                    </option>
+                                ))
+                            ) }
                         </select>
                     </>
                 ) }
@@ -497,16 +582,10 @@ export default function TableEditor({
                     <button
                         onClick={ saveProductTable }
                         className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                        disabled={ isLoading }
+                        disabled={ isLoading || isPending }
                     >
                         📥 Save to MongoDB
                     </button>
-                ) }
-
-                { isLoading && (
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded">
-                        Loading...
-                    </span>
                 ) }
             </div>
 
@@ -550,7 +629,7 @@ export default function TableEditor({
             <button
                 onClick={ () => data.rows.length > 0 ? addRowBelow(data.rows.length - 1) : addRowBelow(-1) }
                 className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                disabled={ isLoading }
+                disabled={ isLoading || isPending }
             >
                 + Add Row
             </button>
