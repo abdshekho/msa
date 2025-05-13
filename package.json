@@ -29,6 +29,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/negotiator": "0.6.3",
     "@types/node": "^22.9.0",
     "@types/react": "^18.0.23",

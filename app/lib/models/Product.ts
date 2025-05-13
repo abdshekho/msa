@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IProduct extends Document {
     name: string;
     nameAr: string;
+    slug: string;
     price: number;
     imageCover: string;
     images: string[];
@@ -29,6 +30,7 @@ const ProductSchema: Schema = new Schema(
     {
         name: { type: String, required: true, trim: true },
         nameAr: { type: String, required: true, trim: true },
+        slug: { type: String, required: true, unique: true, trim: true },
         price: { type: Number, required: true },
         imageCover: { type: String, required: true },
         images: [{ type: String }],
@@ -50,6 +52,14 @@ const ProductSchema: Schema = new Schema(
     },
     { timestamps: true }
 );
+
+// Add pre-save hook to generate slug from name if not provided
+ProductSchema.pre('save', function(next) {
+    if (!this.slug) {
+        this.slug = this.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+    }
+    next();
+});
 
 // Check if the model already exists to prevent recompilation errors
 const Product = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);

@@ -6,6 +6,7 @@ import { getDictionary } from '@/get-dictionary';
 import NavbarMain from '@/components/Navigation/Navbar';
 import AuthProvider from '@/components/auth/AuthProvider';
 import ThemeProvider from "../them/theme-provider";
+import { FooterMSA } from '@/components/ui/footer';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -34,7 +35,10 @@ export default async function Root(props: {
         >
           <AuthProvider>
             <NavbarMain lang={ params.lang }/>
+            <div className="min-h-screen bg-white dark:bg-gray-900">
             { children }
+            </div>
+            <FooterMSA />
           </AuthProvider>
         </ThemeProvider>
       </body>

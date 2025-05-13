@@ -32,7 +32,7 @@ export default async function IndexPage(props: { params: Promise<{ lang: Locale 
         </Link>
       </div>
       <img src="favicon.ico" alt="logo"/>
-      <NavMenu /> 
+      {/* <NavMenu />  */}
     </div>
   );
 }
