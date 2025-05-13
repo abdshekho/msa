@@ -12,7 +12,6 @@ export default async function IndexPage(props: { params: Promise<{ lang: Locale 
 
   const dictionary = await getDictionary(lang);
 
-  console.log('🚀 ~ page.tsx ~ IndexPage ~ dictionary:', dictionary);
 
 
   return (

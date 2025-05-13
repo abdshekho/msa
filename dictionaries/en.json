@@ -10,7 +10,29 @@
   "navbar": {
     "home": "Home",
     "about": "About",
-    "services": "Services"
+    "services": "Services",
+    "categories": "Categories",
+    "brands": "Brands"
   },
-  "home": {}
+  "home": {},
+  "categories": {
+    "allCategories": "All Categories",
+    "subcategories": "Subcategories"
+  },
+  "brands": {
+    "allBrands": "All Brands"
+  },
+  "products": {
+    "inThisCategory": "Products in this category",
+    "byThisBrand": "Products by this brand",
+    "noProductsInCategory": "No products found in this category.",
+    "noProductsByBrand": "No products found for this brand."
+  },
+  "common": {
+    "viewAll": "View All",
+    "viewDetails": "View Details",
+    "backToCategories": "Back to Categories",
+    "backToBrands": "Back to Brands",
+    "notFound": "Not Found"
+  }
 }

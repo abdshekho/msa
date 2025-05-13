@@ -97,7 +97,7 @@ async function ProductPage(
                 {ParentCategory && (
                     <>
                         <span className="mx-2">/</span>
-                        <a href={`/${lang}/products/category/${ParentCategory._id}`} className="hover:text-blue-600">
+                        <a href={`/${lang}/categories/${ParentCategory.slug}`} className="hover:text-blue-600">
                             {ParentCategoryName}
                         </a>
                     </>
@@ -105,7 +105,7 @@ async function ProductPage(
                 {category && (
                     <>
                         <span className="mx-2">/</span>
-                        <a href={`/${lang}/products/category/${product.category}`} className="hover:text-blue-600">
+                        <a href={`/${lang}/categories/${category.slug}`} className="hover:text-blue-600">
                             {categoryName}
                         </a>
                     </>

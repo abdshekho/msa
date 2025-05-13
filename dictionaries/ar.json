@@ -6,5 +6,33 @@
         "increment": "زيادة",
         "decrement": "نقصان"
     },
-    "dashboard": "لوحة القيادة"
+    "dashboard": "لوحة القيادة",
+    "navbar": {
+        "home": "الرئيسية",
+        "about": "حول",
+        "services": "خدمات",
+        "categories": "التصنيفات",
+        "brands": "العلامات التجارية"
+    },
+    "home": {},
+    "categories": {
+        "allCategories": "جميع التصنيفات",
+        "subcategories": "التصنيفات الفرعية"
+    },
+    "brands": {
+        "allBrands": "جميع العلامات التجارية"
+    },
+    "products": {
+        "inThisCategory": "المنتجات في هذا التصنيف",
+        "byThisBrand": "منتجات هذه العلامة التجارية",
+        "noProductsInCategory": "لا توجد منتجات في هذا التصنيف.",
+        "noProductsByBrand": "لا توجد منتجات لهذه العلامة التجارية."
+    },
+    "common": {
+        "viewAll": "عرض الكل",
+        "viewDetails": "عرض التفاصيل",
+        "backToCategories": "العودة إلى التصنيفات",
+        "backToBrands": "العودة إلى العلامات التجارية",
+        "notFound": "غير موجود"
+    }
 }
