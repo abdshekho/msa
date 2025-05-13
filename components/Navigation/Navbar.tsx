@@ -15,6 +15,7 @@ import NavMenu from "../menuNav/NavMenu";
 import Link from "next/link";
 import { FaRegMoon } from "react-icons/fa";
 import LocaleSwitcher from "../locale-switcher";
+import ThemeToggle from "@/app/them/theme-toggle";
 
 export default function NavbarMain() {
     return (
@@ -35,16 +36,16 @@ export default function NavbarMain() {
                         <span className="block text-sm">Bonnie Green</span>
                         <span className="block truncate text-sm font-medium">name@flowbite.com</span>
                     </DropdownHeader>
-                    <DropdownItem>Dashboard</DropdownItem>
+                    <DropdownItem className="dark:text-[#ffffffcf]">Dashboard</DropdownItem>
                     <DropdownItem>Settings</DropdownItem>
                     <DropdownItem>Earnings</DropdownItem>
                     <DropdownDivider />
                     <DropdownItem>Sign out</DropdownItem>
                 </Dropdown>
-                <div className="flex justify-center items-center mx-2 bg-black rounded-full w-10 h-10">
+                {/* <div className="flex justify-center items-center mx-2 bg-black rounded-full w-10 h-10">
                     <FaRegMoon className="size-6 text-blue-300" />
-                </div>
-
+                </div> */}
+                <ThemeToggle/>
                 <LocaleSwitcher />
                 <NavbarToggle />
             </div>

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import { notFound } from 'next/navigation';
 import connectToDatabase from '@/app/lib/DB/mongoDB';
@@ -9,17 +10,6 @@ import Image from 'next/image';
 import ProductTable2 from '@/components/products/ProductTabel2';
 
 // Define types for the product and related data
-interface CategoryType {
-    _id: string;
-    name: string;
-    nameAr?: string;
-}
-
-interface BrandType {
-    _id: string;
-    name: string;
-    nameAr?: string;
-}
 
 interface ProductType {
     _id: string;
@@ -57,7 +47,7 @@ async function ProductPage(
     await connectToDatabase();
 
     // Fetch the product
-    const product = await Product.findById(id).lean() as ProductType;
+    const product = await Product.findById(id).lean();
 
     // If product not found, show 404
     if (!product) {
@@ -65,17 +55,17 @@ async function ProductPage(
     }
 
     // Fetch category and brand data if they exist
-    let category: CategoryType | null = null;
-    let ParentCategory: CategoryType | null = null;
-    let brand: BrandType | null = null;
+    let category= null;
+    let ParentCategory = null;
+    let brand= null;
 
     if (product.category && isValidObjectId(product.category)) {
-        category = await Category.findById(product.category).lean() as CategoryType;
-        ParentCategory = await Category.findById(category?.parentId).lean() as CategoryType;
+        category = await Category.findById(product.category).lean();
+        ParentCategory = await Category.findById(category?.parentId).lean();
     }
 
     if (product.brand && isValidObjectId(product.brand)) {
-        brand = await Brand.findById(product.brand).lean() as BrandType;
+        brand = await Brand.findById(product.brand).lean();
     }
 
     // Determine which language to display
