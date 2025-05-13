@@ -2,10 +2,6 @@
 import React from "react";
 import styles from './ProductTable.module.css';
 const ProductTable2 = ({ tableDataProps }) => {
-
-    console.log('🚀 ~ ProductTabel2.tsx ~ ProductTable2 ~ tableDataProps:', tableDataProps);
-
-
     function findEmptyValues(arr) {
         //  ["40-60", "", "", "", "", ""]
         const emptyPositions = arr.map((value, index) => {

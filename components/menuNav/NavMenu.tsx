@@ -42,7 +42,7 @@ const NavMenu = () => {
     const handleMouseLeave = () => {
 
         timeoutRef2.current = setTimeout(() => {
-            console.log("🚀 ~ NavMenu.ts", document.getElementsByClassName('dropDown_Product')[0].style.animationName = 'BottomToTop');
+            document.getElementsByClassName('dropDown_Product')[0].style.animationName = 'BottomToTop'
         }, 400);
         timeoutRef.current = setTimeout(() => {
             setVisible(false);

@@ -16,7 +16,6 @@ export default function LocaleSwitcher() {
     segments[1] = locale;
     return segments.join("/");
   };
-  console.log('3333333', i18n);
   return (
     <Dropdown
       arrowIcon={ false }
