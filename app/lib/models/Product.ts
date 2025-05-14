@@ -54,6 +54,8 @@ const ProductSchema: Schema = new Schema(
 );
 
 // Add pre-save hook to generate slug from name if not provided
+// Create indexes for better performance
+ProductSchema.index({ slug: 1 });
 ProductSchema.pre('save', function(next) {
     if (!this.slug) {
         this.slug = this.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
