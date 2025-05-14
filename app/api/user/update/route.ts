@@ -1,9 +1,7 @@
-//@ts-nocheck
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/app/lib/mongodb";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
-import { ObjectId } from "mongodb";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
 
 export async function PUT(request: Request) {
   try {
@@ -16,21 +14,23 @@ export async function PUT(request: Request) {
       );
     }
 
-    const { name } = await request.json();
+    const { name, phone, address, image } = await request.json();
 
-    if (!name || name.trim() === "") {
-      return NextResponse.json(
-        { message: "الاسم مطلوب" },
-        { status: 400 }
-      );
-    }
-
+    // الاتصال بقاعدة البيانات
     const { db } = await connectToDatabase();
-    
+
     // تحديث بيانات المستخدم
     await db.collection("users").updateOne(
-      { _id: new ObjectId(session.user.id) },
-      { $set: { name } }
+      { email: session.user.email },
+      {
+        $set: {
+          name,
+          phone,
+          address,
+          image,
+          updatedAt: new Date(),
+        },
+      }
     );
 
     return NextResponse.json(

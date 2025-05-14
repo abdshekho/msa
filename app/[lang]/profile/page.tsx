@@ -1,13 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
+
+  console.log('🚀 ~ page.tsx ~ Profile ~ session:', session);
+
   const [name, setName] = useState(session?.user?.name || "");
+  const [phone, setPhone] = useState(session?.user?.phone || "");
+  const [address, setAddress] = useState(session?.user?.address || "");
+  const [image, setImage] = useState(session?.user?.image || "/en/profile.webp");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  
+  // تحديث الحقول عندما تكون بيانات الجلسة متاحة
+  useEffect(() => {
+    if (session?.user) {
+      setName(session.user.name || "");
+      setPhone(session.user.phone || "");
+      setAddress(session.user.address || "");
+      setImage(session.user.image || "/en/profile.webp");
+    }
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +37,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, phone, address, image }),
       });
 
       const data = await response.json();
@@ -32,7 +49,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
       }
 
       // تحديث بيانات الجلسة
-      await update({ name });
+      await update({ name, phone, address, image });
       
       setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
     } catch (error) {
@@ -60,6 +77,32 @@ export default function Profile({ params }: { params: { lang: string } }) {
         )}
         
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex justify-center mb-6">
+            <div className="relative w-24 h-24">
+              <Image 
+                src={image || '/en/profile.webp'} 
+                alt={name || "صورة المستخدم"} 
+                width={96} 
+                height={96} 
+                className="rounded-full object-cover"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              رابط الصورة الشخصية
+            </label>
+            <input
+              type="text"
+              id="image"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              placeholder="رابط الصورة الشخصية"
+            />
+          </div>
+          
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               البريد الإلكتروني
@@ -86,6 +129,34 @@ export default function Profile({ params }: { params: { lang: string } }) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              رقم الهاتف
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              placeholder="رقم الهاتف"
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              العنوان
+            </label>
+            <input
+              type="text"
+              id="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              placeholder="العنوان"
             />
           </div>
           

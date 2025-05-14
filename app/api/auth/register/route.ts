@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, phone, address, image } = await request.json();
 
     // التحقق من البيانات المدخلة
     if (!name || !email || !password) {
@@ -52,6 +52,9 @@ export async function POST(request: Request) {
       email,
       username: email.split('@')[0], // استخدام جزء من البريد الإلكتروني كاسم مستخدم
       password: hashedPassword,
+      phone: phone || "",
+      address: address || "",
+      image: image || "/profile.webp",
       role: "user",
       createdAt: new Date(),
     });

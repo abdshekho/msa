@@ -6,16 +6,16 @@ module.exports = withFlowbiteReact({
         config.resolve.alias['@lib'] = path.join(__dirname, 'lib')
         return config
     },
-    // images: {
-    //     remotePatterns: [
-    //         {
-    //             protocol: 'https',
-    //             hostname: 'localhost',
-    //             port: '3000',
-    //             pathname: '/account123/**',
-    //             search: '',
-    //         },
-    //     ],
-    // },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'flowbite',
+                port: '*',
+                pathname: '/account123/**',
+                search: '',
+            },
+        ],
+    },
 })
     // "next": "15.3.1",

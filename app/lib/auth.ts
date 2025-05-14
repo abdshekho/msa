@@ -33,6 +33,9 @@ export const authOptions: NextAuthOptions = {
           id: user._id.toString(),
           name: user.name,
           email: user.email,
+          image: user.image,
+          phone: user.phone,
+          address: user.address,
           role: user.role || "user"
         };
       }
@@ -43,6 +46,9 @@ export const authOptions: NextAuthOptions = {
       // إضافة role إلى الـ token عند تسجيل الدخول
       if (user) {
         token.role = user.role;
+        token.image = user.image;
+        token.phone = user.phone;
+        token.address = user.address;
       }
       return token;
     },
@@ -50,6 +56,9 @@ export const authOptions: NextAuthOptions = {
       // إضافة role إلى الـ session
       if (session.user) {
         session.user.role = token.role;
+        session.user.image = token.image;
+        session.user.phone = token.phone;
+        session.user.address = token.address;
       }
       return session;
     }
@@ -67,6 +76,9 @@ export const authOptions: NextAuthOptions = {
 declare module "next-auth" {
   interface User {
     role?: string;
+    image?: string;
+    phone?: string;
+    address?: string;
   }
   
   interface Session {
@@ -75,6 +87,9 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       role?: string;
+      image?: string;
+      phone?: string;
+      address?: string;
     };
   }
 }
@@ -82,5 +97,8 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     role?: string;
+    image?: string;
+    phone?: string;
+    address?: string;
   }
 }
