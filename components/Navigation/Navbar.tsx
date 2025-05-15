@@ -21,11 +21,10 @@ import { useSession, signOut } from "next-auth/react";
 export default function NavbarMain({ lang }: any) {
     const { data: session, status } = useSession();
 
-    // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
+    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', status);
 
     const isAuthenticated = status === "authenticated";
     const isLoading = status === "loading";
-    // const session = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
     const handleSignOut = () => {
         signOut({ callbackUrl: `/${lang}` });

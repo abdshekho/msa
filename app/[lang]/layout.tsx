@@ -7,6 +7,8 @@ import NavbarMain from '@/components/Navigation/Navbar';
 import AuthProvider from '@/components/auth/AuthProvider';
 import ThemeProvider from "../them/theme-provider";
 import { FooterMSA } from '@/components/ui/footer';
+import Providers from '@/components/ProgressProvider';
+
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -34,9 +36,11 @@ export default async function Root(props: {
           disableTransitionOnChange
         >
           <AuthProvider>
-            <NavbarMain lang={ params.lang }/>
+            <NavbarMain lang={ params.lang } />
             <div className="min-h-screen bg-white dark:bg-gray-900">
-            { children }
+              <Providers>
+                { children }
+              </Providers>
             </div>
             <FooterMSA />
           </AuthProvider>
