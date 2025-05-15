@@ -15,13 +15,13 @@ export const authOptions = {
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
 
-                    
+
                     return null;
                 }
 
                 const { db } = await connectToDatabase();
                 const user = await db.collection("users").findOne({ email: credentials.email });
-                    console.log('🚀 ~ route.ts ~ authorize ~ user:', user);
+                console.log('🚀 ~ route.ts ~ authorize ~ user:', user);
 
                 if (!user) {
                     return null;
@@ -51,7 +51,17 @@ export const authOptions = {
         maxAge: 30 * 24 * 60 * 60, // 30 يوم
     },
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger,session }) {
+            if(trigger === 'update' && session){
+                token.name = session.user.name;
+                token.picture = session.user.image;
+                token.address = session.user.address;
+                token.phone = session.user.phone;
+            }
+
+
+            console.log('🚀 ~ route.ts ~ jwt ~ trigger:', trigger);
+
             if (user) {
                 token.id = user.id;
                 token.role = user.role;

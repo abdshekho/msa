@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
 
-      console.log('🚀 ~ auth.ts ~ jwt ~ token:', token);
+      // console.log('🚀 ~ auth.ts ~ jwt ~ token:', token);
 
       // إضافة role إلى الـ token عند تسجيل الدخول
       if (user) {

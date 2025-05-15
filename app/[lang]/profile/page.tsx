@@ -71,7 +71,6 @@ export default function Profile({ params }: { params: { lang: string } }) {
         const data = await response.json();
 
         setImage(data?.imageUrl);
-        console.log('🚀 ~ page.tsx ~ handleFileChange ~ data:', data);
 
 
         // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));
@@ -107,7 +106,15 @@ export default function Profile({ params }: { params: { lang: string } }) {
       }
 
       // تحديث بيانات الجلسة
-      await update({ name, phone, address, image });
+      await update({
+        user: {
+          name,
+          image,
+          phone,
+          address
+        }
+      });
+
 
       setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
     } catch (error) {
