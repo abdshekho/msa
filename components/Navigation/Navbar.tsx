@@ -23,8 +23,6 @@ import { BsFillPersonLinesFill } from "react-icons/bs";
 export default function NavbarMain({ lang }: any) {
     const { data: session, status } = useSession();
 
-    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', status);
-
     const isAuthenticated = status === "authenticated";
     const isLoading = status === "loading";
 

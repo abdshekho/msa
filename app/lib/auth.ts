@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
       // إضافة role إلى الـ session
       if (session.user) {
         session.user.role = token.role;
-        session.user.image = token.image;
+        session.user.image = token.picture;
         session.user.phone = token.phone;
         session.user.address = token.address;
       }

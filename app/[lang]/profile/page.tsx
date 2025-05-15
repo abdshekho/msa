@@ -77,7 +77,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
         // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));
       } catch (error: any) {
         console.error('Error uploading image:', error);
-        setMessage({ text: error || "حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: error || "222حدث خطأ أثناء تحديث البيانات", type: "error" });
       } finally {
         setIsLoading(false);
       }
@@ -101,7 +101,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage({ text: data.message || "حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: data.message || "000حدث خطأ أثناء تحديث البيانات", type: "error" });
         setIsLoading(false);
         return;
       }
@@ -111,7 +111,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
       setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
     } catch (error) {
-      setMessage({ text: "حدث خطأ أثناء تحديث البيانات", type: "error" });
+      setMessage({ text: "1111حدث خطأ أثناء تحديث البيانات", type: "error" });
     } finally {
       setIsLoading(false);
     }
@@ -145,20 +145,20 @@ export default function Profile({ params }: { params: { lang: string } }) {
               />
             </div>
             <Tooltip content='Edit profile image'>
-            <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+              <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
             </Tooltip>
 
           </div>
 
           <div>
 
-            <label className="block mb-2 font-medium" htmlFor="profile-image">Cover Image</label>
+            {/* <label className="block mb-2 font-medium" htmlFor="profile-image">Cover Image</label> */ }
             <input
               type="file"
               name="image"
               id="profile-image"
               onChange={ handleFileChange }
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded hidden"
               accept="image/*"
             />
           </div>
