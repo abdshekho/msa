@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { FaEdit } from "react-icons/fa";
+import { Tooltip } from "flowbite-react";
 
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
@@ -15,16 +17,72 @@ export default function Profile({ params }: { params: { lang: string } }) {
   const [image, setImage] = useState(session?.user?.image || "/en/profile.webp");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
-  
+
   // تحديث الحقول عندما تكون بيانات الجلسة متاحة
+  // useEffect(() => {
+  //   if (session?.user) {
+  //     setName(session.user.name || "");
+  //     setPhone(session.user.phone || "");
+  //     setAddress(session.user.address || "");
+  //     setImage(session.user.image || "/en/profile.webp");
+  //   }
+  // }, [session]);
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/user/me');
+        if (response.ok) {
+          const userData = await response.json();
+
+          console.log('🚀 ~ page.tsx ~ fetchUserData ~ userData:', userData);
+
+          setName(userData.name || "");
+          setPhone(userData.phone || "");
+          setAddress(userData.address || "");
+          setImage(userData.image || "/en/profile.webp");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     if (session?.user) {
-      setName(session.user.name || "");
-      setPhone(session.user.phone || "");
-      setAddress(session.user.address || "");
-      setImage(session.user.image || "/en/profile.webp");
+      fetchUserData();
     }
   }, [session]);
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      // Create a FormData object
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('type', 'porfiles');
+
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error('Image upload failed');
+
+        const data = await response.json();
+
+        setImage(data?.imageUrl);
+        console.log('🚀 ~ page.tsx ~ handleFileChange ~ data:', data);
+
+
+        // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));
+      } catch (error: any) {
+        console.error('Error uploading image:', error);
+        setMessage({ text: error || "حدث خطأ أثناء تحديث البيانات", type: "error" });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +108,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
       // تحديث بيانات الجلسة
       await update({ name, phone, address, image });
-      
+
       setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
     } catch (error) {
       setMessage({ text: "حدث خطأ أثناء تحديث البيانات", type: "error" });
@@ -62,47 +120,49 @@ export default function Profile({ params }: { params: { lang: string } }) {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">الملف الشخصي</h1>
-      
+
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mb-6">
-        {message.text && (
-          <div 
-            className={`mb-4 p-4 rounded ${
-              message.type === "success" 
-                ? "bg-green-100 text-green-700 border border-green-400" 
-                : "bg-red-100 text-red-700 border border-red-400"
-            }`}
+        { message.text && (
+          <div
+            className={ `mb-4 p-4 rounded ${message.type === "success"
+              ? "bg-green-100 text-green-700 border border-green-400"
+              : "bg-red-100 text-red-700 border border-red-400"
+              }` }
           >
-            {message.text}
+            { message.text }
           </div>
-        )}
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
+        ) }
+
+        <form onSubmit={ handleSubmit } className="space-y-6">
           <div className="flex justify-center mb-6">
             <div className="relative w-24 h-24">
-              <Image 
-                src={image || '/en/profile.webp'} 
-                alt={name || "صورة المستخدم"} 
-                width={96} 
-                height={96} 
+              <Image
+                src={ image || '/en/profile.webp' }
+                alt={ name || "صورة المستخدم" }
+                width={ 96 }
+                height={ 96 }
                 className="rounded-full object-cover"
               />
             </div>
+            <Tooltip content='Edit profile image'>
+            <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+            </Tooltip>
+
           </div>
-          
+
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              رابط الصورة الشخصية
-            </label>
+
+            <label className="block mb-2 font-medium" htmlFor="profile-image">Cover Image</label>
             <input
-              type="text"
-              id="image"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
-              placeholder="رابط الصورة الشخصية"
+              type="file"
+              name="image"
+              id="profile-image"
+              onChange={ handleFileChange }
+              className="w-full p-2 border rounded"
+              accept="image/*"
             />
           </div>
-          
+
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               البريد الإلكتروني
@@ -110,7 +170,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="email"
               id="email"
-              value={session?.user?.email || ""}
+              value={ session?.user?.email || "" }
               disabled
               className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none"
             />
@@ -118,7 +178,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
               لا يمكن تغيير البريد الإلكتروني
             </p>
           </div>
-          
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               الاسم
@@ -126,12 +186,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="text"
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={ name }
+              onChange={ (e) => setName(e.target.value) }
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
             />
           </div>
-          
+
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               رقم الهاتف
@@ -139,13 +199,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="tel"
               id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={ phone }
+              onChange={ (e) => setPhone(e.target.value) }
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
               placeholder="رقم الهاتف"
             />
           </div>
-          
+
           <div>
             <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               العنوان
@@ -153,25 +213,25 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="text"
               id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={ address }
+              onChange={ (e) => setAddress(e.target.value) }
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
               placeholder="العنوان"
             />
           </div>
-          
+
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={ isLoading }
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
             >
-              {isLoading ? "جاري الحفظ..." : "حفظ التغييرات"}
+              { isLoading ? "جاري الحفظ..." : "حفظ التغييرات" }
             </button>
           </div>
         </form>
       </div>
-      
+
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">تغيير كلمة المرور</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-4">

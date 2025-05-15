@@ -82,6 +82,8 @@ declare module "next-auth" {
     image?: string;
     phone?: string;
     address?: string;
+    phone?: string;
+    address?: string;
   }
   
   interface Session {

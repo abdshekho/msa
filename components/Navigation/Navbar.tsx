@@ -17,7 +17,9 @@ import Link from "next/link";
 import LocaleSwitcher from "../locale-switcher";
 import ThemeToggle from "@/app/them/theme-toggle";
 import { useSession, signOut } from "next-auth/react";
-
+import { IoSettingsOutline } from "react-icons/io5";
+import { VscSignOut } from "react-icons/vsc";
+import { BsFillPersonLinesFill } from "react-icons/bs";
 export default function NavbarMain({ lang }: any) {
     const { data: session, status } = useSession();
 
@@ -53,24 +55,35 @@ export default function NavbarMain({ lang }: any) {
                         }
                     >
                         <DropdownHeader>
-                            <span className="block text-sm">{ session?.user?.name }</span>
+                            <span className="block text-sm text-center">{ session?.user?.name }</span>
                             <span className="block truncate text-sm font-medium">{ session?.user?.email }</span>
                         </DropdownHeader>
+                        <DropdownDivider />
                         { session?.user?.role === 'admin' &&
                             (<DropdownItem className="dark:text-[#ffffffcf]">
                                 <Link href={ `/${lang}/dashboard` }>لوحة التحكم</Link>
                             </DropdownItem>) }
 
-                        <DropdownItem>
-                            <Link href={ `/${lang}/profile` }>الإعدادات</Link>
-                        </DropdownItem>
-                        { session?.user?.role === "admin" && (
+                        <Link href={ `/${lang}/profile` }>
                             <DropdownItem>
-                                <Link href={ `/${lang}/admin` }>إدارة الموقع</Link>
+                                <BsFillPersonLinesFill className="mx-2"/>
+                                {/* الإعدادات */}
+                                setting
+                            </DropdownItem >
+                        </Link>
+                        { session?.user?.role === "admin" && (
+                                <Link href={ `/${lang}/admin` }>
+                            <DropdownItem>
+                                <IoSettingsOutline className="mx-2"/>
+                                Dashborad
                             </DropdownItem>
+                                </Link>
                         ) }
                         <DropdownDivider />
-                        <DropdownItem onClick={ handleSignOut }>تسجيل الخروج</DropdownItem>
+                        <DropdownItem onClick={ handleSignOut }>
+                            <VscSignOut className="mx-2"/>
+                            تسجيل الخروج
+                        </DropdownItem>
                     </Dropdown>
                 ) : (
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
