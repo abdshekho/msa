@@ -52,6 +52,9 @@ export const authOptions = {
     },
     callbacks: {
         async jwt({ token, user, trigger,session }) {
+
+            // console.log('🚀 ~ route.ts ~ jwt ~ session:', session);
+
             if(trigger === 'update' && session){
                 token.name = session.user.name;
                 token.picture = session.user.image;
@@ -60,7 +63,6 @@ export const authOptions = {
             }
 
 
-            console.log('🚀 ~ route.ts ~ jwt ~ trigger:', trigger);
 
             if (user) {
                 token.id = user.id;
@@ -72,6 +74,9 @@ export const authOptions = {
             if (session.user) {
                 session.user.id = token.id;
                 session.user.role = token.role;
+                session.user.phone = token.phone;
+                session.user.image = token.picture;
+                session.user.address = token.address;
             }
             return session;
         },

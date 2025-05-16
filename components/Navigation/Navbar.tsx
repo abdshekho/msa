@@ -20,8 +20,15 @@ import { useSession, signOut } from "next-auth/react";
 import { IoSettingsOutline } from "react-icons/io5";
 import { VscSignOut } from "react-icons/vsc";
 import { BsFillPersonLinesFill } from "react-icons/bs";
+import { usePathname } from 'next/navigation';
+
 export default function NavbarMain({ lang }: any) {
     const { data: session, status } = useSession();
+    const pathname = usePathname();
+
+    // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ pathname:', pathname === '/' + lang);
+
+
 
     const isAuthenticated = status === "authenticated";
     const isLoading = status === "loading";
@@ -31,7 +38,7 @@ export default function NavbarMain({ lang }: any) {
     };
 
     return (
-        <Navbar>
+        <Navbar className={ `${pathname === '/' + lang ? 'absolute w-full z-10 dark:bg-transparent' : ''}` }>
             <NavbarBrand href={ `/${lang}` }>
                 <Image src="/favicon.ico" width={ 40 } height={ 45 } className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">MSA sunPower</span>
@@ -64,22 +71,22 @@ export default function NavbarMain({ lang }: any) {
 
                         <Link href={ `/${lang}/profile` }>
                             <DropdownItem>
-                                <BsFillPersonLinesFill className="mx-2"/>
-                                {/* الإعدادات */}
+                                <BsFillPersonLinesFill className="mx-2" />
+                                {/* الإعدادات */ }
                                 setting
                             </DropdownItem >
                         </Link>
                         { session?.user?.role === "admin" && (
-                                <Link href={ `/${lang}/admin` }>
-                            <DropdownItem>
-                                <IoSettingsOutline className="mx-2"/>
-                                Dashborad
-                            </DropdownItem>
-                                </Link>
+                            <Link href={ `/${lang}/admin` }>
+                                <DropdownItem>
+                                    <IoSettingsOutline className="mx-2" />
+                                    Dashborad
+                                </DropdownItem>
+                            </Link>
                         ) }
                         <DropdownDivider />
                         <DropdownItem onClick={ handleSignOut }>
-                            <VscSignOut className="mx-2"/>
+                            <VscSignOut className="mx-2" />
                             تسجيل الخروج
                         </DropdownItem>
                     </Dropdown>

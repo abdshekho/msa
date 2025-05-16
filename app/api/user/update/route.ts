@@ -30,7 +30,7 @@ export async function PUT(request: Request) {
   try {
     const session = await getServerSession(authOptions);
 
-    console.log('🚀 ~ route.ts ~ PUT ~ session:', session);
+    // console.log('🚀 ~ route.ts ~ PUT ~ session:', session);
 
 
     if (!session || !session.user) {
