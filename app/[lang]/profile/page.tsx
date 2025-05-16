@@ -9,7 +9,7 @@ import { Tooltip } from "flowbite-react";
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
 
-  console.log('🚀 ~ page.tsx ~ Profile ~ session:', session);
+  
 
   const [name, setName] = useState(session?.user?.name || "");
   const [phone, setPhone] = useState(session?.user?.phone || "");
@@ -17,6 +17,11 @@ export default function Profile({ params }: { params: { lang: string } }) {
   const [image, setImage] = useState(session?.user?.image || "/en/profile.webp");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  const [passwordMessage, setPasswordMessage] = useState({ text: "", type: "" });
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   // تحديث الحقول عندما تكون بيانات الجلسة متاحة
   // useEffect(() => {
@@ -34,7 +39,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
         if (response.ok) {
           const userData = await response.json();
 
-          console.log('🚀 ~ page.tsx ~ fetchUserData ~ userData:', userData);
+          
 
           setName(userData.name || "");
           setPhone(userData.phone || "");
@@ -121,6 +126,54 @@ export default function Profile({ params }: { params: { lang: string } }) {
       setMessage({ text: "1111حدث خطأ أثناء تحديث البيانات", type: "error" });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsChangingPassword(true);
+    setPasswordMessage({ text: "", type: "" });
+
+    // Validate passwords
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ text: "كلمات المرور الجديدة غير متطابقة", type: "error" });
+      setIsChangingPassword(false);
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordMessage({ text: "يجب أن تكون كلمة المرور الجديدة 6 أحرف على الأقل", type: "error" });
+      setIsChangingPassword(false);
+
+      
+      return;
+    }
+    const email = session?.user?.email;
+
+    try {
+      const response = await fetch("/api/user/change-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ currentPassword, newPassword, email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setPasswordMessage({ text: data.message || "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+        return;
+      }
+
+      setPasswordMessage({ text: "تم تغيير كلمة المرور بنجاح", type: "success" });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      setPasswordMessage({ text: "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+    } finally {
+      setIsChangingPassword(false);
     }
   };
 
@@ -241,14 +294,71 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">تغيير كلمة المرور</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
-          لتغيير كلمة المرور، يرجى إدخال كلمة المرور الحالية وكلمة المرور الجديدة.
-        </p>
-        <button
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          تغيير كلمة المرور
-        </button>
+
+        { passwordMessage.text && (
+          <div
+            className={ `mb-4 p-4 rounded ${passwordMessage.type === "success"
+              ? "bg-green-100 text-green-700 border border-green-400"
+              : "bg-red-100 text-red-700 border border-red-400"
+              }` }
+          >
+            { passwordMessage.text }
+          </div>
+        ) }
+
+        <form onSubmit={ handlePasswordChange } className="space-y-4">
+          <div>
+            <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              كلمة المرور الحالية
+            </label>
+            <input
+              type="password"
+              id="currentPassword"
+              value={ currentPassword }
+              onChange={ (e) => setCurrentPassword(e.target.value) }
+              required
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              كلمة المرور الجديدة
+            </label>
+            <input
+              type="password"
+              id="newPassword"
+              value={ newPassword }
+              onChange={ (e) => setNewPassword(e.target.value) }
+              required
+              minLength={ 6 }
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              تأكيد كلمة المرور الجديدة
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={ confirmPassword }
+              onChange={ (e) => setConfirmPassword(e.target.value) }
+              required
+              minLength={ 6 }
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={ isChangingPassword }
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-400"
+          >
+            { isChangingPassword ? "جاري تغيير كلمة المرور..." : "تغيير كلمة المرور" }
+          </button>
+        </form>
       </div>
     </div>
   );

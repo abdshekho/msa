@@ -6,7 +6,6 @@ export async function middleware(request: NextRequest) {
   const session = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   
 
-  console.log('🚀 ~ middleware.ts ~ middleware ~ session:', session);
 
   // التحقق مما إذا كان المسار يبدأ بـ /dashboard
   const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');

@@ -39,7 +39,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
         const data = await response.json();
         
         setImage(data?.imageUrl);
-        console.log('🚀 ~ page.tsx ~ handleFileChange ~ data:', data);
+
 
 
         // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));

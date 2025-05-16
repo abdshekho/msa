@@ -7,10 +7,6 @@ import { redirect } from "next/navigation";
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
 
-    console.log('🚀 ~ layout.tsx ~ Layout ~ status:', status);
-
-
-    console.log('🚀 ~ layout.tsx ~ Layout ~ data:', session);
 
 
     // التحقق من حالة الجلسة
