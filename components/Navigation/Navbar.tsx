@@ -24,6 +24,9 @@ import { usePathname } from 'next/navigation';
 
 export default function NavbarMain({ lang }: any) {
     const { data: session, status } = useSession();
+
+    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
+
     const pathname = usePathname();
 
     // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ pathname:', pathname === '/' + lang);
@@ -40,7 +43,7 @@ export default function NavbarMain({ lang }: any) {
     return (
         <Navbar className={ `${pathname === '/' + lang ? 'absolute w-full z-10 dark:bg-transparent' : ''}` }>
             <NavbarBrand href={ `/${lang}` }>
-                <Image src="/favicon.ico" width={ 40 } height={ 45 } className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">MSA sunPower</span>
             </NavbarBrand>
             <div className="flex md:order-2">
@@ -77,7 +80,7 @@ export default function NavbarMain({ lang }: any) {
                             </DropdownItem >
                         </Link>
                         { session?.user?.role === "admin" && (
-                            <Link href={ `/${lang}/admin` }>
+                            <Link href={ `/${lang}/dashboard` }>
                                 <DropdownItem>
                                     <IoSettingsOutline className="mx-2" />
                                     Dashborad

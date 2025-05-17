@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { use } from "react";
 import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/react";
 
 export default function SignUp({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
@@ -17,6 +19,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
   const [image, setImage] = useState("/en/profile.webp");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   // For cover image
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -37,7 +40,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
         if (!response.ok) throw new Error('Image upload failed');
 
         const data = await response.json();
-        
+
         setImage(data?.imageUrl);
 
 
@@ -51,7 +54,17 @@ export default function SignUp({ params }: { params: { lang: string } }) {
       }
     }
   }, []);
-
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      await signIn("google", {
+        callbackUrl: `/${resolvedParams.lang}`,
+      });
+    } catch (error) {
+      setError("حدث خطأ أثناء تسجيل الدخول بواسطة جوجل");
+      setIsGoogleLoading(false);
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -94,6 +107,27 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <span className="block sm:inline">{ error }</span>
           </div>
         ) }
+
+        <div className="mt-6">
+          <button
+            onClick={ handleGoogleSignIn }
+            disabled={ isGoogleLoading }
+            className="w-full flex justify-center items-center gap-2 bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <FcGoogle className="h-5 w-5" />
+            { isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل" }
+          </button>
+        </div>
+
+        <div className="mt-6 relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+          </div>
+        </div>
+
         <form className="mt-8 space-y-6" onSubmit={ handleSubmit }>
           <div className="flex justify-center mb-6">
             <div className="relative w-24 h-24">

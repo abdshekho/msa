@@ -3,9 +3,10 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function ErrorPage({ params }: { params: { lang: string } }) {
+export default async function ErrorPage({ params }: { params: { lang: string } }) {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const { lang } = await params;
 
   let errorMessage = "حدث خطأ أثناء المصادقة";
 
@@ -38,7 +39,7 @@ export default function ErrorPage({ params }: { params: { lang: string } }) {
         </div>
         <div className="flex justify-center">
           <Link
-            href={`/${params.lang}/auth/signin`}
+            href={`/${lang}/auth/signin`}
             className="text-blue-600 hover:text-blue-800 font-medium"
           >
             العودة إلى صفحة تسجيل الدخول

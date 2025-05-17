@@ -1,11 +1,17 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { connectToDatabase } from "@/app/lib/mongodb";
 import { compare } from "bcrypt";
 import { getServerSession } from "next-auth/next";
 
+console.log('in [...nextauth]')
 export const authOptions = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -14,8 +20,6 @@ export const authOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-
-
                     return null;
                 }
 
@@ -44,25 +48,59 @@ export const authOptions = {
                 };
             }
         }),
-        // يمكنك إضافة مزودي مصادقة آخرين هنا مثل Google أو GitHub
     ],
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 يوم
-    },
     callbacks: {
-        async jwt({ token, user, trigger,session }) {
+        async signIn({ user, account }) {
 
-            // console.log('🚀 ~ route.ts ~ jwt ~ session:', session);
+            console.log('🚀 ~ route.ts ~ signIn ~ account:', account);
 
-            if(trigger === 'update' && session){
+
+            console.log('🚀 ~ route.ts ~ signIn ~ user:', user);
+
+            // Handle Google sign in
+            if (account?.provider === "google") {
+                const { db } = await connectToDatabase();
+
+                // Check if user exists
+                const existingUser = await db.collection("users").findOne({ email: user.email });
+
+
+                console.log('🚀 ~ route.ts ~ signIn ~ existingUser:', existingUser);
+
+                if (!existingUser) {
+                    // Create new user if they don't exist
+                    await db.collection("users").insertOne({
+                        name: user.name,
+                        email: user.email,
+                        image: user.image,
+                        role: user.role || "user",
+                        createdAt: new Date(),
+                    });
+                } else {
+                    // Update user info if needed
+                    await db.collection("users").updateOne(
+                        { email: user.email },
+                        {
+                            $set: {
+                                name: user.name,
+                                image: user.image,
+                                role: existingUser.role || 'user'
+                            }
+                        }
+                    );
+                    user.role = existingUser.role || "user";
+                }
+            }
+            return true;
+        },
+        async jwt({ token, user, trigger, session }) {
+            if (trigger === 'update' && session) {
                 token.name = session.user.name;
                 token.picture = session.user.image;
                 token.address = session.user.address;
                 token.phone = session.user.phone;
+                token.role = session.user.role;
             }
-
-
 
             if (user) {
                 token.id = user.id;
@@ -80,6 +118,10 @@ export const authOptions = {
             }
             return session;
         },
+    },
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     pages: {
         signIn: "/auth/signin",

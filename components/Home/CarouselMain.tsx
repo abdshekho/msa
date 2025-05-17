@@ -12,7 +12,7 @@ export default function CarouselMain() {
     return (
         <div className="h-[40vh] lg:h-[100vh]">
             <ThemeProvider theme={mainTheme}>
-                <Carousel className='overflow-x-hidden'>
+                <Carousel slide={false} className='overflow-x-hidden'>
                     <div className="relative overflow-x-hidden flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                         <img
                             src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1920&auto=format&fit=crop"
@@ -23,7 +23,7 @@ export default function CarouselMain() {
                         <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl">
                             <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">حلول الطاقة الشمسية للمنازل</h2>
                             <p className="text-md lg:text-xl mb-6 text-[lightgrey]">وفر في فواتير الكهرباء واستثمر في مستقبل أكثر استدامة مع أنظمة الطاقة الشمسية عالية الكفاءة</p>
-                            <button className="border border-white  hover:bg-[#111827] font-bold py-3 px-6 rounded-lg transition-all">
+                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
                                 استكشف الحلول المنزلية
                             </button>
                             {/* <button role="button" className="golden-button">

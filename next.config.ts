@@ -6,16 +6,19 @@ module.exports = withFlowbiteReact({
         config.resolve.alias['@lib'] = path.join(__dirname, 'lib')
         return config
     },
+    // images: {
+    //     remotePatterns: [
+    //         {
+    //             protocol: 'https',
+    //             hostname: 'flowbite',
+    //             port: '*',
+    //             pathname: '/account123/**',
+    //             search: '',
+    //         },
+    //     ],
+    // },
     images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'flowbite',
-                port: '*',
-                pathname: '/account123/**',
-                search: '',
-            },
-        ],
+        remotePatterns: [new URL('https://lh3.googleusercontent.com/**/**')],
     },
 })
-    // "next": "15.3.1",
+// "next": "15.3.1",

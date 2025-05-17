@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignIn({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
@@ -12,6 +13,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +41,18 @@ export default function SignIn({ params }: { params: { lang: string } }) {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      await signIn("google", {
+        callbackUrl: `/${resolvedParams.lang}`,
+      });
+    } catch (error) {
+      setError("حدث خطأ أثناء تسجيل الدخول بواسطة جوجل");
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
@@ -52,6 +66,27 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
+        
+        <div className="mt-6">
+          <button
+            onClick={handleGoogleSignIn}
+            disabled={isGoogleLoading}
+            className="w-full flex justify-center items-center gap-2 bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <FcGoogle className="h-5 w-5" />
+            {isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل"}
+          </button>
+        </div>
+        
+        <div className="mt-6 relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+          </div>
+        </div>
+        
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
