@@ -6,7 +6,7 @@
 // } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaBeer,FaHome } from 'react-icons/fa';
+import { FaBeer, FaHome, FaCogs } from 'react-icons/fa';
 // import clsx from 'clsx';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -19,6 +19,7 @@ const links = [
   },
   { name: 'categories', href: '/dashboard/categories', icon: FaBeer },
   { name: 'brands', href: '/dashboard/brands', icon: FaBeer },
+  { name: 'services', href: '/dashboard/services', icon: FaCogs },
 ];
 
 export default function NavLinks() {

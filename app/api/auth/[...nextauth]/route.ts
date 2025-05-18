@@ -5,7 +5,7 @@ import { connectToDatabase } from "@/app/lib/mongodb";
 import { compare } from "bcrypt";
 import { getServerSession } from "next-auth/next";
 
-console.log('in [...nextauth]')
+
 export const authOptions = {
     providers: [
         GoogleProvider({
@@ -25,7 +25,7 @@ export const authOptions = {
 
                 const { db } = await connectToDatabase();
                 const user = await db.collection("users").findOne({ email: credentials.email });
-                console.log('🚀 ~ route.ts ~ authorize ~ user:', user);
+
 
                 if (!user) {
                     return null;
@@ -52,10 +52,6 @@ export const authOptions = {
     callbacks: {
         async signIn({ user, account }) {
 
-            console.log('🚀 ~ route.ts ~ signIn ~ account:', account);
-
-
-            console.log('🚀 ~ route.ts ~ signIn ~ user:', user);
 
             // Handle Google sign in
             if (account?.provider === "google") {
@@ -64,8 +60,6 @@ export const authOptions = {
                 // Check if user exists
                 const existingUser = await db.collection("users").findOne({ email: user.email });
 
-
-                console.log('🚀 ~ route.ts ~ signIn ~ existingUser:', existingUser);
 
                 if (!existingUser) {
                     // Create new user if they don't exist

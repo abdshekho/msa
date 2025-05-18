@@ -32,6 +32,8 @@ export async function POST(request: NextRequest) {
                 subfolder = 'brands';
             } else if (contentType === 'porfiles') {
                 subfolder = 'porfiles';
+            }else if (contentType === 'services') {
+                subfolder = 'services';
             }
 
             // Define path to save the file (in public directory with appropriate subfolder)
