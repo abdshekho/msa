@@ -8,12 +8,11 @@
     .menu__link {
     @apply relative dark:text-white hover:text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
     before:left-0 before:h-[2px] before:w-0 before:rounded before:bg-[#cf8714] before:transition-all 
-    before:duration-300 hover:before:w-full ;
+    before:duration-500 hover:before:w-full ;
     }
     .active__link {
     @apply relative  text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
-    before:left-0 before:h-[2px] before:rounded before:bg-[#cf8714] before:transition-all 
-    before:duration-300 before:w-full ;
+    before:left-0 before:h-[2px] before:rounded before:bg-[#cf8714] before:transition-all before:w-full ;
     }
     .paddingX {
     @apply sm:px-16 px-6;
@@ -222,37 +221,28 @@ input {
 
 
 
-
-
-
-
-
-/* <reset-style> ============================ */
-a {
-  text-decoration: none;
-}
-/* <main-style> ============================ */
-    /* .menu__link {
-    color: #fff;
-    line-height: 2;
-    position: relative;
-    }
-
-    .menu__link::before {
-    content: '';
-    width: 0;
-    height: 2px;
-    border-radius: 2px;
-    background-color: #fff;
+.custom-shape-divider-top-1747581643 {
     position: absolute;
-    bottom: -.25rem;
+    top: 0;
     left: 0;
-    transition: width .3s;
-    }
-
-    .menu__link:hover::before {
     width: 100%;
-    }
- */
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-top-1747581643 svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 75px;
+}
+
+.custom-shape-divider-top-1747581643 .shape-fill {
+    fill: #FFFFFF;
+}
+
+.dark .custom-shape-divider-top-1747581643 .shape-fill {
+  fill: #1f2937; /* أو أي لون تريده في الوضع المظلم */
+}
 
 
