@@ -67,8 +67,8 @@ export default function NavbarMain({ lang }: any) {
                         }
                     >
                         <DropdownHeader>
-                            <span className="block text-sm text-center">{ session?.user?.name }</span>
-                            <span className="block truncate text-sm font-medium">{ session?.user?.email }</span>
+                            <span className="block text-sm text-center text-primary">{ session?.user?.name }</span>
+                            <span className="block truncate text-sm font-medium text-secondary dark:text-secondary-10">{ session?.user?.email }</span>
                         </DropdownHeader>
                         <DropdownDivider />
                         { session?.user?.role === 'admin' &&
@@ -101,13 +101,14 @@ export default function NavbarMain({ lang }: any) {
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <Link
                             href={ `/${lang}/auth/signin` }
-                            className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                            className="text-sm font-medium text-primary dark:text-primary hover:underline hover:text-primary-10  mx-2"
                         >
                             تسجيل الدخول
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                            className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-4 py-2
+                             dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
                             إنشاء حساب
                         </Link>
@@ -124,9 +125,9 @@ export default function NavbarMain({ lang }: any) {
                 <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>Home</Link>
 
 
-                <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories'? "active__link" : "menu__link" }>Categories</Link>
-                <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands'? "active__link" : "menu__link" }>Brands</Link>
-                <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services'? "active__link" : "menu__link" }>Services</Link>
+                <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>Categories</Link>
+                <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>Brands</Link>
+                <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>Services</Link>
                 <Link href="#" className={ `menu__link` }>Contact</Link>
             </NavbarCollapse>
         </Navbar >

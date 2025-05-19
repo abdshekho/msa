@@ -55,7 +55,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                 ) }
 
                 <div className="mt-4">
-                  <h3 className="text-md md:text-xl font-medium mb-2">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
+                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary-10">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
                   <ul className="space-y-2">
                     { category.items && category.items.map((subcategory: any) => (
                       <li key={ subcategory.id }>
@@ -82,7 +82,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
 
                 <Link
                   href={ `/${lang}/categories/${category.slug}` }
-                  className="mt-6 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  className="mt-6 inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-10 transition"
                 >
                   { dictionary.common?.viewAll || 'View All' }
                 </Link>
