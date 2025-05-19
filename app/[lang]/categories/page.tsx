@@ -31,14 +31,17 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
   return (
     <div className="mx-auto">
       <CategoriesHero />
-      <div className='container mx-auto'>
-        <h1 className="text-3xl font-bold mb-8">{ dictionary.categories?.allCategories || 'All Categories' }</h1>
+      <div className='container mx-auto px-4 py-16'>
+        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">{ dictionary.categories?.allCategories || 'All Categories' }</h1>
+        <p className="text-sm md:text-lg text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+          We offer a wide range of solar power services to meet your energy needs. Our team of experts is dedicated to providing high-quality solutions tailored to your specific requirements.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           { categories.map((category: any) => (
             <div key={ category.id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">{ category.name }</h2>
+                <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">{ category.name }</h2>
 
                 { category.image && (
                   <div className="relative h-40 mb-4">
@@ -46,13 +49,13 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                       src={ category.image }
                       alt={ category.name }
                       fill
-                      className="object-cover rounded-md"
+                      className="object-contain rounded-md"
                     />
                   </div>
                 ) }
 
                 <div className="mt-4">
-                  <h3 className="text-lg font-medium mb-2">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
+                  <h3 className="text-md md:text-xl font-medium mb-2">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
                   <ul className="space-y-2">
                     { category.items && category.items.map((subcategory: any) => (
                       <li key={ subcategory.id }>
