@@ -4,15 +4,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+/* block py-2 pl-3 pr-4 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-white */
 @layer utilities {
     .menu__link {
     @apply relative dark:text-white hover:text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
     before:left-0 before:h-[2px] before:w-0 before:rounded before:bg-[#cf8714] before:transition-all 
-    before:duration-500 hover:before:w-full ;
+    before:duration-500 hover:before:w-full
+    py-2 pl-3 pr-4 md:p-0 border-b border-gray-700 text-gray-700 md:border-0
+    ;
     }
     .active__link {
     @apply relative  text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
-    before:left-0 before:h-[2px] before:rounded before:bg-[#cf8714] before:transition-all before:w-full ;
+    before:left-0 before:h-[2px] before:rounded before:bg-[#cf8714] before:transition-all before:w-full
+    py-2 pl-3 pr-4 md:p-0  md:border-0 ;
     }
     .paddingX {
     @apply sm:px-16 px-6;
@@ -221,6 +226,7 @@ input {
 
 
 
+/* Hero section */
 .custom-shape-divider-top-1747581643 {
     position: absolute;
     top: 0;
@@ -233,16 +239,22 @@ input {
 .custom-shape-divider-top-1747581643 svg {
     position: relative;
     display: block;
-    width: calc(100% + 1.3px);
+    width: calc(100% + 1.3px); 
+    /* 300% on mobile */
     height: 75px;
 }
 
+@media screen and (max-width: 580px) {
+.custom-shape-divider-top-1747581643 svg {
+    width: calc(230% + 1.3px); 
+    }
+}
 .custom-shape-divider-top-1747581643 .shape-fill {
-    fill: #FFFFFF;
+    fill: #ffffff;
 }
 
 .dark .custom-shape-divider-top-1747581643 .shape-fill {
-  fill: #1f2937; /* أو أي لون تريده في الوضع المظلم */
+    fill: #1f2937; 
 }
 
 

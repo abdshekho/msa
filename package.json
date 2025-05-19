@@ -30,6 +30,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/negotiator": "0.6.3",
     "@types/node": "^22.9.0",

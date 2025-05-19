@@ -42,12 +42,12 @@ export default function NavbarMain({ lang }: any) {
     };
 
     return (
-        <Navbar className={ `${pathname === '/' + lang ? 'absolute w-full z-10 dark:bg-transparent' : ''}` }>
-            <NavbarBrand href={ `/${lang}` }>
-                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-                <div className="flex column  justify-center items-center self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-                    MSA
-                    <div>sunPower</div>
+        <Navbar className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }>
+            <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse">
+                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-1 h-9" alt="Flowbite React Logo" />
+                <div className="hidden lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">
+                    <span className="text-[#d28711] font-bold">MSA</span>
+                    <span className="mt-[-10px] text-[#05406d] font-bold">SunPower</span>
                 </div>
             </NavbarBrand>
             <div className="flex md:order-2">
@@ -118,12 +118,12 @@ export default function NavbarMain({ lang }: any) {
                 <NavbarToggle />
             </div>
             <NavbarCollapse>
-                <NavbarLink>
+                <NavbarLink >
                     <NavMenu />
                 </NavbarLink>
-                <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>
-                    Home
-                </Link>
+                <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>Home</Link>
+
+
                 <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories'? "active__link" : "menu__link" }>Categories</Link>
                 <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands'? "active__link" : "menu__link" }>Brands</Link>
                 <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services'? "active__link" : "menu__link" }>Services</Link>
