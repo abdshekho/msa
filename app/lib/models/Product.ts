@@ -7,8 +7,8 @@ export interface IProduct extends Document {
     price: number;
     imageCover: string;
     images: string[];
-    category: string;
-    brand: string;
+    category: mongoose.Schema.Types.ObjectId;
+    brand: mongoose.Schema.Types.ObjectId;
     // subcategory: string;
     desc: string;
     descAr: string;
@@ -34,9 +34,16 @@ const ProductSchema: Schema = new Schema(
         price: { type: Number, required: true },
         imageCover: { type: String, required: true },
         images: [{ type: String }],
-        category: { type: String, required: true },
-        brand: { type: String },
-        // subcategory: { type: String },
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category',
+            required: true,
+        },
+        brand: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Brand',
+            required: true,
+        },
         desc: { type: String, required: true },
         descAr: { type: String, required: true },
         features: [{ type: String }],
@@ -56,7 +63,7 @@ const ProductSchema: Schema = new Schema(
 // Add pre-save hook to generate slug from name if not provided
 // Create indexes for better performance
 // ProductSchema.index({ slug: 1 });
-ProductSchema.pre('save', function(next) {
+ProductSchema.pre('save', function (next) {
     if (!this.slug) {
         this.slug = this.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
     }

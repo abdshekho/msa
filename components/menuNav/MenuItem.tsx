@@ -5,11 +5,14 @@ import ProductMenuItem from './ProductMenuItem';
 
 export default function MenuItem({ title, items }: any) {
 
+// console.log('🚀 ~ MenuItem.tsx ~ MenuItem ~ items:', items);
+
+
 
 
     const [openSub2, setOpenSub2] = useState(false);
     // const [selectedImage, setSelectedImage] = useState('https://images.unsplash.com/photo-1505740420928-5e560c06d30e');
-    const [selectedImage, setSelectedImage] = useState(items[0].imageCover);
+    const [selectedImage, setSelectedImage] = useState(items[0]?.imageCover || '');
     const handleItemSelect = (item: any) => {
         setSelectedImage(item.imageCover);
     }
@@ -18,7 +21,7 @@ export default function MenuItem({ title, items }: any) {
     return (
         <div className={ styles.dropdownItem }
             onMouseEnter={ () => setOpenSub2(true) }
-            onMouseLeave={ () => setOpenSub2(false) }
+            // onMouseLeave={ () => setOpenSub2(false) }
         >{ title } ▸
             { openSub2 && (
 

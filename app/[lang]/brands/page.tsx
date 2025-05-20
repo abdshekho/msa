@@ -8,7 +8,7 @@ import BrandsHero from '@/components/brands/BrandsHero';
 
 async function getBrands() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/brands`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/brands?includeProductCount=true`, {
       cache: 'no-store'
     });
 
@@ -28,6 +28,9 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
   const dictionary = await getDictionary(lang);
   const brands = await getBrands();
 
+  // console.log('🚀 ~ page.tsx ~ BrandsPage ~ brands:', brands);
+
+
   return (
     <div >
       <BrandsHero />
@@ -46,7 +49,7 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
             >
               <div className="p-8 flex flex-col items-center">
                 { brand.image && (
-                  <div className="relative h-24 w-24 mb-4">
+                  <div className="relative h-30 w-30 mb-4">
                     <Image
                       src={ brand.image }
                       alt={ brand.name }
@@ -56,7 +59,12 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
                   </div>
                 ) }
                 <h2 className="text-lg md:text-xl font-semibold text-primary text-center">{ brand.name }</h2>
-                <span className='text-sm md:text-md text-secondary-10'>{brand.description}</span>
+                <span className='text-sm md:text-md text-secondary-10 text-center'>{brand.description}</span>
+                {brand.productCount !== undefined && (
+                  <span className="mt-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
+                    {brand.productCount} {brand.productCount === 1 ? 'product' : 'products'}
+                  </span>
+                )}
               </div>
             </Link>
           )) }

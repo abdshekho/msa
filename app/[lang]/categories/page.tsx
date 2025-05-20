@@ -8,7 +8,7 @@ import CategoriesHero from '@/components/categories/CategoriesHero';
 async function getCategories() {
   try {
     // Use nested=true to get a hierarchical structure of categories
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories?nested=true`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories?nested=true&withProductCount=true`, {
       cache: 'no-store'
     });
 
@@ -27,6 +27,9 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
   const { lang } = await props.params;
   const dictionary = await getDictionary(lang);
   const categories = await getCategories();
+
+  // console.log('🚀 ~ page.tsx ~ CategoriesPage ~ categories:', categories);
+
 
   return (
     <div className="mx-auto">
@@ -61,19 +64,26 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                       <li key={ subcategory.id }>
                         <Link
                           href={ `/${lang}/categories/${subcategory.slug}` }
-                          className="text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+                          className="text-blue-600 dark:text-blue-400  flex justify-between items-center"
                         >
-                          { subcategory.image && (
-                            <div className="relative w-8 h-8 mr-2">
+                          <div className='flex hover:underline '>
+                          <div className="relative w-8 h-8 mr-2">
+                            { subcategory.image && (
                               <Image
                                 src={ subcategory.image }
                                 alt={ subcategory.name }
                                 fill
                                 className="object-cover rounded-full"
                               />
-                            </div>
+                            ) }
+                          </div>
+                          { subcategory.name }</div>
+                          {/* <span className="text-sm md:text-base">{ subcategory.name }</span> */ }
+                          { subcategory.productCount !== undefined && (
+                            <span className="px-3 py-2 text-black dark:text-white bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
+                              { subcategory.productCount } { subcategory.productCount === 1 ? 'product' : 'products' }
+                            </span>
                           ) }
-                          { subcategory.name }
                         </Link>
                       </li>
                     )) }

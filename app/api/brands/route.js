@@ -1,20 +1,86 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Brand from '@/app/lib/models/Brand';
-// import Product from '@/app/lib/models/Product'; // Assuming you have a Product model
+import Product from '@/app/lib/models/Product';
 
-// Get all categories
+// Get all brands
+// export async function GET(request) {
+//     try {
+//         const { searchParams } = new URL(request.url);
+//         const includeProductCount = searchParams.get('includeProductCount') === 'true';
+
+//         await connectToDatabase();
+//         const brands = await Brand.find({}).sort({ createdAt: -1 });
+
+//         if (includeProductCount) {
+//             // Get product counts for each brand
+//             const brandsWithCounts = await Promise.all(brands.map(async (brand) => {
+//                 const brandObj = brand.toObject();
+
+//                 const productCount = await Product.countDocuments({ brand: brand._id });
+//                 return { ...brandObj, productCount };
+
+//             }));
+
+
+
+//             return NextResponse.json(brandsWithCounts);
+//         }
+
+//         return NextResponse.json(brands);
+//     } catch (err) {
+//         console.error('Error fetching brands:', err);
+//         return NextResponse.json({ error: 'Failed to read brands' }, { status: 500 });
+//     }
+// }
+// Get all brands
 export async function GET( request ) {
     try {
-        await connectToDatabase();
-        const Brands = await Brand.find( {} ).sort( { createdAt: -1 } );
+        const { searchParams } = new URL( request.url );
+        const includeProductCount = searchParams.get( 'includeProductCount' ) === 'true';
 
-        return NextResponse.json( Brands );
+        await connectToDatabase();
+
+        if ( includeProductCount ) {
+            const brandsWithCounts = await Brand.aggregate( [
+                {
+                    $lookup: {
+                        from: 'products', // اسم مجموعة المنتجات في قاعدة البيانات
+                        localField: '_id',
+                        foreignField: 'brand',
+                        as: 'products',
+                    },
+                },
+                {
+                    $addFields: {
+                        productCount: { $size: '$products' },
+                    },
+                },
+                {
+                    $project: {
+                        products: 0, // نحذف قائمة المنتجات إذا ما بدنا نعرضها
+                    },
+                },
+                {
+                    $sort: {
+                        createdAt: -1,
+                    },
+                },
+            ] );
+
+            return NextResponse.json( brandsWithCounts );
+        }
+
+        // في حال عدم طلب عدد المنتجات
+        const brands = await Brand.find( {} ).sort( { createdAt: -1 } );
+        return NextResponse.json( brands );
+
     } catch ( err ) {
-        console.error( 'Error fetching Brand:', err );
-        return NextResponse.json( { error: 'Failed to read Brand' }, { status: 500 } );
+        console.error( 'Error fetching brands:', err );
+        return NextResponse.json( { error: 'Failed to read brands' }, { status: 500 } );
     }
 }
+
 
 // Create a new Brand
 export async function POST( request ) {
@@ -37,12 +103,11 @@ export async function POST( request ) {
                 .replace( /(^-|-$)/g, '' );
         }
 
-
         await connectToDatabase();
 
         // Check if slug already exists
-        const existingBrand  = await Brand.findOne( { slug: brandData.slug } );
-        if ( existingBrand  ) {
+        const existingBrand = await Brand.findOne( { slug: brandData.slug } );
+        if ( existingBrand ) {
             return NextResponse.json(
                 { error: 'A Brand with this slug already exists' },
                 { status: 409 }
