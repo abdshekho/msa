@@ -118,6 +118,7 @@ export async function GET( request ) {
         const parentId = searchParams.get( 'parentId' );
         const notNull = searchParams.get( 'notNull' ) === 'true';
         const fields = searchParams.get( 'fields' );
+        const slug = searchParams.get( 'slug' );
         const withProducts = searchParams.get( 'withProducts' ) === 'true';
         const withProductCount = searchParams.get( 'withProductCount' ) === 'true';
         const nested = searchParams.get( 'nested' ) === 'true';
@@ -201,7 +202,7 @@ export async function GET( request ) {
                                 },
                             },
                         ] );
-                            items = subcategories.map( sub => ( {
+                        items = subcategories.map( sub => ( {
                             id: sub._id,
                             name: sub.name,
                             slug: sub.slug,
@@ -231,6 +232,10 @@ export async function GET( request ) {
             return NextResponse.json( result );
         }
 
+        if ( slug ) {
+            const category = await Category.findOne( { slug:slug.toString().trim() } );
+            return NextResponse.json( category );
+        }
         // FLAT CATEGORY STRUCTURE
         const query = {};
         if ( parentId === 'null' ) query.parentId = null;

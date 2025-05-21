@@ -28,6 +28,8 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
   const dictionary = await getDictionary(lang);
   const categories = await getCategories();
 
+
+
   // console.log('🚀 ~ page.tsx ~ CategoriesPage ~ categories:', categories);
 
 
@@ -44,7 +46,12 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
           { categories.map((category: any) => (
             <div key={ category.id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
               <div className="p-6">
-                <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">{ category.name }</h2>
+                <div className='flex justify-between items-center'>
+                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">{ category.name }</h2>
+                  <span className="px-3 py-2 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
+                    { category?.items.length } { category?.items.length === 1 ? 'category' : 'categories' }
+                  </span>
+                </div>
 
                 { category.image && (
                   <div className="relative h-40 mb-4">
@@ -67,17 +74,17 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                           className="text-blue-600 dark:text-blue-400  flex justify-between items-center"
                         >
                           <div className='flex hover:underline '>
-                          <div className="relative w-8 h-8 mr-2">
-                            { subcategory.image && (
-                              <Image
-                                src={ subcategory.image }
-                                alt={ subcategory.name }
-                                fill
-                                className="object-cover rounded-full"
-                              />
-                            ) }
-                          </div>
-                          { subcategory.name }</div>
+                            <div className="relative w-8 h-8 mr-2">
+                              { subcategory.image && (
+                                <Image
+                                  src={ subcategory.image }
+                                  alt={ subcategory.name }
+                                  fill
+                                  className="object-cover rounded-full"
+                                />
+                              ) }
+                            </div>
+                            { subcategory.name }</div>
                           {/* <span className="text-sm md:text-base">{ subcategory.name }</span> */ }
                           { subcategory.productCount !== undefined && (
                             <span className="px-3 py-2 text-black dark:text-white bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">

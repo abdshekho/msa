@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 // import connectToDatabase from '../../lib/db/mongoDB';
 import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Product from '@/app/lib/models/Product';
+import mongoose from 'mongoose';
 
 
 // Get all products
@@ -12,11 +13,17 @@ export async function GET( request ) {
         // const subcategory = searchParams.get( 'subcategory' );
 
         const query = {};
-        if ( category ) query.category = category;
+        if ( category ) query.category = new mongoose.Types.ObjectId(category);
+
+        // console.log('🚀 ~ route.js ~ GET ~ category:', query);
+
         // if ( subcategory ) query.subcategory = subcategory;
 
         await connectToDatabase();
         const products = await Product.find( query ).sort( { createdAt: -1 } );
+
+
+        // console.log('🚀 ~ route.js ~ GET ~ products:', products);
 
         return NextResponse.json( products );
     } catch ( error ) {

@@ -44,6 +44,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     const dictionary = await getDictionary(lang);
     const category = await getCategoryBySlug(slug);
 
+
     if (!category) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -51,13 +52,14 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
             </div>
         );
     }
-
     const products = await getProductsByCategory(category._id);
+
+
 
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <Link href={ `/${lang}/categories` } className="text-blue-600 dark:text-blue-400 hover:underline">
+                <Link href={ `/${lang}/categories` } className="hover:text-secondary hover:underline">
                     ← { dictionary.common?.backToCategories || 'Back to Categories' }
                 </Link>
             </div>
@@ -70,21 +72,21 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                                 src={ category.image }
                                 alt={ category.name }
                                 fill
-                                className="object-cover rounded-lg"
+                                className="rounded-lg object-contain"
                             />
                         </div>
                     </div>
                 ) }
 
                 <div className="md:w-2/3">
-                    <h1 className="text-3xl font-bold mb-4">{ category.name }</h1>
+                    <h1 className="text:lg text-3xl text-primary font-bold mb-4 ">{ category.name }</h1>
                     { category.description && (
-                        <p className="text-gray-700 dark:text-gray-300 mb-4">{ category.description }</p>
+                        <p className="text-gray-700 dark:text-gray-400 font-bold mb-4">{ category.description }</p>
                     ) }
                 </div>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
+            <h2 className="text-2xl font-bold mb-6 text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
 
             { products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

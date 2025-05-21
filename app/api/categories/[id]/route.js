@@ -31,10 +31,14 @@ async function deleteImageFile( imageUrl ) {
     }
 }
 
+
 // Get a single category
 export async function GET( request, { params } ) {
     try {
         const { id } = await params;
+
+        console.log('🚀 ~ route.js ~ GET ~ id:', id);
+
 
         if ( !isValidObjectId( id ) ) {
             return NextResponse.json(
