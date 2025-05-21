@@ -31,7 +31,7 @@
     }
 
     .desc{
-        @apply text-gray-700 dark:text-gray-400;
+        @apply text-gray-700 dark:text-gray-200;
     }
     .menu__link {
     @apply relative dark:text-white hover:text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 

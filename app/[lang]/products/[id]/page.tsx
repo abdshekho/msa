@@ -111,7 +111,7 @@ async function ProductPage(
                     </>
                 ) }
                 <span className="mx-2">/</span>
-                <span className="text-gray-900 font-medium">{ productName }</span>
+                <span className="text-primary font-medium">{ productName }</span>
             </nav>
 
             {/* Product Header */ }
@@ -136,12 +136,12 @@ async function ProductPage(
                         <div className="grid grid-cols-5 gap-2">
                             { product.images.map((image, index) => (
                                 image && (
-                                    <div key={ index } className="relative h-20 bg-gray-100 rounded-md overflow-hidden">
+                                    <div key={ index } className="relative h-20 bg-card-10 dark:bg-card rounded-md overflow-hidden">
                                         <Image
                                             src={ image }
                                             alt={ `${productName} - image ${index + 1}` }
                                             fill
-                                            className="object-cover hover:opacity-80 cursor-pointer"
+                                            className="object-cover hover:opacity-80 cursor-pointer bg-card-10 dark:bg-card"
                                             sizes="(max-width: 768px) 20vw, 10vw"
                                         />
                                     </div>

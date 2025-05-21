@@ -21,6 +21,7 @@ interface Category {
 
 export default function CategoriesAdminPage() {
     const [categories, setCategories] = useState<Category[]>([]);
+    const [categoriesC, setCategoriesC] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
@@ -53,10 +54,13 @@ export default function CategoriesAdminPage() {
     const fetchCategories = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/categories');
+            const response = await fetch('/api/categories?withProductCount=true');
             if (!response.ok) throw new Error('Failed to fetch categories');
 
             const data = await response.json();
+
+            console.log('🚀 ~ page.tsx ~ fetchCategories ~ data:', data);
+
             setCategories(data);
         } catch (err: any) {
             setError(err.message || 'An error occurred while fetching categories');
@@ -499,7 +503,7 @@ export default function CategoriesAdminPage() {
                                         disabled={ !(categories && categories?.length) }
                                     >
                                         <option value="">None (Top Level Category)</option>
-                                        { categories?.map(cat => (
+                                        { categories?.filter(cat => cat.parentId === null).map(cat => (
                                             <option
                                                 key={ cat._id }
                                                 value={ cat._id }
@@ -507,7 +511,8 @@ export default function CategoriesAdminPage() {
                                             >
                                                 { cat.name }
                                             </option>
-                                        )) }                                </select>
+                                        )) }
+                                    </select>
                                 </div>
 
                                 {/* Order */ }

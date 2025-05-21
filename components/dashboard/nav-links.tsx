@@ -26,7 +26,7 @@ const links = [
 export default function NavLinks() {
   const pathname = usePathname();
 
-  console.log('🚀 ~ nav-links.tsx ~ NavLinks ~ pathname:', pathname);
+  // console.log('🚀 ~ nav-links.tsx ~ NavLinks ~ pathname:', pathname);
 
   return (
     <>
