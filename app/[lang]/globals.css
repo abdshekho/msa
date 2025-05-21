@@ -10,10 +10,29 @@
     --color-primary-1: lightgoldenrodyellow;
     --color-secondary: #023f6f;
     --color-secondary-10: #739ebf;
+    --color-card: #1f2937;
+    --color-card-10: #f3f4f6;
+    /* --text-md: 10px; */
 }
 
 /* block py-2 pl-3 pr-4 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 md:border-0 md:hover:bg-transparent md:hover:text-primary-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-white */
 @layer utilities {
+
+    .head-1 {
+        @apply text-xl md:text-3xl font-bold text-primary dark:text-primary-10;
+    }
+
+    .head-21 {
+        @apply text-lg md:text-2xl font-bold text-secondary dark:text-secondary-10; 
+    }
+
+    .head-22 {
+        @apply text-base md:text-lg font-bold text-secondary dark:text-secondary-10; 
+    }
+
+    .desc{
+        @apply text-gray-700 dark:text-gray-400;
+    }
     .menu__link {
     @apply relative dark:text-white hover:text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
     before:left-0 before:h-[2px] before:w-0 before:rounded before:bg-[#cf8714] before:transition-all 

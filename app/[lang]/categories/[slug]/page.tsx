@@ -15,7 +15,7 @@ async function getCategoryBySlug(slug: string) {
         }
 
         const categories = await res.json();
-        return categories[0]; // Return the first category that matches the slug
+        return categories; // Return the first category that matches the slug
     } catch (error) {
         console.error('Error loading category:', error);
         return null;
@@ -54,6 +54,9 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     }
     const products = await getProductsByCategory(category._id);
 
+    console.log('🚀 ~ page.tsx ~ CategoryDetailPage ~ products:', products);
+
+
 
 
     return (
@@ -86,23 +89,23 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                 </div>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6 text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
+            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
 
             { products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     { products.map((product: any) => (
-                        <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                        <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden py-2 sm:py-4">
                             <div className="relative h-48">
                                 <Image
                                     src={ product.imageCover }
                                     alt={ product.name }
                                     fill
-                                    className="object-cover"
+                                    className="object-contain"
                                 />
                             </div>
                             <div className="p-4">
-                                <h3 className="text-lg font-semibold mb-2">{ product.name }</h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-2">${ product.price.toFixed(2) }</p>
+                                <h3 className="text-lg text-primary font-semibold mb-2">{ product.name }</h3>
+                                <p className="text-secondary dark:text-secondary-10 font-bold mb-2">${ product.price.toFixed(2) }</p>
                                 <Link
                                     href={ `/${lang}/products/${product._id}` }
                                     className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"

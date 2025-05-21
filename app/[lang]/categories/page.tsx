@@ -65,7 +65,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                 ) }
 
                 <div className="mt-4">
-                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary-10">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
+                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
                   <ul className="space-y-2">
                     { category.items && category.items.map((subcategory: any) => (
                       <li key={ subcategory.id }>
