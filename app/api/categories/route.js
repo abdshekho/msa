@@ -122,9 +122,11 @@ export async function GET( request ) {
         const withProducts = searchParams.get( 'withProducts' ) === 'true';
         const withProductCount = searchParams.get( 'withProductCount' ) === 'true';
         const nested = searchParams.get( 'nested' ) === 'true';
+        const projection = fields
+            ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
+            : {};
 
         await connectToDatabase();
-
         // NESTED STRUCTURE
         if ( nested ) {
             // Step 1: Fetch all categories in one go
@@ -231,20 +233,80 @@ export async function GET( request ) {
 
             return NextResponse.json( result );
         }
-
-        if ( slug ) {
-            const category = await Category.findOne( { slug:slug.toString().trim() } );
-            return NextResponse.json( category );
+        // get Category by slug
+        if ( slug && !notNull ) {
+            const categoryBySlug = await Category.findOne( { slug: slug.toString().trim() } );
+            return NextResponse.json( categoryBySlug );
         }
+        //get Child by slug of parent
+        else if ( slug && notNull ) {
+
+            console.log( '🚀 ~ route.js ~ GET ~ slug:', slug );
+
+            const categoryWithSubs = await Category.aggregate( [
+                {
+                    $match: { slug: slug.trim() } // جلب الكاتيجوري الأب
+                },
+                {
+                    $lookup: {
+                        from: 'categories',
+                        localField: '_id',
+                        foreignField: 'parentId',
+                        as: 'subcategories'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$subcategories",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "subcategories._id",
+                        foreignField: "category",
+                        as: "subcategories.products"
+                    }
+                },
+                {
+                    $addFields: {
+                        "subcategories.productCount": { $size: "$subcategories.products" }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        name: { $first: "$name" },
+                        nameAr: { $first: "$name" },
+                        slug: { $first: "$slug" },
+                        image: { $first: "$image" },
+                        description: { $first: "$description" },
+                        descriptionAr: { $first: "$descriptionAr" },
+                        // أي حقول تانية بدك ترجعها من الأب
+                        subcategories: {
+                            $push: {
+                                _id: "$subcategories._id",
+                                name: "$subcategories.name",
+                                name: "$subcategories.nameAr",
+                                slug: "$subcategories.slug",
+                                image: "$subcategories.image",
+                                productCount: "$subcategories.productCount"
+                            }
+                        }
+                    }
+                }
+            ] );
+
+            console.log( categoryWithSubs );
+            return NextResponse.json( categoryWithSubs );
+        }
+
         // FLAT CATEGORY STRUCTURE
         const query = {};
         if ( parentId === 'null' ) query.parentId = null;
         else if ( parentId ) query.parentId = parentId;
         if ( notNull ) query.parentId = { $ne: null };
-
-        const projection = fields
-            ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
-            : {};
 
         const categories = await Category.find( query, projection )
             .sort( { order: 1, name: 1 } )

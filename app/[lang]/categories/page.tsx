@@ -30,9 +30,6 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
 
 
 
-  // console.log('🚀 ~ page.tsx ~ CategoriesPage ~ categories:', categories);
-
-
   return (
     <div className="mx-auto">
       <CategoriesHero />
@@ -70,7 +67,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                     { category.items && category.items.map((subcategory: any) => (
                       <li key={ subcategory.id }>
                         <Link
-                          href={ `/${lang}/categories/${subcategory.slug}` }
+                          href={ `/${lang}/categories/${category.slug}/${subcategory.slug}` }
                           className="text-blue-600 dark:text-blue-400  flex justify-between items-center"
                         >
                           <div className='flex hover:underline '>

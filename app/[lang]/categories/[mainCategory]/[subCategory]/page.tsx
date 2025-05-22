@@ -4,9 +4,9 @@ import { Locale } from '@/i18n-config';
 import Image from 'next/image';
 import Link from 'next/link';
 
-async function getCategoryBySlug(slug: string) {
+async function getCategoryBySlug(subCategory: string) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories?slug=${slug}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories?slug=${subCategory}`, {
             cache: 'no-store'
         });
 
@@ -39,10 +39,13 @@ async function getProductsByCategory(categoryId: string) {
     }
 }
 
-export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale, slug: string }> }) {
-    const { lang, slug } = await props.params;
+export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale,mainCategory: string, subCategory: string }> }) {
+    const { lang,  mainCategory, subCategory } = await props.params;
+    const resolve = await props.params;
     const dictionary = await getDictionary(lang);
-    const category = await getCategoryBySlug(slug);
+    const category = await getCategoryBySlug(subCategory);
+
+
 
 
     if (!category) {
@@ -53,10 +56,6 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
         );
     }
     const products = await getProductsByCategory(category._id);
-
-    console.log('🚀 ~ page.tsx ~ CategoryDetailPage ~ products:', products);
-
-
 
 
     return (
@@ -91,7 +90,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
 
             <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
 
-            { products.length > 0 ? (
+            { products?.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     { products.map((product: any) => (
                         <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden py-2 sm:py-4">
