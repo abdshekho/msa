@@ -11,11 +11,11 @@ export default function ServiceHero() {
                             Harness the power of the sun with our comprehensive solar energy solutions.
                             We provide end-to-end services from consultation to installation and maintenance.
                         </p>
-                        <div className="flex flex-wrap gap-4">
-                            <button className="bg-[#d28711] hover:bg-yellow-600 text-whitefont-bold py-3 px-6 rounded-lg transition duration-300">
+                        <div className="flex flex-wrap gap-2 sm:gap-4">
+                            <button className="bg-[#d28711] hover:bg-yellow-600 text-whitefont-bold py-3 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
                                 Get a Free Quote
                             </button>
-                            <button className="bg-transparent hover:bg-white hover:text-blue-600 text-white font-bold py-3 px-6 border-2 border-white rounded-lg transition duration-300">
+                            <button className="bg-transparent hover:bg-white hover:text-blue-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 border-2 border-white rounded-lg transition duration-300">
                                 Learn More
                             </button>
                         </div>

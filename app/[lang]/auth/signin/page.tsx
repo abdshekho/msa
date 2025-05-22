@@ -5,6 +5,25 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import { FloatingLabel } from "flowbite-react";
+const customTheme = {
+  input: {
+    "default": {
+      "outlined": {
+        "sm": "peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-xs text-gray-900 focus:border-primary focus:outline-none focus:ring-0 dark:border-primary dark:text-white dark:focus:border-primary",
+        "md": "peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-primary focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary"
+      },
+    }
+  },
+  label: {
+    "default": {
+      outlined: {
+        "sm": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary",
+        "md": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary"
+      },
+    },
+  }
+};
 
 export default function SignIn({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
@@ -55,77 +74,55 @@ export default function SignIn({ params }: { params: { lang: string } }) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-8 py-8 px-8 bg-white dark:bg-card rounded-3xl shadow-2xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
-            تسجيل الدخول إلى حسابك
+          <h2 className="mt-6 text-center head-1">
+            تسجيل الدخول
           </h2>
         </div>
-        {error && (
+        { error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
+            <span className="block sm:inline">{ error }</span>
           </div>
-        )}
-        
+        ) }
+
         <div className="mt-6">
           <button
-            onClick={handleGoogleSignIn}
-            disabled={isGoogleLoading}
-            className="w-full flex justify-center items-center gap-2 bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={ handleGoogleSignIn }
+            disabled={ isGoogleLoading }
+            className="w-full flex justify-center items-center gap-2  bg-card-10 dark:bg-bgm rounded-md py-2 px-4 text-sm font-medium text-gray-700 dark:text-white hover:opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             <FcGoogle className="h-5 w-5" />
-            {isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل"}
+            { isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل" }
           </button>
         </div>
-        
+
         <div className="mt-6 relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-secondary dark:border-secondary-10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+            <span className="px-2 bg-white dark:bg-card text-secondary dark:text-secondary-10">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
           </div>
         </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="-space-y-px rounded-md shadow-sm">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                البريد الإلكتروني
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="relative block w-full rounded-t-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="البريد الإلكتروني"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+
+        <form className="mt-8 space-y-6" onSubmit={ handleSubmit }>
+          <div className="flex flex-col gap-2 md:gap-4">
+
+            <FloatingLabel variant="outlined" label="Email" type="email" theme={ customTheme }
+              autoComplete="email" value={ email }
+              onChange={ (e) => setEmail(e.target.value) }
+              required 
               />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                كلمة المرور
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="relative block w-full rounded-b-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="كلمة المرور"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <FloatingLabel variant="outlined" label="Password" type="password" theme={ customTheme }
+              autoComplete="email" value={ password }
+              onChange={ (e) => setPassword(e.target.value) }
+              required />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href={`/${resolvedParams.lang}/auth/signup`} className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link href={ `/${resolvedParams.lang}/auth/signup` } className="font-medium dark:text-secondary-10 hover:dark:text-secondary hover:underline">
                 ليس لديك حساب؟ سجل الآن
               </Link>
             </div>
@@ -134,10 +131,11 @@ export default function SignIn({ params }: { params: { lang: string } }) {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400"
+              disabled={ isLoading }
+              className="w-full text-white bg-primary hover:bg-primary-10 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
+                            dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
             >
-              {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
+              { isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول" }
             </button>
           </div>
         </form>

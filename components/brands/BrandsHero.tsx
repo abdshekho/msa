@@ -11,7 +11,7 @@ export default function BrandsHero() {
                             Harness the power of the sun with our comprehensive solar energy solutions.
                             We provide end-to-end services from consultation to installation and maintenance.
                         </p>
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-wrap gap-2 sm:gap-4">
                             <button className="bg-[#d28711] hover:bg-yellow-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
                                 Get a Free Quote
                             </button>

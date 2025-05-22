@@ -107,7 +107,7 @@ export default function NavbarMain({ lang }: any) {
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
-                            className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-4 py-2
+                            className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
                              dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
                             إنشاء حساب
