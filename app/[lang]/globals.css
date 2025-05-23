@@ -34,6 +34,11 @@
     .desc{
         @apply text-gray-700 dark:text-gray-200;
     }
+
+    .fButton {
+        @apply w-full text-white bg-primary hover:bg-primary-10 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
+                            dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10;
+    }
     .menu__link {
     @apply relative dark:text-white hover:text-[#cf8714] before:content-[''] before:absolute before:bottom-[-0.25rem] 
     before:left-0 before:h-[2px] before:w-0 before:rounded before:bg-[#cf8714] before:transition-all 

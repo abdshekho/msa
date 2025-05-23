@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       password: hashedPassword,
       phone: phone || "",
       address: address || "",
-      image: image || "/profile.webp",
+      image: image || "/en/profile.webp",
       role: "user",
       createdAt: new Date(),
     });

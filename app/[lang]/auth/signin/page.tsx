@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FloatingLabel } from "flowbite-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 const customTheme = {
   input: {
     "default": {
@@ -25,25 +28,40 @@ const customTheme = {
   }
 };
 
+// Define the validation schema
+const loginSchema = z.object({
+  email: z.string().email("البريد الإلكتروني غير صالح"),
+  password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
+});
+
+// Type for the form data
+type LoginFormData = z.infer<typeof loginSchema>;
+
 export default function SignIn({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Setup react-hook-form with zod validation
+  const { register, handleSubmit: handleFormSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
+  const handleSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setError("");
 
     try {
       const result = await signIn("credentials", {
         redirect: false,
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       });
 
       if (result?.error) {
@@ -102,27 +120,44 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <div className="w-full border-t border-secondary dark:border-secondary-10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-card text-secondary dark:text-secondary-10">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
           </div>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={ handleSubmit }>
+        <form className="mt-8 space-y-6" onSubmit={ handleFormSubmit(handleSubmit) }>
           <div className="flex flex-col gap-2 md:gap-4">
-
-            <FloatingLabel variant="outlined" label="Email" type="email" theme={ customTheme }
-              autoComplete="email" value={ email }
-              onChange={ (e) => setEmail(e.target.value) }
-              required 
+            <div>
+              <FloatingLabel
+                variant="outlined"
+                label="Email"
+                type="email"
+                theme={ customTheme }
+                autoComplete="email"
+                { ...register("email") }
               />
-            <FloatingLabel variant="outlined" label="Password" type="password" theme={ customTheme }
-              autoComplete="email" value={ password }
-              onChange={ (e) => setPassword(e.target.value) }
-              required />
+              { errors.email && (
+                <p className="mt-1 text-sm text-red-600">{ errors.email.message }</p>
+              ) }
+            </div>
+
+            <div>
+              <FloatingLabel
+                variant="outlined"
+                label="Password"
+                type="password"
+                theme={ customTheme }
+                autoComplete="current-password"
+                { ...register("password") }
+              />
+              { errors.password && (
+                <p className="mt-1 text-sm text-red-600">{ errors.password.message }</p>
+              ) }
+            </div>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href={ `/${resolvedParams.lang}/auth/signup` } className="font-medium dark:text-secondary-10 hover:dark:text-secondary hover:underline">
+              <Link href={ `/${resolvedParams.lang}/auth/signup` } className="font-medium text-secondary  dark:text-secondary-10 hover:text-secondary-10 hover:dark:text-secondary hover:underline">
                 ليس لديك حساب؟ سجل الآن
               </Link>
             </div>
@@ -132,8 +167,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <button
               type="submit"
               disabled={ isLoading }
-              className="w-full text-white bg-primary hover:bg-primary-10 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
-                            dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
+              className="fButton"
             >
               { isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول" }
             </button>

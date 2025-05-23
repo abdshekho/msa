@@ -7,19 +7,69 @@ import { use } from "react";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
+import { FloatingLabel } from "flowbite-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import profileImage from "@/public/en/profile.webp"
+import { FaEdit } from "react-icons/fa";
+import { Tooltip } from "flowbite-react";
+
+const customTheme = {
+  input: {
+    "default": {
+      "outlined": {
+        "sm": "peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-xs text-gray-900 focus:border-primary focus:outline-none focus:ring-0 dark:border-primary dark:text-white dark:focus:border-primary",
+        "md": "peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-primary focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-primary"
+      },
+    }
+  },
+  label: {
+    "default": {
+      outlined: {
+        "sm": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary",
+        "md": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary"
+      },
+    },
+  }
+};
+
+// Define the validation schema
+const signupSchema = z.object({
+  name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
+  email: z.string().email("البريد الإلكتروني غير صالح"),
+  password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
+  phone: z.string().optional(),
+  address: z.string().optional()
+});
+
+// Type for the form data
+type SignupFormData = z.infer<typeof signupSchema>;
 
 export default function SignUp({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [image, setImage] = useState("/en/profile.webp");
+  const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  // Setup react-hook-form with zod validation
+  const {
+    register,
+    handleSubmit: handleFormSubmit,
+    formState: { errors }
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+      address: ""
+    }
+  });
+
   // For cover image
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -42,10 +92,6 @@ export default function SignUp({ params }: { params: { lang: string } }) {
         const data = await response.json();
 
         setImage(data?.imageUrl);
-
-
-
-        // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));
       } catch (error: any) {
         console.error('Error uploading image:', error);
         setError(`Error: ${error.message}`);
@@ -54,6 +100,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
       }
     }
   }, []);
+
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
@@ -65,8 +112,8 @@ export default function SignUp({ params }: { params: { lang: string } }) {
       setIsGoogleLoading(false);
     }
   };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+
+  const handleSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
     setError("");
 
@@ -76,13 +123,20 @@ export default function SignUp({ params }: { params: { lang: string } }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, phone, address, image }),
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+          address: data.address,
+          image
+        }),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "حدث خطأ أثناء التسجيل");
+        setError(responseData.message || "حدث خطأ أثناء التسجيل");
         setIsLoading(false);
         return;
       }
@@ -96,9 +150,9 @@ export default function SignUp({ params }: { params: { lang: string } }) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-8 py-8 px-8 bg-white dark:bg-card rounded-3xl shadow-2xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
+          <h2 className="mt-6 text-center head-1">
             إنشاء حساب جديد
           </h2>
         </div>
@@ -112,7 +166,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
           <button
             onClick={ handleGoogleSignIn }
             disabled={ isGoogleLoading }
-            className="w-full flex justify-center items-center gap-2 bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full flex justify-center items-center gap-2 bg-card-10 dark:bg-bgm rounded-md py-2 px-4 text-sm font-medium text-gray-700 dark:text-white hover:opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             <FcGoogle className="h-5 w-5" />
             { isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل" }
@@ -121,115 +175,99 @@ export default function SignUp({ params }: { params: { lang: string } }) {
 
         <div className="mt-6 relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-secondary dark:border-secondary-10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">أو التسجيل باستخدام البريد الإلكتروني</span>
           </div>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={ handleSubmit }>
+        <form className="mt-8 space-y-6" onSubmit={ handleFormSubmit(handleSubmit) }>
           <div className="flex justify-center mb-6">
             <div className="relative w-24 h-24">
               <Image
-                src={ image || '/en/profile.webp' }
-                alt={ name || "صورة المستخدم" }
+                src={ image || profileImage }
+                alt="صورة المستخدم"
                 width={ 96 }
                 height={ 96 }
                 className="rounded-full object-cover"
               />
             </div>
+            <Tooltip content={image ? "Edit profile image" : "Add profile image" }>
+              <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+            </Tooltip>
           </div>
-          <div className="-space-y-px rounded-md shadow-sm">
+
+          <div className="flex flex-col gap-2 md:gap-4">
             <div>
-              <label htmlFor="name" className="sr-only">
-                الاسم
-              </label>
-              <input
-                id="name"
-                name="name"
+              <FloatingLabel
+                variant="outlined"
+                label="الاسم"
                 type="text"
-                required
-                className="relative block w-full rounded-t-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="الاسم"
-                value={ name }
-                onChange={ (e) => setName(e.target.value) }
+                theme={ customTheme }
+                { ...register("name") }
               />
+              { errors.name && (
+                <p className="mt-1 text-sm text-red-600">{ errors.name.message }</p>
+              ) }
             </div>
+
             <div>
-              <label htmlFor="email-address" className="sr-only">
-                البريد الإلكتروني
-              </label>
-              <input
-                id="email-address"
-                name="email"
+              <FloatingLabel
+                variant="outlined"
+                label="البريد الإلكتروني"
                 type="email"
+                theme={ customTheme }
                 autoComplete="email"
-                required
-                className="relative block w-full border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="البريد الإلكتروني"
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
+                { ...register("email") }
               />
+              { errors.email && (
+                <p className="mt-1 text-sm text-red-600">{ errors.email.message }</p>
+              ) }
             </div>
+
             <div>
-              <label htmlFor="password" className="sr-only">
-                كلمة المرور
-              </label>
-              <input
-                id="password"
-                name="password"
+              <FloatingLabel
+                variant="outlined"
+                label="كلمة المرور"
                 type="password"
+                theme={ customTheme }
                 autoComplete="new-password"
-                required
-                className="relative block w-full rounded-b-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="كلمة المرور"
-                value={ password }
-                onChange={ (e) => setPassword(e.target.value) }
+                { ...register("password") }
               />
+              { errors.password && (
+                <p className="mt-1 text-sm text-red-600">{ errors.password.message }</p>
+              ) }
             </div>
+
             <div>
-              <label htmlFor="phone" className="sr-only">
-                رقم الهاتف
-              </label>
-              <input
-                id="phone"
-                name="phone"
+              <FloatingLabel
+                variant="outlined"
+                label="رقم الهاتف"
                 type="tel"
-                className="relative block w-full border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="رقم الهاتف"
-                value={ phone }
-                onChange={ (e) => setPhone(e.target.value) }
+                theme={ customTheme }
+                { ...register("phone") }
               />
+              { errors.phone && (
+                <p className="mt-1 text-sm text-red-600">{ errors.phone.message }</p>
+              ) }
             </div>
+
             <div>
-              <label htmlFor="address" className="sr-only">
-                العنوان
-              </label>
-              <input
-                id="address"
-                name="address"
+              <FloatingLabel
+                variant="outlined"
+                label="العنوان"
                 type="text"
-                className="relative block w-full border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="العنوان"
-                value={ address }
-                onChange={ (e) => setAddress(e.target.value) }
+                theme={ customTheme }
+                { ...register("address") }
               />
+              { errors.address && (
+                <p className="mt-1 text-sm text-red-600">{ errors.address.message }</p>
+              ) }
             </div>
+
             <div>
-              {/* <label htmlFor="image" className="sr-only">
-                رابط الصورة الشخصية
-              </label>
-              <input
-                id="image"
-                name="image"
-                type="text"
-                className="relative block w-full border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="رابط الصورة الشخصية (اختياري)"
-                value={ image }
-                onChange={ (e) => setImage(e.target.value) }
-              /> */}
-              <label className="block mb-2 font-medium" htmlFor="profile-image">Cover Image</label>
+              <label className="block mb-2 font-medium" htmlFor="profile-image">صورة الملف الشخصي</label>
               <input
                 type="file"
                 name="image"
@@ -243,7 +281,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href={ `/${resolvedParams.lang}/auth/signin` } className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link href={ `/${resolvedParams.lang}/auth/signin` } className="font-medium text-secondary dark:text-secondary-10 hover:text-secondary-10 hover:dark:text-secondary hover:underline">
                 لديك حساب بالفعل؟ سجل دخول
               </Link>
             </div>
@@ -253,7 +291,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <button
               type="submit"
               disabled={ isLoading }
-              className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400"
+              className="fButton"
             >
               { isLoading ? "جاري التسجيل..." : "إنشاء حساب" }
             </button>
