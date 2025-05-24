@@ -206,3 +206,35 @@ input {
 }
 
 
+/* footer section */
+.custom-shape-divider-top-55555555555 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-top-55555555555 svg {
+    position: relative;
+    display: block;
+    width: calc(147% + 1.3px); 
+    /* 300% on mobile */
+    height: 75px;
+}
+
+@media screen and (max-width: 580px) {
+.custom-shape-divider-top-55555555555 svg {
+    width: calc(230% + 1.3px); 
+    }
+}
+.custom-shape-divider-top-55555555555 .shape-fill {
+    fill: #ffffff;
+}
+
+.dark .custom-shape-divider-top-55555555555 .shape-fill {
+    fill: var(--color-bgm); 
+}
+
+

@@ -75,7 +75,7 @@ export default function ServicesList() {
             <div className="mb-4">
               {service.icon}
             </div>
-            <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+            <h3 className="text-xl font-semibold text-secondary dark:text-secondary-10 mb-2">{service.title}</h3>
             <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
           </div>
         </div>
