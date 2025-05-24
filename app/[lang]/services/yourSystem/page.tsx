@@ -42,11 +42,36 @@ export default function SolarCalculator() {
     const devices = watch('devices');
 
     const onSubmit = (data: FormData) => {
+        // const total = data.devices.reduce((acc, d) => {
+        //     return acc + (d.count * d.wattage * (d.morning + d.evening));
+        // }, 0);
         const total = data.devices.reduce((acc, d) => {
-            return acc + (d.count * d.wattage * (d.morning + d.evening));
+            return acc + (d.count * d.wattage);
         }, 0);
 
-        alert(`⚡ الاستطاعة اليومية المقدرة: ${total} واط/ساعة`);
+
+        const totalMorning = data.devices.reduce((acc, d) => {
+            return acc + (d.count * d.wattage * (d.morning));
+        }, 0);
+        const totalEvening = data.devices.reduce((acc, d) => {
+            return acc + (d.count * d.wattage * (d.evening));
+        }, 0);
+        const capacityOfBattery = totalEvening / 0.8
+        // 12.5 voltage of battery
+        const NumberOfBattery = capacityOfBattery / 12.5 / 1000 / 0.7
+
+        // 705 is watt of panel
+        const NumberOfPanel = (capacityOfBattery + totalMorning) / 4.8 / 705 / 0.8
+
+        alert(`
+                total watt: ${total}
+                totalMornign: ${totalMorning}
+                total evenign: ${totalEvening}
+                total: ${totalMorning + totalEvening}
+                capacity of battary: ${capacityOfBattery}
+                Number of battary: ${NumberOfBattery}
+                Number of Panel: ${NumberOfPanel}
+            `);
     };
 
 
@@ -64,44 +89,6 @@ export default function SolarCalculator() {
             }
         });
     }, [devices.map(d => d.name).join(','), fields.map(f => f.name).join(','), setValue]);
-
-
-    // تحديث الواط حسب الجهاز المختار
-    // useEffect(() => {
-    //     devices.forEach((d, i) => {
-    //         if (!d.isCustom) {
-    //             const selectedOption = deviceOptions.find(opt => opt.name === d.name);
-    //             const prevOption = deviceOptions.find(opt => opt.name === fields[i]?.name);
-    //             const isSameDevice = selectedOption?.name === prevOption?.name;
-
-    //             // فقط إذا تغيّر الاسم نحدث الاستطاعة
-    //             if (!isSameDevice && selectedOption) {
-    //                 setValue(`devices.${i}.wattage`, selectedOption.wattage);
-    //             }
-    //         }
-    //     });
-    // }, [fields, setValue]);
-
-
-
-    // useEffect(() => {
-    //     devices.forEach((device, index) => {
-
-    //     console.log('🚀 ~ page.tsx ~ devices.forEach ~ device:', device);
-
-    //         const isCustom = device.isCustom;
-    //         const selectedDevice = deviceOptions.find(opt => opt.name === device.name);
-
-    //         if (!isCustom && selectedDevice) {
-    //             const currentWatt = devices[index]?.wattage;
-    //             const shouldUpdate = currentWatt !== selectedDevice.wattage;
-
-    //             if (shouldUpdate) {
-    //                 setValue(`devices.${index}.wattage`, selectedDevice.wattage);
-    //             }
-    //         }
-    //     });
-    // }, [devices.map(d => d.name).join(','), setValue]);
 
     return (
         <form onSubmit={ handleSubmit(onSubmit) } className="p-6 max-w-5xl mx-auto space-y-4 text-black dark:text-white">
