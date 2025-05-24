@@ -6,7 +6,7 @@ import { getDictionary } from '@/get-dictionary';
 import NavbarMain from '@/components/Navigation/Navbar';
 import AuthProvider from '@/components/auth/AuthProvider';
 import ThemeProvider from "../them/theme-provider";
-import { FooterMSA } from '@/components/ui/footer';
+import { FooterMSA } from '../../components/ui/Footer';
 import Providers from '@/components/ProgressProvider';
 
 
