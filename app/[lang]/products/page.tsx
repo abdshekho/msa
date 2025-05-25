@@ -30,6 +30,17 @@ interface Brand {
   slug: string;
 }
 
+// Product Skeleton component
+const ProductSkeleton = () => (
+  <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden animate-pulse">
+    <div className="h-48 w-full bg-gray-300 dark:bg-gray-700"></div>
+    <div className="p-4">
+      <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+      <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+    </div>
+  </div>
+);
+
 export default function ProductsPage({ params }: { params: { lang: string } }) {
   // Extract lang from params to avoid direct access
   const resolveParam = use(params);
@@ -233,8 +244,10 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
 
       {/* Products Grid */}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 dark:border-blue-400"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array(8).fill(0).map((_, index) => (
+            <ProductSkeleton key={index} />
+          ))}
         </div>
       ) : filteredProducts.length > 0 ? (
         <>
