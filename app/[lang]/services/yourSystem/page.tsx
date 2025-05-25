@@ -4,6 +4,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
+import { FaCalculator, FaPlus } from 'react-icons/fa';
 
 const deviceOptions = [
     { name: 'نيون', wattage: 40 },
@@ -42,14 +43,12 @@ export default function SolarCalculator() {
     const devices = watch('devices');
 
     const onSubmit = (data: FormData) => {
-        // const total = data.devices.reduce((acc, d) => {
-        //     return acc + (d.count * d.wattage * (d.morning + d.evening));
-        // }, 0);
+
+
+        // to inverter
         const total = data.devices.reduce((acc, d) => {
             return acc + (d.count * d.wattage);
         }, 0);
-
-
         const totalMorning = data.devices.reduce((acc, d) => {
             return acc + (d.count * d.wattage * (d.morning));
         }, 0);
@@ -91,12 +90,12 @@ export default function SolarCalculator() {
     }, [devices.map(d => d.name).join(','), fields.map(f => f.name).join(','), setValue]);
 
     return (
-        <form onSubmit={ handleSubmit(onSubmit) } className="p-6 max-w-5xl mx-auto space-y-4 text-black dark:text-white">
-            <h1 className="text-center text-2xl font-bold text-primary">🔋 حاسبة الطاقة</h1>
+        <form onSubmit={ handleSubmit(onSubmit) } className="p-6 max-w-5xl mx-auto space-y-4 text-black dark:text-white mt-10">
+            <h1 className="text-center text-2xl font-bold text-primary my-10">حاسبة الطاقة</h1>
 
             <div className="grid grid-cols-6 font-semibold text-center text-secondary dark:text-secondary-10">
                 <div>الجهاز</div>
-                <div>الواط</div>
+                <div>الاستطاعة (الواط)</div>
                 <div>العدد</div>
                 <div>ساعات التشغيل في الصباح</div>
                 <div>ساعات التشغل في المساء</div>
@@ -172,27 +171,30 @@ export default function SolarCalculator() {
                 );
             }) }
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-8">
                 <button
                     type="button"
                     onClick={ () => append({ name: '', wattage: deviceOptions[0].wattage, count: 1, morning: 2, evening: 2, isCustom: false }) }
-                    className="bg-green-500 text-white px-4 py-2 rounded"
+                    className="bg-green-800 text-white px-4 py-2 rounded flex justify-between items-center"
                 >
-                    ➕ أضف من القائمة
+                    <FaPlus className='mx-2' />
+                    أضف من القائمة
                 </button>
 
                 <button
                     type="button"
                     onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: true }) }
-                    className="bg-secondary text-white px-4 py-2 rounded"
+                    className="bg-secondary text-white px-4 py-2 rounded flex justify-between items-center"
                 >
-                    ➕ أضف مخصص
+                    <FaPlus className='mx-2' />
+                    أضف مخصص
+                </button>
+                <button type="submit" className="bg-primary text-white px-4 py-2 rounded flex justify-between items-center">
+                    <FaCalculator className='mx-2' />
+                    احسب الاستطاعة
                 </button>
             </div>
 
-            <button type="submit" className="bg-primary text-white px-6 py-2 rounded mt-4">
-                💡 احسب الاستطاعة
-            </button>
         </form>
     );
 }
