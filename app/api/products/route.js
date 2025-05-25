@@ -10,10 +10,12 @@ export async function GET( request ) {
     try {
         const { searchParams } = new URL( request.url );
         const category = searchParams.get( 'category' );
+        const brand = searchParams.get( 'brand' );
         // const subcategory = searchParams.get( 'subcategory' );
 
         const query = {};
         if ( category ) query.category = new mongoose.Types.ObjectId(category);
+        if ( brand ) query.brand = new mongoose.Types.ObjectId(brand);
         // if ( subcategory ) query.subcategory = subcategory;
 
         await connectToDatabase();
