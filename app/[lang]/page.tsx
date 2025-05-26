@@ -1,38 +1,35 @@
-import Link from "next/link";
 import { getDictionary } from "../../get-dictionary";
 import { Locale } from "../../i18n-config";
-import Counter from "../../components/counter";
-import LocaleSwitcher from "../../components/locale-switcher";
-import NavMenu from "../../components/menuNav/NavMenu";
 import CarouselMain from "@/components/Home/CarouselMain";
-
+import FeaturedProducts from "@/components/Home/FeaturedProducts";
+import CategorySection from "@/components/Home/CategorySection";
+import AboutSection from "@/components/Home/AboutSection";
+import CallToAction from "@/components/Home/CallToAction";
+import PartnerLogos from "@/components/Home/PartnerLogos";
 
 export default async function IndexPage(props: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await props.params;
-
   const dictionary = await getDictionary(lang);
-
-
 
   return (
     <div className="relative">
+      {/* Hero Carousel */}
       <CarouselMain />
-      <LocaleSwitcher />
-      <div>
-        <p>Current locale2: { lang }</p>
-        <p>
-          This text is rendered on the server:{ " " }
-          { dictionary["server-component"].welcome }
-        </p>
-        <Counter dictionary={ dictionary.counter } />
-      </div>
-      <div>
-        <Link href={ `${lang}/dashboard` }>
-          dashboard
-        </Link>
-      </div>
-      <img src="favicon.ico" alt="logo"/>
-      {/* <NavMenu />  */}
+      
+      {/* Featured Categories */}
+      <CategorySection lang={lang} />
+      
+      {/* Featured Products */}
+      <FeaturedProducts lang={lang} />
+      
+      {/* Partner Companies */}
+      <PartnerLogos lang={lang} />
+      
+      {/* About Section */}
+      <AboutSection lang={lang} />
+      
+      {/* Call to Action */}
+      <CallToAction lang={lang} />
     </div>
   );
 }
