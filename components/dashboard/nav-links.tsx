@@ -6,21 +6,26 @@
 // } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaBeer, FaHome, FaCogs } from 'react-icons/fa';
+// import { FaBeer, FaHome, FaCogs } from 'react-icons/fa';
+import {
+  FaHome,
+  FaBoxOpen,
+  FaTags,
+  FaIndustry,
+  FaTools,
+  FaShoppingCart,
+} from 'react-icons/fa';
 
 // import clsx from 'clsx';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard', icon: FaHome },
-  {
-    name: 'products',
-    href: '/dashboard/products',
-    icon: FaBeer,
-  },
-  { name: 'categories', href: '/dashboard/categories', icon: FaBeer },
-  { name: 'brands', href: '/dashboard/brands', icon: FaBeer },
-  { name: 'services', href: '/dashboard/services', icon: FaCogs },
+  { name: 'products', href: '/dashboard/products', icon: FaBoxOpen },
+  { name: 'categories', href: '/dashboard/categories', icon: FaTags },
+  { name: 'brands', href: '/dashboard/brands', icon: FaIndustry },
+  { name: 'services', href: '/dashboard/services', icon: FaTools },
+  { name: 'orders', href: '/dashboard/orders', icon: FaShoppingCart },
 ];
 
 export default function NavLinks() {
