@@ -14,6 +14,7 @@ import {
   FaIndustry,
   FaTools,
   FaShoppingCart,
+  FaUsers,
 } from 'react-icons/fa';
 
 // import clsx from 'clsx';
@@ -26,6 +27,7 @@ const links = [
   { name: 'brands', href: '/dashboard/brands', icon: FaIndustry },
   { name: 'services', href: '/dashboard/services', icon: FaTools },
   { name: 'orders', href: '/dashboard/orders', icon: FaShoppingCart },
+  { name: 'users', href: '/dashboard/users', icon: FaUsers },
 ];
 
 export default function NavLinks() {
