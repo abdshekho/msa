@@ -103,6 +103,7 @@ export const authOptions = {
             return token;
         },
         async session({ session, token }) {
+            // console.log('444444444444444',token)
             if (session.user) {
                 session.user.id = token.id;
                 session.user.role = token.role;
@@ -110,6 +111,7 @@ export const authOptions = {
                 session.user.image = token.picture;
                 session.user.address = token.address;
             }
+            // console.log('55555555555555555',session)s
             return session;
         },
     },
