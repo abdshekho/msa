@@ -1,92 +1,43 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { addToCart } from '@/app/lib/cart/actions';
-import { useRouter } from 'next/navigation';
+import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
 
 interface AddToCartButtonProps {
   productId: string;
-  lang: string;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-const AddToCartButton: React.FC<AddToCartButtonProps> = ({ productId, lang }) => {
-  const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const router = useRouter();
-  
-  const isArabic = lang === 'ar';
-  
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1) {
-      setQuantity(newQuantity);
-    }
-  };
-  
+export default function AddToCartButton({ productId, className, children }: AddToCartButtonProps) {
+  const [loading, setLoading] = useState(false);
+
   const handleAddToCart = async () => {
-    setIsLoading(true);
-    setMessage('');
-    
     try {
-      const result = await addToCart(productId, quantity);
+      setLoading(true);
+      const result = await addToCart(productId, 1);
       
       if (result.success) {
-        setMessage(isArabic ? 'تمت إضافة المنتج إلى سلة التسوق' : 'Product added to cart');
-        router.refresh();
-        
-        // Clear message after 3 seconds
-        setTimeout(() => {
-          setMessage('');
-        }, 3000);
+        // Trigger cart update event to refresh cart UI
+        triggerCartUpdate();
       } else {
-        setMessage(result.error || (isArabic ? 'حدث خطأ ما' : 'Something went wrong'));
+        console.error('Failed to add to cart:', result.error);
       }
     } catch (error) {
-      setMessage(isArabic ? 'حدث خطأ ما' : 'Something went wrong');
+      console.error('Error adding to cart:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-  
-  return (
-    <div className="mt-6">
-      <div className="flex items-center mb-4">
-        <span className="mr-3 dark:text-white">{isArabic ? 'الكمية:' : 'Quantity:'}</span>
-        <div className="flex items-center border rounded">
-          <button 
-            onClick={() => handleQuantityChange(quantity - 1)}
-            className="px-3 py-1 border-r"
-            disabled={quantity <= 1}
-          >
-            -
-          </button>
-          <span className="px-4 py-1">{quantity}</span>
-          <button 
-            onClick={() => handleQuantityChange(quantity + 1)}
-            className="px-3 py-1 border-l"
-          >
-            +
-          </button>
-        </div>
-      </div>
-      
-      <button
-        onClick={handleAddToCart}
-        disabled={isLoading}
-        className="px-8 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors w-full"
-      >
-        {isLoading 
-          ? (isArabic ? 'جاري الإضافة...' : 'Adding...') 
-          : (isArabic ? 'أضف إلى السلة' : 'Add to Cart')}
-      </button>
-      
-      {message && (
-        <div className={`mt-3 p-2 text-center rounded ${message.includes('error') || message.includes('خطأ') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-          {message}
-        </div>
-      )}
-    </div>
-  );
-};
 
-export default AddToCartButton;
+  return (
+    <button 
+      onClick={handleAddToCart}
+      disabled={loading}
+      className={className || "fButton"}
+    >
+      {loading ? 'Adding...' : children || 'Add to Cart'}
+    </button>
+  );
+}

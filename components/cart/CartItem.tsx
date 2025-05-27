@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { updateCartItem, removeFromCart } from '@/app/lib/cart/actions';
 import { useRouter } from 'next/navigation';
+import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
 
 interface CartItemProps {
   item: {
@@ -29,10 +30,12 @@ const CartItem: React.FC<CartItemProps> = ({ item, lang }) => {
   const handleQuantityChange = async (newQuantity: number) => {
     if (newQuantity < 1) return;
     await updateCartItem(item._id, newQuantity);
+    triggerCartUpdate();
   };
   
   const handleRemove = async () => {
     await removeFromCart(item._id);
+    triggerCartUpdate();
   };
   
   return (

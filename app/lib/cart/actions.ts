@@ -6,6 +6,7 @@ import Cart from '../models/Cart';
 import Product from '../models/Product';
 import { revalidatePath } from 'next/cache';
 import { authOptions } from "../../api/auth/[...nextauth]/route"
+
 // Get cart for current user
 export async function getCart() {
   try {

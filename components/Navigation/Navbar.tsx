@@ -21,6 +21,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { VscSignOut } from "react-icons/vsc";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { usePathname } from 'next/navigation';
+import CartDropdown from "../cart/CartDropdown";
 
 const them = {
     "root": {
@@ -98,6 +99,7 @@ export default function NavbarMain({ lang }: any) {
                 </div>
             </NavbarBrand>
             <div className="flex md:order-2">
+                <CartDropdown />
                 { isLoading ? (
                     <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
                 ) : isAuthenticated ? (
@@ -161,6 +163,7 @@ export default function NavbarMain({ lang }: any) {
                         </Link>
                     </div>
                 ) }
+                
                 <ThemeToggle />
                 <LocaleSwitcher />
                 <NavbarToggle />

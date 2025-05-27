@@ -8,7 +8,7 @@ import AuthProvider from '@/components/auth/AuthProvider';
 import ThemeProvider from "../them/theme-provider";
 import { FooterMSA } from '../../components/ui/Footer';
 import Providers from '@/components/ProgressProvider';
-
+import { CartProvider } from '../lib/cart/CartContext';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -36,13 +36,15 @@ export default async function Root(props: {
           disableTransitionOnChange
         >
           <AuthProvider>
-            <NavbarMain lang={ params.lang } />
-            <div className="min-h-screen bg-white dark:bg-gray-900">
-              <Providers>
-                { children }
-              </Providers>
-            </div>
-            <FooterMSA />
+            <CartProvider>
+              <NavbarMain lang={ params.lang } />
+              <div className="min-h-screen bg-white dark:bg-gray-900">
+                <Providers>
+                  { children }
+                </Providers>
+              </div>
+              <FooterMSA />
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
