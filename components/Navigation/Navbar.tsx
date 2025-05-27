@@ -17,11 +17,9 @@ import Link from "next/link";
 import LocaleSwitcher from "../locale-switcher";
 import ThemeToggle from "@/app/them/theme-toggle";
 import { useSession, signOut } from "next-auth/react";
-import { IoSettingsOutline } from "react-icons/io5";
-import { VscSignOut } from "react-icons/vsc";
-import { BsFillPersonLinesFill } from "react-icons/bs";
 import { usePathname } from 'next/navigation';
 import CartDropdown from "../cart/CartDropdown";
+import { FaClipboardList, FaCog, FaRegAddressCard, FaSignOutAlt } from "react-icons/fa";
 
 const them = {
     "root": {
@@ -98,7 +96,7 @@ export default function NavbarMain({ lang }: any) {
                     <span className="mt-[-10px] text-[#05406d] font-bold">SunPower</span>
                 </div>
             </NavbarBrand>
-            <div className="flex md:order-2">
+            <div className="flex md:order-2 gap-4">
                 <CartDropdown />
                 { isLoading ? (
                     <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
@@ -111,7 +109,7 @@ export default function NavbarMain({ lang }: any) {
                                 alt={ session?.user?.name || "User" }
                                 img={ session?.user?.image || "/profile.webp" }
                                 rounded
-                                className="mx-2"
+                                className=""
                             />
                         }
                     >
@@ -127,7 +125,7 @@ export default function NavbarMain({ lang }: any) {
 
                         <Link href={ `/${lang}/profile` }>
                             <DropdownItem>
-                                <BsFillPersonLinesFill className="mx-2" />
+                                <FaRegAddressCard  className="mx-2" />
                                 {/* الإعدادات */ }
                                 setting
                             </DropdownItem >
@@ -135,14 +133,22 @@ export default function NavbarMain({ lang }: any) {
                         { session?.user?.role === "admin" && (
                             <Link href={ `/${lang}/dashboard` }>
                                 <DropdownItem>
-                                    <IoSettingsOutline className="mx-2" />
+                                    <FaCog  className="mx-2" />
                                     Dashborad
+                                </DropdownItem>
+                            </Link>
+                        ) }
+                        { session?.user?.role === "user" && (
+                            <Link href={ `/${lang}/orders` }>
+                                <DropdownItem>
+                                    <FaClipboardList  className="mx-2"/>
+                                    My orders
                                 </DropdownItem>
                             </Link>
                         ) }
                         <DropdownDivider />
                         <DropdownItem onClick={ handleSignOut }>
-                            <VscSignOut className="mx-2" />
+                            <FaSignOutAlt  className="mx-2" />
                             تسجيل الخروج
                         </DropdownItem>
                     </Dropdown>

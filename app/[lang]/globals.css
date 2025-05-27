@@ -87,6 +87,19 @@ input {
     0%   {transform: scaleY(0);}
     100% {transform: scaleY(1);}
 }
+.dropDown_Cart {
+    position: absolute;
+    top: 18px;
+    right: 0;
+    min-width: 200px;
+    padding-top: 22px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform-origin: top;
+    animation-name: topToBottom;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+}
 .dropDown_Product {
     position: absolute;
     top: 18px;
@@ -101,7 +114,6 @@ input {
     animation-name: topToBottom;
     animation-duration: 0.4s;
     animation-direction: normal;
-
 }
 
 

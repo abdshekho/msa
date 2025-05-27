@@ -35,12 +35,12 @@ export default function CartDropdown() {
     <div className="relative flex" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary-10 focus:outline-none"
+        className="flex items-center text-secondary dark:text-[lightgray] hover:text-secondary-10 dark:hover:text-secondary-10 focus:outline-none"
       >
         <div className="relative">
-          <FaShoppingCart className="w-8 h-8" />
+          <FaShoppingCart className="w-7 h-7" />
           {itemCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            <span className="absolute -top-2 -right-4 bg-primary-10 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
               {itemCount}
             </span>
           )}
@@ -48,7 +48,7 @@ export default function CartDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-card rounded-lg shadow-lg z-50 py-2 dropDown_Product">
+        <div className="absolute right-0 mt-5 w-72 bg-white dark:bg-gray-700 rounded-lg shadow-lg z-50 py-2 dropDown_Cart">
           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
             <h3 className="font-medium text-gray-900 dark:text-white">
               {isArabic ? 'سلة التسوق' : 'Shopping Cart'} ({itemCount})

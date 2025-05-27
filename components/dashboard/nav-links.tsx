@@ -6,7 +6,6 @@
 // } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import { FaBeer, FaHome, FaCogs } from 'react-icons/fa';
 import {
   FaHome,
   FaBoxOpen,
