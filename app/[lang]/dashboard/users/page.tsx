@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { FaUser, FaEdit, FaTrash, FaTimes ,FaUserPlus } from 'react-icons/fa';
-import { Avatar } from 'flowbite-react';
+import { useState, useEffect, useCallback } from 'react';
+import { FaUser, FaEdit, FaTrash, FaTimes, FaUserPlus } from 'react-icons/fa';
+import { Avatar, Tooltip } from 'flowbite-react';
+import Image from 'next/image';
+import profileImage from "@/public/en/profile.webp"
+
 interface User {
   _id: string;
   name: string;
-  username:string;
+  username: string;
   email: string;
   role: string;
   image: string;
@@ -16,13 +19,16 @@ interface User {
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [image, setImage] = useState("");
   const [formData, setFormData] = useState({
     name: '',
-    username:'',
+    username: '',
     email: '',
+    image: '',
     role: 'User',
     // status: 'active',
     password: ''
@@ -62,8 +68,9 @@ export default function UsersPage() {
     setFormData({
       name: '',
       email: '',
+      image: '',
       role: 'User',
-      username:'',
+      username: '',
       // status: 'active',
       password: ''
     });
@@ -76,12 +83,43 @@ export default function UsersPage() {
       name: user.name,
       email: user.email,
       role: user.role,
-      username:user.username,
+      image: user?.image,
+      username: user.username,
       // status: user.status,
       password: ''
     });
     setIsModalOpen(true);
   };
+  // For cover image
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      // Create a FormData object
+      const formDataImage = new FormData();
+      formDataImage.append('image', file);
+      formDataImage.append('type', 'porfiles');
+
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formDataImage,
+        });
+
+        if (!response.ok) throw new Error('Image upload failed');
+
+        const data = await response.json();
+
+        setImage(data?.imageUrl);
+      } catch (error: any) {
+        console.error('Error uploading image:', error);
+        setError(`Error: ${error.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +135,7 @@ export default function UsersPage() {
           body: JSON.stringify({
             _id: currentUser._id,
             ...formData,
+            image,
             // Don't send password if it's empty
             ...(formData.password ? {} : { password: undefined })
           }),
@@ -105,6 +144,7 @@ export default function UsersPage() {
         if (!response.ok) {
           throw new Error('Failed to update user');
         }
+        setImage('');
       } else {
         // Add new user
         const response = await fetch('/api/users', {
@@ -112,7 +152,7 @@ export default function UsersPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({...formData,image}),
         });
 
         if (!response.ok) {
@@ -150,7 +190,7 @@ export default function UsersPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="head-1">Users Management</h1>
         <button onClick={ openAddModal } className="flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  rounded-lg">
-          <FaUserPlus  className="text-sm" />
+          <FaUserPlus className="text-sm" />
           <span>Add New User</span>
         </button>
       </div>
@@ -164,7 +204,7 @@ export default function UsersPage() {
                 <th className="px-6 py-3">Name</th>
                 <th className="px-6 py-3">Email</th>
                 <th className="px-6 py-3">Role</th>
-                {/* <th className="px-6 py-3">Status</th> */}
+                {/* <th className="px-6 py-3">Status</th> */ }
                 <th className="px-6 py-3">Actions</th>
               </tr>
             </thead>
@@ -224,6 +264,31 @@ export default function UsersPage() {
             </div>
 
             <form onSubmit={ handleSubmit }>
+              <div className="flex justify-center mb-6">
+                <div className="relative w-24 h-24 overflow-hidden">
+                  <Image
+                    src={ image ? image :  (formData.image ? formData.image : profileImage) }
+                    alt="صورة المستخدم"
+                    width={ 96 }
+                    height={ 96 }
+                    className="rounded-full object-cover"
+                  />
+                </div>
+                <Tooltip content={ image ? "Edit profile image" : "Add profile image" }>
+                  <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+                </Tooltip>
+              </div>
+              <div className='hidden'>
+                <label className="block mb-2 font-medium" htmlFor="profile-image">صورة الملف الشخصي</label>
+                <input
+                  type="file"
+                  name="image"
+                  id="profile-image"
+                  onChange={ handleFileChange }
+                  className="w-full p-2 border rounded"
+                  accept="image/*"
+                />
+              </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Name
@@ -290,7 +355,7 @@ export default function UsersPage() {
                   className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   <option value="User">User</option>
-                  {/* <option value="Editor">Editor</option> */}
+                  {/* <option value="Editor">Editor</option> */ }
                   <option value="admin">Admin</option>
                 </select>
               </div>
@@ -322,7 +387,8 @@ export default function UsersPage() {
                   type="submit"
                   className="fButton"
                 >
-                  { currentUser ? 'Update User' : 'Add User' }
+                  { isLoading ? 'loadding' : (currentUser ? 'Update User' : 'Add User') }
+
                 </button>
               </div>
             </form>
