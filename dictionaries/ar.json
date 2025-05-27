@@ -1,38 +1,41 @@
 {
-    "server-component": {
-        "welcome": "مرحبا"
+  "title": "مثال على i18n",
+  "description": "هذا مثال على تطبيق لعرض i18n في دليل تطبيق Next.js 13",
+  "navigation": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "contact": "اتصل بنا"
+  },
+  "page": {
+    "home": {
+      "title": "مرحبًا بك في NextJs i18n",
+      "description": "هذا تطبيق نموذجي لعرض i18n في دليل تطبيق Next.js 13"
     },
-    "counter": {
-        "increment": "زيادة",
-        "decrement": "نقصان"
+    "about": {
+      "title": "من نحن",
+      "description": "هذه صفحة من نحن"
     },
-    "dashboard": "لوحة القيادة",
-    "navbar": {
-        "home": "الرئيسية",
-        "about": "حول",
-        "services": "خدمات",
-        "categories": "التصنيفات",
-        "brands": "العلامات التجارية"
-    },
-    "home": {},
-    "categories": {
-        "allCategories": "جميع التصنيفات",
-        "subcategories": "التصنيفات الفرعية"
-    },
-    "brands": {
-        "allBrands": "جميع العلامات التجارية"
-    },
-    "products": {
-        "inThisCategory": "المنتجات في هذا التصنيف",
-        "byThisBrand": "منتجات هذه العلامة التجارية",
-        "noProductsInCategory": "لا توجد منتجات في هذا التصنيف.",
-        "noProductsByBrand": "لا توجد منتجات لهذه العلامة التجارية."
-    },
-    "common": {
-        "viewAll": "عرض الكل",
-        "viewDetails": "عرض التفاصيل",
-        "backToCategories": "العودة إلى التصنيفات",
-        "backToBrands": "العودة إلى العلامات التجارية",
-        "notFound": "غير موجود"
+    "contact": {
+      "title": "اتصل بنا",
+      "description": "تواصل مع فريقنا",
+      "form": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "subject": "الموضوع",
+        "message": "الرسالة",
+        "submit": "إرسال الرسالة",
+        "sending": "جاري الإرسال...",
+        "success": "تم إرسال رسالتك بنجاح. سنتواصل معك قريبًا.",
+        "error": "حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى."
+      },
+      "info": {
+        "call": "اتصل بنا",
+        "email": "راسلنا",
+        "location": "موقعنا",
+        "address": "عمان، الأردن",
+        "street": "شارع الرئيسي، مبنى رقم 123",
+        "sendMessage": "أرسل لنا رسالة"
+      }
     }
+  }
 }

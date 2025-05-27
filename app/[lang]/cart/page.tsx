@@ -7,7 +7,8 @@ import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Cart from '@/app/lib/models/Cart';
 
 export default async function CartPage({ params }: { params: { lang: string } }) {
-  const lang = params.lang;
+  const resolvedparams = await params;
+  const lang = resolvedparams.lang
   const isArabic = lang === 'ar';
   
   // Get cart data directly from database to avoid circular dependencies

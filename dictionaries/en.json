@@ -1,38 +1,41 @@
 {
-  "server-component": {
-    "welcome": "Welcome"
-  },
-  "counter": {
-    "increment": "Increment",
-    "decrement": "Decrement"
-  },
-  "dashboard": "Dashboard",
-  "navbar": {
+  "title": "i18n Example",
+  "description": "This is an example app to showcase i18n in Next.js 13 app directory",
+  "navigation": {
     "home": "Home",
     "about": "About",
-    "services": "Services",
-    "categories": "Categories",
-    "brands": "Brands"
+    "contact": "Contact Us"
   },
-  "home": {},
-  "categories": {
-    "allCategories": "All Categories",
-    "subcategories": "Subcategories"
-  },
-  "brands": {
-    "allBrands": "All Brands"
-  },
-  "products": {
-    "inThisCategory": "Products in this category",
-    "byThisBrand": "Products by this brand",
-    "noProductsInCategory": "No products found in this category.",
-    "noProductsByBrand": "No products found for this brand."
-  },
-  "common": {
-    "viewAll": "View All",
-    "viewDetails": "View Details",
-    "backToCategories": "Back to Categories",
-    "backToBrands": "Back to Brands",
-    "notFound": "Not Found"
+  "page": {
+    "home": {
+      "title": "Welcome to NextJs i18n",
+      "description": "This is a sample app to showcase i18n in Next.js 13 app directory"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "This is the about page"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Get in touch with our team",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "subject": "Subject",
+        "message": "Message",
+        "submit": "Send Message",
+        "sending": "Sending...",
+        "success": "Your message has been sent successfully. We will contact you soon.",
+        "error": "An error occurred while sending your message. Please try again."
+      },
+      "info": {
+        "call": "Call Us",
+        "email": "Email Us",
+        "location": "Our Location",
+        "address": "Amman, Jordan",
+        "street": "Main Street, Building 123",
+        "sendMessage": "Send Us a Message"
+      }
+    }
   }
 }

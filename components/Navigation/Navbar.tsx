@@ -184,7 +184,7 @@ export default function NavbarMain({ lang }: any) {
                 <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>Categories</Link>
                 <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>Brands</Link>
                 <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>Services</Link>
-                <Link href="#" className={ `menu__link` }>Contact</Link>
+                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>Contact</Link>
             </NavbarCollapse>
         </Navbar >
     );
