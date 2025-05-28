@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import AddToCartButton from '@/components/products/AddToCartButton';
 
 interface Product {
   _id: string;
@@ -41,7 +42,7 @@ const ProductSkeleton = () => (
 );
 
 export default function ProductsPage({ params }: { params: { lang: string } }) {
-    const resolveParam = use(params);
+  const resolveParam = use(params);
   const lang = resolveParam.lang;
   // const lang = params.lang;
 
@@ -252,16 +253,20 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                       src={ product.imageCover.startsWith('/') ? product.imageCover : `/${product.imageCover}` }
                       alt={ product.name }
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2 dark:text-white">
-                      { lang === 'ar' ? product.nameAr : product.name }
-                    </h3>
-                    <p className="text-blue-600 dark:text-blue-400 font-bold">${ product.price.toFixed(2) }</p>
-                  </div>
                 </Link>
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg mb-2 dark:text-white">
+                    { lang === 'ar' ? product.nameAr : product.name }
+                  </h3>
+                  <div className='flex justify-between items-center'>
+                    <span className="text-blue-600 dark:text-blue-400 font-bold">${ product.price.toFixed(2) }</span>
+                    <AddToCartButton productId={ product._id.toString() } lang={ lang } className='text-base flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-2 py-2  rounded-lg'/>
+                  </div>
+                </div>
+
               </div>
             )) }
           </div>

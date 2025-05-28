@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { addToCart } from '@/app/lib/cart/actions';
 import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
+import { FaCartPlus } from 'react-icons/fa';
 
 interface AddToCartButtonProps {
   productId: string;
@@ -17,7 +18,7 @@ export default function AddToCartButton({ productId, className, children }: AddT
     try {
       setLoading(true);
       const result = await addToCart(productId, 1);
-      
+
       if (result.success) {
         // Trigger cart update event to refresh cart UI
         triggerCartUpdate();
@@ -32,12 +33,13 @@ export default function AddToCartButton({ productId, className, children }: AddT
   };
 
   return (
-    <button 
-      onClick={handleAddToCart}
-      disabled={loading}
-      className={className || "fButton"}
+    <button
+      onClick={ handleAddToCart }
+      disabled={ loading }
+      className={ className || "flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  rounded-lg" }
     >
-      {loading ? 'Adding...' : children || 'Add to Cart'}
+      <FaCartPlus />
+      { loading ? 'Adding...' : children || 'Add to Cart' }
     </button>
   );
 }
