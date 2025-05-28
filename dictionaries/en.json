@@ -13,7 +13,36 @@
     },
     "about": {
       "title": "About Us",
-      "description": "This is the about page"
+      "description": "Learn more about our company, mission, and values",
+      "who": {
+        "title": "Who We Are",
+        "p1": "Our company is a leading renewable energy company specializing in innovative and sustainable solar energy solutions. Founded in 2010, we have grown to become one of the most trusted solar solution providers in the region.",
+        "p2": "We believe in a more sustainable future and work hard to empower our customers to benefit from clean, renewable energy. By combining advanced technology and technical expertise, we deliver customized solutions that meet the unique needs of our customers."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "p1": "Our mission is to accelerate the global transition to sustainable energy by providing high-quality, cost-effective solar energy solutions. We are committed to reducing carbon footprint and promoting environmental sustainability.",
+        "p2": "We strive to empower individuals and businesses to embrace clean energy through exceptional service, customer support, and innovative solutions. Our goal is to make renewable energy accessible to everyone."
+      },
+      "values": {
+        "title": "Our Values",
+        "innovation": {
+          "title": "Innovation",
+          "description": "We continuously strive to develop and improve our solutions to meet the evolving needs of our customers and the industry."
+        },
+        "sustainability": {
+          "title": "Sustainability",
+          "description": "We are committed to promoting sustainable practices and reducing environmental impact through our solutions and operations."
+        },
+        "excellence": {
+          "title": "Excellence",
+          "description": "We strive for the highest standards of quality and service in everything we do."
+        }
+      },
+      "team": {
+        "title": "Our Team",
+        "member": "Team Member"
+      }
     },
     "contact": {
       "title": "Contact Us",
