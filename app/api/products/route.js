@@ -11,14 +11,20 @@ export async function GET( request ) {
         const { searchParams } = new URL( request.url );
         const category = searchParams.get( 'category' );
         const brand = searchParams.get( 'brand' );
+        const limit = searchParams.get( 'limit' );
+
         // const subcategory = searchParams.get( 'subcategory' );
+        await connectToDatabase();
 
         const query = {};
-        if ( category ) query.category = new mongoose.Types.ObjectId(category);
-        if ( brand ) query.brand = new mongoose.Types.ObjectId(brand);
-        // if ( subcategory ) query.subcategory = subcategory;
+        if ( category ) query.category = new mongoose.Types.ObjectId( category );
+        if ( brand ) query.brand = new mongoose.Types.ObjectId( brand );
+        if ( limit ) {
+            // query = query.limit( parseInt( limit ) );
+            const products = await Product.find( query ).sort( { createdAt: -1 } ).limit( parseInt( limit ) ).lean();
+            return NextResponse.json( products );
+        }
 
-        await connectToDatabase();
         const products = await Product.find( query ).sort( { createdAt: -1 } );
         return NextResponse.json( products );
     } catch ( error ) {
@@ -62,36 +68,6 @@ export async function POST( request ) {
     }
 }
 
-// export async function GET( request, { params } ) {
-//     try {
-//         const { id } = params;
-
-//         if ( !isValidObjectId( id ) ) {
-//             return NextResponse.json(
-//                 { error: 'Invalid product ID' },
-//                 { status: 400 }
-//             );
-//         }
-
-//         await connectToDatabase();
-//         const product = await Product.findById( id );
-
-//         if ( !product ) {
-//             return NextResponse.json(
-//                 { error: 'Product not found' },
-//                 { status: 404 }
-//             );
-//         }
-
-//         return NextResponse.json( product );
-//     } catch ( error ) {
-//         console.error( 'Error fetching product:', error );
-//         return NextResponse.json(
-//             { error: 'Failed to fetch product' },
-//             { status: 500 }
-//         );
-//     }
-// }
 
 // Update a product
 export async function PUT( request, { params } ) {

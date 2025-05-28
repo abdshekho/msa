@@ -3,115 +3,6 @@ import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Category from '@/app/lib/models/Category';
 import Product from '@/app/lib/models/Product'; // Assuming you have a Product model
 
-// Get all categories
-// export async function GET(request) {
-//     try {
-//         const { searchParams } = new URL(request.url);
-//         const parentId = searchParams.get('parentId');
-//         const notNull = searchParams.get('notNull');
-//         const fields = searchParams.get('fields');
-//         const withProducts = searchParams.get('withProducts') === 'true';
-//         const nested = searchParams.get('nested') === 'true';
-
-//         // If nested structure is requested, handle it differently
-//         if (nested) {
-//             await connectToDatabase();
-
-//             // First, get all parent categories (where parentId is null)
-//             const parentCategories = await Category.find({ parentId: null })
-//                 .sort({ order: 1, name: 1 });
-
-//             // For each parent category, get its subcategories
-//             const result = await Promise.all(parentCategories.map(async (parentCategory) => {
-//                 const subcategories = await Category.find({ parentId: parentCategory._id })
-//                     .sort({ order: 1, name: 1 });
-
-//                 // If withProducts is true, get products for each subcategory
-//                 if (withProducts) {
-//                     const subcategoriesWithProducts = await Promise.all(subcategories.map(async (subCategory) => {
-//                         const products = await Product.find({ category: subCategory._id })
-//                             .select('_id name slug imageCover price') // Select only needed fields
-//                             .sort({ createdAt: -1 });
-
-//                         return {
-//                             id: subCategory._id,
-//                             name: subCategory.name,
-//                             slug: subCategory.slug,
-//                             image: subCategory.image,
-//                             items: products.map(product => ({
-//                                 id: product._id,
-//                                 name: product.name,
-//                                 slug: product.slug,
-//                                 imageCover: product.imageCover,
-//                                 price: product.price
-//                             }))
-//                         };
-//                     }));
-
-//                     return {
-//                         id: parentCategory._id,
-//                         name: parentCategory.name,
-//                         slug: parentCategory.slug,
-//                         imageCover: parentCategory.imageCover,
-//                         items: subcategoriesWithProducts
-//                     };
-//                 } else {
-//                     // Return just the subcategories without products
-//                     return {
-//                         id: parentCategory._id,
-//                         name: parentCategory.name,
-//                         slug: parentCategory.slug,
-//                         image: parentCategory.image,
-//                         items: subcategories.map(subCategory => ({
-//                             id: subCategory._id,
-//                             name: subCategory.name,
-//                             slug: subCategory.slug,
-//                             image: subCategory.image
-//                         }))
-//                     };
-//                 }
-//             }));
-
-//             return NextResponse.json(result);
-//         }
-
-//         // Handle regular category queries (existing functionality)
-//         const query = {};
-//         if (parentId === 'null') {
-//             query.parentId = null;
-//         } else if (parentId) {
-//             query.parentId = parentId;
-//         }
-
-//         // Add condition for notNull parameter
-//         if (notNull === 'true') {
-//             query.parentId = { $ne: null };
-//         }
-
-//         await connectToDatabase();
-
-//         let projection = {};
-//         // If fields parameter is provided, only return those fields
-//         if (fields) {
-//             const fieldList = fields.split(',');
-//             fieldList.forEach(field => {
-//                 projection[field] = 1;
-//             });
-//         }
-
-//         const categories = await Category.find(query, projection)
-//             .sort({ order: 1, name: 1 })
-//             .populate('subcategories');
-
-//         return NextResponse.json(categories);
-//     } catch (error) {
-//         console.error('Error fetching categories:', error);
-//         return NextResponse.json(
-//             { error: 'Failed to fetch categories' },
-//             { status: 500 }
-//         );
-//     }
-// }
 export async function GET( request ) {
     try {
         const { searchParams } = new URL( request.url );
@@ -119,6 +10,7 @@ export async function GET( request ) {
         const notNull = searchParams.get( 'notNull' ) === 'true';
         const fields = searchParams.get( 'fields' );
         const slug = searchParams.get( 'slug' );
+        const limit = searchParams.get( 'limit' );
         const withProducts = searchParams.get( 'withProducts' ) === 'true';
         const withProductCount = searchParams.get( 'withProductCount' ) === 'true';
         const nested = searchParams.get( 'nested' ) === 'true';
@@ -126,7 +18,10 @@ export async function GET( request ) {
             ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
             : {};
 
+
         await connectToDatabase();
+
+
         // NESTED STRUCTURE
         if ( nested ) {
             // Step 1: Fetch all categories in one go
@@ -212,7 +107,10 @@ export async function GET( request ) {
                             productCount: categoriesWithCounts.find( c => c._id.toString() === sub._id.toString() )
                                 ?.productCount || 0,
                         } ) );
-                    } else {
+
+                    }
+                    // withot products or products counts
+                    else {
                         items = subcategories.map( sub => ( {
                             id: sub._id,
                             name: sub.name,
@@ -234,7 +132,7 @@ export async function GET( request ) {
             return NextResponse.json( result );
         }
         // get Category by slug
-        if ( slug && !notNull ) {
+        else if ( slug && !notNull ) {
             const categoryBySlug = await Category.findOne( { slug: slug.toString().trim() } );
             return NextResponse.json( categoryBySlug );
         }
@@ -302,11 +200,18 @@ export async function GET( request ) {
             return NextResponse.json( categoryWithSubs );
         }
 
+
         // FLAT CATEGORY STRUCTURE
         const query = {};
         if ( parentId === 'null' ) query.parentId = null;
         else if ( parentId ) query.parentId = parentId;
         if ( notNull ) query.parentId = { $ne: null };
+
+        // limit categories
+        if ( limit ) {
+            const categories = await Category.find(query, projection).limit( parseInt( limit ) ).lean();
+            return NextResponse.json( categories );
+        }
 
         const categories = await Category.find( query, projection )
             .sort( { order: 1, name: 1 } )

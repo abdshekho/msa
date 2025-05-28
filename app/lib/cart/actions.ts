@@ -6,7 +6,7 @@ import Cart from '../models/Cart';
 import Product from '../models/Product';
 import { revalidatePath } from 'next/cache';
 import { authOptions } from "../../api/auth/[...nextauth]/route"
-
+import mongoose from 'mongoose';
 // Get cart for current user
 export async function getCart() {
   try {
@@ -22,7 +22,7 @@ export async function getCart() {
     await connectToDatabase();
     
     const userId = session.user.id.toString();
-    const cart = await Cart.findOne({ user: userId })
+    const cart = await Cart.findOne({ user: new mongoose.Types.ObjectId(userId)})
       .populate({
         path: 'items.product',
         select: 'name nameAr price imageCover'
