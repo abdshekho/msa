@@ -52,38 +52,38 @@ const BasicInfoSection = memo(({
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label className="block mb-2 font-medium">Name (English)</label>
+                <label className="block mb-2 font-medium dark:text-white">Name (English)</label>
                 <input
                     type="text"
                     name="name"
                     value={ product.name }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                 />
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Name (Arabic)</label>
+                <label className="block mb-2 font-medium dark:text-white">Name (Arabic)</label>
                 <input
                     type="text"
                     name="nameAr"
                     value={ product.nameAr }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                     dir="rtl"
                 />
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Price</label>
+                <label className="block mb-2 font-medium dark:text-white">Price</label>
                 <input
                     type="number"
                     name="price"
                     value={ product.price }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                     min="0"
                     step="0.01"
@@ -91,12 +91,12 @@ const BasicInfoSection = memo(({
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Category</label>
+                <label className="block mb-2 font-medium dark:text-white">Category</label>
                 <select
                     name="category"
                     value={ product.category }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={ isLoading }
                 >
                     { parentCategories?.map(parent => (
@@ -108,12 +108,12 @@ const BasicInfoSection = memo(({
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Brand</label>
+                <label className="block mb-2 font-medium dark:text-white">Brand</label>
                 <select
                     name="brand"
                     value={ product.brand }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={ isLoading }
                 >
                     { brands?.map(parent => (
@@ -125,12 +125,12 @@ const BasicInfoSection = memo(({
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Cover Image</label>
+                <label className="block mb-2 font-medium dark:text-white">Cover Image</label>
                 <input
                     type="file"
                     name="imageCoverFile"
                     onChange={ handleFileChange }
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white file:bg-blue-500 file:text-white file:border-0 file:rounded file:px-2 file:py-1 dark:file:bg-blue-600"
                     accept="image/*"
                 />
                 { product.imageCover && (
@@ -154,13 +154,13 @@ const ImagesSection = memo(({
 }) => {
     return (
         <div>
-            <label className="block mb-2 font-medium">Additional Images</label>
+            <label className="block mb-2 font-medium dark:text-white">Additional Images</label>
             { product.images.map((image, index) => (
                 <div key={ index } className="flex mb-2 items-center">
                     <input
                         type="file"
                         onChange={ (e) => handleFileArrayChange('images', index, e) }
-                        className="flex-grow p-2 border rounded-l"
+                        className="flex-grow p-2 border rounded-l dark:bg-gray-700 dark:border-gray-600 dark:text-white file:bg-blue-500 file:text-white file:border-0 file:rounded file:px-2 file:py-1 dark:file:bg-blue-600"
                         accept="image/*"
                     />
                     { image && (
@@ -169,7 +169,7 @@ const ImagesSection = memo(({
                     <button
                         type="button"
                         onClick={ () => removeArrayItem('images', index) }
-                        className="px-4 py-2 bg-red-500 text-white rounded-r"
+                        className="px-4 py-2 bg-red-500 text-white rounded mx-1 dark:bg-red-700 dark:hover:bg-red-800"
                     >
                         Remove
                     </button>
@@ -178,7 +178,7 @@ const ImagesSection = memo(({
             <button
                 type="button"
                 onClick={ () => addArrayItem('images') }
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-blue-500 text-white rounded dark:bg-blue-700 dark:hover:bg-blue-800"
             >
                 Add Image
             </button>
@@ -192,23 +192,23 @@ const DescriptionSection = memo(({ product, handleChange }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label className="block mb-2 font-medium">Description (English)</label>
+                <label className="block mb-2 font-medium dark:text-white">Description (English)</label>
                 <textarea
                     name="desc"
                     value={ product.desc }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded h-32"
+                    className="w-full p-2 border rounded h-32 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                 ></textarea>
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Description (Arabic)</label>
+                <label className="block mb-2 font-medium dark:text-white">Description (Arabic)</label>
                 <textarea
                     name="descAr"
                     value={ product.descAr }
                     onChange={ handleChange }
-                    className="w-full p-2 border rounded h-32"
+                    className="w-full p-2 border rounded h-32 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                     dir="rtl"
                 ></textarea>
@@ -228,19 +228,19 @@ const FeaturesSection = memo(({
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label className="block mb-2 font-medium">Features (English)</label>
+                <label className="block mb-2 font-medium dark:text-white">Features (English)</label>
                 { product.features.map((feature, index) => (
                     <div key={ index } className="flex mb-2">
                         <input
                             type="text"
                             value={ feature }
                             onChange={ (e) => handleArrayChange('features', index, e.target.value) }
-                            className="flex-grow p-2 border rounded-l"
+                            className="flex-grow p-2 border rounded-l dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         />
                         <button
                             type="button"
                             onClick={ () => removeArrayItem('features', index) }
-                            className="px-4 py-2 bg-red-500 text-white rounded-r"
+                            className="px-4 py-2 bg-red-500 text-white rounded-r dark:bg-red-700 dark:hover:bg-red-800"
                         >
                             Remove
                         </button>
@@ -249,27 +249,27 @@ const FeaturesSection = memo(({
                 <button
                     type="button"
                     onClick={ () => addArrayItem('features') }
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    className="px-4 py-2 bg-blue-500 text-white rounded dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                     Add Feature
                 </button>
             </div>
 
             <div>
-                <label className="block mb-2 font-medium">Features (Arabic)</label>
+                <label className="block mb-2 font-medium dark:text-white">Features (Arabic)</label>
                 { product.featuresAr.map((feature, index) => (
                     <div key={ index } className="flex mb-2">
                         <input
                             type="text"
                             value={ feature }
                             onChange={ (e) => handleArrayChange('featuresAr', index, e.target.value) }
-                            className="flex-grow p-2 border rounded-l"
+                            className="flex-grow p-2 border rounded-l dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             dir="rtl"
                         />
                         <button
                             type="button"
                             onClick={ () => removeArrayItem('featuresAr', index) }
-                            className="px-4 py-2 bg-red-500 text-white rounded-r"
+                            className="px-4 py-2 bg-red-500 text-white rounded-r dark:bg-red-700 dark:hover:bg-red-800"
                         >
                             Remove
                         </button>
@@ -278,7 +278,7 @@ const FeaturesSection = memo(({
                 <button
                     type="button"
                     onClick={ () => addArrayItem('featuresAr') }
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    className="px-4 py-2 bg-blue-500 text-white rounded dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                     Add Feature (Arabic)
                 </button>
@@ -557,26 +557,26 @@ export default function ProductForm({ productId }: ProductFormProps) {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-6 mt-20 max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold mb-6 mt-20 max-w-4xl mx-auto dark:text-white">
                 { productId ? 'Edit Product' : 'Add New Product' }
             </h1>
 
             { message && (
-                <div className={ `p-4 mb-6 rounded ${message.includes('Error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}` }>
+                <div className={ `p-4 mb-6 rounded ${message.includes('Error') ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200' : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200'}` }>
                     { message }
                 </div>
             ) }
 
             {/* Loading state */ }
             { (isLoading || isPending) && (
-                <div className="p-4 mb-6 rounded bg-blue-50 text-blue-700">
+                <div className="p-4 mb-6 rounded bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
                     Processing...
                 </div>
             ) }
 
             <form onSubmit={ handleSubmit } className="space-y-6">
                 {/* Basic Information */ }
-                <div className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+                <div className="p-6 max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md">
                     <BasicInfoSection
                         product={ product }
                         handleChange={ handleChange }
@@ -611,7 +611,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
 
                 {/* Technical Specifications Table */ }
                 <div className='max-w-8xl'>
-                    <h2 className="text-xl font-semibold mb-4 pl-[100px]">Technical Specifications</h2>
+                    <h2 className="text-xl font-semibold mb-4 pl-[100px] dark:text-white">Technical Specifications</h2>
                     <TableEditor
                         tableData={ tableData }
                         setTableData={ updateTableData }
@@ -623,7 +623,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <button
                         type="submit"
                         disabled={ isLoading || isPending }
-                        className="px-6 py-3 max-w-4xl mx-auto bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400"
+                        className="px-6 py-3 max-w-4xl mx-auto bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400 dark:bg-green-700 dark:hover:bg-green-800 dark:disabled:bg-gray-600"
                     >
                         { isLoading || isPending ? 'Saving...' : 'Save Product' }
                     </button>

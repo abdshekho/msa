@@ -101,8 +101,8 @@ const TableRow = memo(({
     };
 
     return (
-        <tr className={ row.isSectionHeader ? 'bg-gray-200' : '' }>
-            <td className={ `border p-1 relative ${row.isSectionHeader ? 'bg-gray-400' : ''}` }
+        <tr className={ row.isSectionHeader ? 'bg-gray-200 dark:bg-gray-700' : 'dark:bg-gray-800' }>
+            <td className={ `border p-1 relative ${row.isSectionHeader ? 'bg-gray-400 dark:bg-black' : 'dark:bg-gray-700'}` }
                 colSpan={ row.isSectionHeader ? headers.length : 1 }>
                 <div className="flex gap-1 mt-1 absolute left-[-90px] top-[10px]">
                     <Checkbox
@@ -129,7 +129,7 @@ const TableRow = memo(({
                 <input
                     value={ parameterValue }
                     onChange={ handleParameterChange }
-                    className={ `w-full p-1 border rounded border-none ${row.isSectionHeader ? 'text-center font-bold' : ''}` }
+                    className={ `w-full p-1 border rounded border-none  dark:text-secondary-10 ${row.isSectionHeader ? 'text-center font-bold dark:bg-black' : 'dark:bg-gray-700'}` }
                     placeholder="Parameter name"
                 />
             </td>
@@ -138,7 +138,7 @@ const TableRow = memo(({
                     <input
                         value={ val }
                         onChange={ (e) => handleCellChange(colIndex, e) }
-                        className="w-full p-1 border-none rounded"
+                        className="w-full p-1 border-none rounded dark:bg-transparent dark:text-[lightgray]"
                         placeholder="Value"
                     />
                 </td>
@@ -179,12 +179,12 @@ const TableHeader = memo(({ headers, updateHeader, removeHeader }) => {
     return (
         <tr>
             { headerValues.map((header, i) => (
-                <th key={ i } className="border px-2 py-1 bg-gray-100">
+                <th key={ i } className="border px-2 py-1 bg-gray-100 dark:bg-gray-600 dark:text-white">
                     <div className="flex items-center gap-1">
                         <input
                             value={ header }
                             onChange={ (e) => handleHeaderChange(i, e) }
-                            className="w-full p-1 border-none rounded"
+                            className="w-full p-1 border-none rounded dark:bg-gray-600 dark:text-primary-10"
                             placeholder="Column name"
                         />
                         { i > 0 && (
@@ -523,18 +523,18 @@ export default function TableEditor({
         <div className="p-4 space-y-4 pl-[100px]">
             {/* Status Messages */ }
             { error && (
-                <div className="p-3 bg-red-100 text-red-700 rounded">
+                <div className="p-3 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 rounded">
                     { error }
                 </div>
             ) }
 
             { successMessage && (
-                <div className="p-3 bg-green-100 text-green-700 rounded">
+                <div className="p-3 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 rounded">
                     { successMessage }
                 </div>
             ) }
 
-            <div className="p-3 bg-blue-50 text-blue-700 rounded h-[48px]">
+            <div className="p-3 bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200 rounded h-[48px]">
                 {/* Loading indicator */ }
                 { (isLoading || isPending) && (
                     <span>Processing...</span>
@@ -545,7 +545,7 @@ export default function TableEditor({
             <div className="flex gap-2 flex-wrap">
                 <button
                     onClick={ addHeader }
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
                     disabled={ isLoading || isPending }
                 >
                     + Add Column
@@ -555,7 +555,7 @@ export default function TableEditor({
                     <>
                         <button
                             onClick={ saveTemplate }
-                            className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600"
+                            className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800"
                             disabled={ isLoading || isPending }
                         >
                             💾 Save as Template
@@ -564,7 +564,7 @@ export default function TableEditor({
                         <select
                             value={ selectedTemplate }
                             onChange={ (e) => loadTemplate(e.target.value) }
-                            className="border px-2 py-1 rounded"
+                            className="border px-2 py-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             disabled={ isLoading || isPending || availableTemplates.length === 0 }
                             onClick={ () => !templatesLoaded && loadTemplates() }
                         >
@@ -583,7 +583,7 @@ export default function TableEditor({
                 { showSaveControls && (
                     <button
                         onClick={ saveProductTable }
-                        className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                        className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
                         disabled={ isLoading || isPending }
                     >
                         📥 Save to MongoDB
@@ -593,7 +593,7 @@ export default function TableEditor({
 
             {/* Table Editor */ }
             <div className="">
-                <table className="table-auto w-full border border-gray-300">
+                <table className="table-auto w-full border border-gray-300 dark:border-gray-600">
                     <thead>
                         <TableHeader
                             headers={ memoizedHeaders }
@@ -618,7 +618,7 @@ export default function TableEditor({
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={ memoizedHeaders.length + 1 } className="border p-4 text-center text-gray-500">
+                                <td colSpan={ memoizedHeaders.length + 1 } className="border p-4 text-center text-gray-500 dark:text-gray-400 dark:border-gray-600">
                                     No rows yet. Click "Add Row" to start building your table.
                                 </td>
                             </tr>
@@ -630,7 +630,7 @@ export default function TableEditor({
             {/* Add row at the end */ }
             <button
                 onClick={ () => data.rows.length > 0 ? addRowBelow(data.rows.length - 1) : addRowBelow(-1) }
-                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
                 disabled={ isLoading || isPending }
             >
                 + Add Row
