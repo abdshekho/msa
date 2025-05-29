@@ -13,6 +13,9 @@ interface brand {
     description?: string;
     descriptionAr?: string;
 }
+function truncate(text, maxLength = 50) {
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+}
 
 export default function CategoriesAdminPage() {
     const [brands, setBrands] = useState<brand[]>([]);
@@ -58,9 +61,7 @@ export default function CategoriesAdminPage() {
     // Handle form input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-
-
-            setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     // Handle image file selection
@@ -77,7 +78,6 @@ export default function CategoriesAdminPage() {
 
     // Handle image upload
     const handleImageUpload = async () => {
-
         if (!imageFile) return;
 
         try {
@@ -101,7 +101,7 @@ export default function CategoriesAdminPage() {
 
             // Update form data with the image URL
             setFormData(prev => ({ ...prev, image: data.imageUrl }));
-            
+
             return data.imageUrl;
         } catch (err: any) {
             setError(err.message || 'An error occurred while uploading the image');
@@ -109,11 +109,7 @@ export default function CategoriesAdminPage() {
         } finally {
             setUploadingImage(false);
         }
-
     };
-
-
-
 
     // Generate slug from name
     const generateSlug = () => {
@@ -189,8 +185,6 @@ export default function CategoriesAdminPage() {
             const url = editingbrand
                 ? `/api/brands/${editingbrand._id}`
                 : '/api/brands';
-                
-
 
             const method = editingbrand ? 'PUT' : 'POST';
 
@@ -278,42 +272,41 @@ export default function CategoriesAdminPage() {
     // Render brand and its subcategories recursively
     const renderbrand = (brand: brand, level = 0) => {
         return (
-            <div key={brand._id} className="mb-2">
+            <div key={ brand._id } className="mb-2">
                 <div
-                    className={`flex items-center justify-between p-3 rounded ${
-                        level === 0 ? 'bg-blue-50' : 'bg-white border border-gray-200 ml-6'
-                    }`}
+                    className={ `flex items-center justify-between p-3 rounded ${level === 0 ? 'bg-blue-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ml-6'
+                        }` }
                 >
                     <div className="flex items-center">
-                        {brand.image && (
-                            <div className="w-10 h-10 mr-3 relative">
+                        { brand.image && (
+                            <div className="w-20 h-15 mr-3 relative">
                                 <Image
-                                    src={brand.image}
-                                    alt={brand.name}
+                                    src={ brand.image }
+                                    alt={ brand.name }
                                     fill
-                                    sizes="40px"
-                                    className="object-cover rounded"
+                                    sizes="120px"
+                                    className="object-contain rounded"
                                 />
                             </div>
-                        )}
+                        ) }
                         <div>
-                            <div className="font-medium">{brand.name} / {brand.nameAr}</div>
-                            <div className="text-sm text-gray-500">
-                                Slug:<span> {brand.slug} </span> |
-                                description:<span> {brand.description}</span> |
+                            <div className="font-medium dark:text-white">{ brand.name } / { brand.nameAr }</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                Slug:<span> { brand.slug } </span> |
+                                description:<span> { truncate(brand.description) }</span> |
                             </div>
                         </div>
                     </div>
 
                     <div className="flex space-x-2">
                         <button
-                            onClick={() => handleEdit(brand)}
+                            onClick={ () => handleEdit(brand) }
                             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Edit
                         </button>
                         <button
-                            onClick={() => handleDelete(brand._id)}
+                            onClick={ () => handleDelete(brand._id) }
                             className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
                         >
                             Delete
@@ -327,7 +320,7 @@ export default function CategoriesAdminPage() {
     return (
         <div className="p-6 max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Brands Management</h1>
+                <h1 className="text-2xl font-bold dark:text-white">Brands Management</h1>
                 <button
                     onClick={ handleAddNew }
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
@@ -338,14 +331,14 @@ export default function CategoriesAdminPage() {
 
             {/* Success message */ }
             { successMessage && (
-                <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                <div className="mb-4 p-3 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">
                     { successMessage }
                 </div>
             ) }
 
             {/* Error message */ }
             { error && (
-                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded">
                     { error }
                 </div>
             ) }
@@ -353,15 +346,15 @@ export default function CategoriesAdminPage() {
             {/* brand form */ }
             { showForm &&
                 (
-                    <div className="mb-6 p-4 bg-gray-50 rounded shadow">
+                    <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded shadow">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">
+                            <h2 className="text-xl font-semibold dark:text-white">
                                 { editingbrand ? 'Edit Brand' : 'Add New Brand' }
                             </h2>
                             <Tooltip content='Cancel'>
                                 <button
                                     onClick={ () => setShowForm(false) }
-                                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
                                 >
                                     ✕
                                 </button>
@@ -372,27 +365,27 @@ export default function CategoriesAdminPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {/* Name */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Name (English)</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Name (English)</label>
                                     <input
                                         type="text"
                                         name="name"
                                         value={ formData.name }
                                         onChange={ handleInputChange }
                                         onBlur={ generateSlug }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
                                 </div>
 
                                 {/* Arabic Name */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Name (Arabic)</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Name (Arabic)</label>
                                     <input
                                         type="text"
                                         name="nameAr"
                                         value={ formData.nameAr }
                                         onChange={ handleInputChange }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                         dir="rtl"
                                     />
@@ -400,29 +393,29 @@ export default function CategoriesAdminPage() {
 
                                 {/* Slug */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Slug</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Slug</label>
                                     <input
                                         type="text"
                                         name="slug"
                                         value={ formData.slug }
                                         onChange={ handleInputChange }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
-                                    <p className="text-sm text-gray-500 mt-1">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                         Used in URLs. Auto-generated from name, but you can customize it.
                                     </p>
                                 </div>
 
                                 {/* Image Upload */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Brand Image</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Brand Image</label>
                                     <div className="flex items-center space-x-4">
                                         <input
                                             type="file"
                                             accept="image/*"
                                             onChange={ handleImageChange }
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                             ref={ fileInputRef }
                                         />
                                     </div>
@@ -430,8 +423,8 @@ export default function CategoriesAdminPage() {
                                     {/* Image Preview */ }
                                     { (imagePreview || formData.image) && (
                                         <div className="mt-2">
-                                            <p className="text-sm font-medium mb-1">Image Preview:</p>
-                                            <div className="relative w-32 h-32 border rounded overflow-hidden">
+                                            <p className="text-sm font-medium mb-1 dark:text-white">Image Preview:</p>
+                                            <div className="relative w-32 h-32 border rounded overflow-hidden dark:border-gray-600">
                                                 <Image
                                                     src={ imagePreview || formData.image }
                                                     alt="Brand image preview"
@@ -444,7 +437,7 @@ export default function CategoriesAdminPage() {
 
                                     {/* Manual Image URL input (optional) */ }
                                     <div className="mt-2">
-                                        <label className="block mb-1 text-sm text-gray-600">
+                                        <label className="block mb-1 text-sm text-gray-600 dark:text-gray-400">
                                             Or enter image URL manually:
                                         </label>
                                         <input
@@ -452,7 +445,7 @@ export default function CategoriesAdminPage() {
                                             name="image"
                                             value={ formData.image }
                                             onChange={ handleInputChange }
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                             placeholder="Enter image URL (optional if uploading)"
                                         />
                                     </div>
@@ -461,23 +454,23 @@ export default function CategoriesAdminPage() {
 
                             {/* Description */ }
                             <div>
-                                <label className="block mb-1 font-medium">Description (English)</label>
+                                <label className="block mb-1 font-medium dark:text-white">Description (English)</label>
                                 <textarea
                                     name="description"
                                     value={ formData.description }
                                     onChange={ handleInputChange }
-                                    className="w-full p-2 border rounded h-20"
+                                    className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 ></textarea>
                             </div>
 
                             {/* Arabic Description */ }
                             <div>
-                                <label className="block mb-1 font-medium">Description (Arabic)</label>
+                                <label className="block mb-1 font-medium dark:text-white">Description (Arabic)</label>
                                 <textarea
                                     name="descriptionAr"
                                     value={ formData.descriptionAr }
                                     onChange={ handleInputChange }
-                                    className="w-full p-2 border rounded h-20"
+                                    className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     dir="rtl"
                                 ></textarea>
                             </div>
@@ -487,14 +480,14 @@ export default function CategoriesAdminPage() {
                                 <button
                                     type="button"
                                     onClick={ () => setShowForm(false) }
-                                    className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+                                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={ loading || uploadingImage }
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300"
+                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 dark:disabled:bg-blue-800"
                                 >
                                     { loading || uploadingImage
                                         ? 'Saving...'
@@ -510,7 +503,10 @@ export default function CategoriesAdminPage() {
 
             {/* brand list */ }
             { loading && !showForm ? (
-                <div>Loading brands…</div>
+                <div className="text-center py-8 dark:text-white">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 dark:border-blue-400 mb-2"></div>
+                    <p>Loading brands...</p>
+                </div>
             ) : (
                 <div>{ brands.map(cat => renderbrand(cat)) }</div>
             ) }

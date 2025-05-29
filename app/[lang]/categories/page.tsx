@@ -41,7 +41,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           { categories.map((category: any) => (
-            <div key={ category.id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+            <div key={ category._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
               <div className="p-6">
                 <div className='flex justify-between items-center'>
                   <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">{ category.name }</h2>
@@ -65,7 +65,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                   <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
                   <ul className="space-y-2">
                     { category.items && category.items.map((subcategory: any) => (
-                      <li key={ subcategory.id }>
+                      <li key={ subcategory._id }>
                         <Link
                           href={ `/${lang}/categories/${category.slug}/${subcategory.slug}` }
                           className="text-blue-600 dark:text-blue-400  flex justify-between items-center"

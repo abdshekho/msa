@@ -61,12 +61,12 @@ export async function GET( request ) {
                         } );
 
                         items = subcategories.map( sub => ( {
-                            id: sub._id,
+                            _id: sub._id,
                             name: sub.name,
                             slug: sub.slug,
                             image: sub.image,
                             items: ( productMap.get( sub._id.toString() ) || [] ).map( prod => ( {
-                                id: prod._id,
+                                _id: prod._id,
                                 name: prod.name,
                                 slug: prod.slug,
                                 imageCover: prod.imageCover,
@@ -100,7 +100,7 @@ export async function GET( request ) {
                             },
                         ] );
                         items = subcategories.map( sub => ( {
-                            id: sub._id,
+                            _id: sub._id,
                             name: sub.name,
                             slug: sub.slug,
                             image: sub.image,
@@ -112,7 +112,7 @@ export async function GET( request ) {
                     // withot products or products counts
                     else {
                         items = subcategories.map( sub => ( {
-                            id: sub._id,
+                            _id: sub._id,
                             name: sub.name,
                             slug: sub.slug,
                             image: sub.image,
@@ -120,7 +120,7 @@ export async function GET( request ) {
                     }
 
                     return {
-                        id: parent._id,
+                        _id: parent._id,
                         name: parent.name,
                         slug: parent.slug,
                         image: parent.image,

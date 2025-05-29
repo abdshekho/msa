@@ -12,10 +12,10 @@ export async function getCart() {
   try {
     const session = await getServerSession(authOptions);
 
-    // console.log('🚀 ~ actions.ts ~ getCart ~ session:', session);
+    console.log('🚀 ~ actions.ts ~ getCart ~ session:', session);
 
     
-    if (!session?.user?.email) {
+    if (!session?.user?.email ||session?.user?.role === 'admin' ) {
       return { items: [], totalPrice: 0 };
     }
     

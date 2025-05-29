@@ -32,6 +32,7 @@ export default function CategorySection({ lang }: { lang: string }) {
       }
     }
      const data = JSON.parse(localStorage.getItem('cachedCategories') || null)
+     //1 hour 3600000
     //  if (data && data.cachedAt && Date.now() - data.cachedAt < 3600000) {
      if (data && data?.cachedAt) {
       console.log('get from cache')

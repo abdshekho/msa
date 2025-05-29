@@ -86,7 +86,7 @@ const NavMenu = () => {
                     { visible && (
                         <div className={ 'dropDown_Product' }>
                             { categories.map((item) => (
-                                <MainMenuItem item={ item } key={ item.id } />
+                                <MainMenuItem item={ item } key={ item._id } />
                             )) }
                         </div>
                     ) }

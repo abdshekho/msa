@@ -27,7 +27,7 @@ export default function MenuItem({ title, items }: any) {
 
                 <div className={ styles.subDropdownProudct }>
                     { items.map((item: any) => {
-                        return <ProductMenuItem key={ item.id } item={ item } onSelect={ handleItemSelect } />
+                        return <ProductMenuItem key={ item._id } item={ item } onSelect={ handleItemSelect } />
                     }) }
                     <div className={ styles.productDetails }>
                         <img src={ selectedImage } width={ 300 } height={ 300 } className='overflow-hidden' />

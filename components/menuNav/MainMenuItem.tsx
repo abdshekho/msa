@@ -32,7 +32,7 @@ export default function MainMenuItem({ item }: any) {
             { openSub && (
                 <div className={ styles.subDropdown }>
                     { item.items.map((subItem: any) => {
-                        return <MenuItem title={ subItem.name } items={ subItem.items } key={ subItem.id } />
+                        return <MenuItem title={ subItem.name } items={ subItem.items } key={ subItem._id } />
                     }) }
                 </div>
             )

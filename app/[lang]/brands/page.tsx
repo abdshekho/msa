@@ -4,7 +4,9 @@ import { Locale } from '@/i18n-config';
 import Link from 'next/link';
 import Image from 'next/image';
 import BrandsHero from '@/components/brands/BrandsHero';
-
+function truncate(text, maxLength = 50) {
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+}
 
 async function getBrands() {
   try {
@@ -47,19 +49,20 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
               href={ `/${lang}/brands/${brand.slug}` }
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
             >
-              <div className="p-8 flex flex-col items-center">
+              <div className="p-4 flex flex-col items-center">
                 { brand.image && (
                   <div className="relative h-30 w-30 mb-4">
                     <Image
                       src={ brand.image }
                       alt={ brand.name }
                       fill
+                      sizes='120px'
                       className="object-contain"
                     />
                   </div>
                 ) }
                 <h2 className="text-lg md:text-xl font-semibold text-primary text-center">{ brand.name }</h2>
-                <span className='text-sm md:text-md text-secondary-10 text-center'>{brand.description}</span>
+                <span className='text-sm md:text-md text-secondary-10 text-center'>{truncate(brand.description)}</span>
                 {brand.productCount !== undefined && (
                   <span className="mt-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
                     {brand.productCount} {brand.productCount === 1 ? 'product' : 'products'}
