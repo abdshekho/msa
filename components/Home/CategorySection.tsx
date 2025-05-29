@@ -31,8 +31,17 @@ export default function CategorySection({ lang }: { lang: string }) {
         setLoading(false);
       }
     }
-
-    fetchCategories();
+     const data = JSON.parse(localStorage.getItem('cachedCategories') || null)
+    //  if (data && data.cachedAt && Date.now() - data.cachedAt < 3600000) {
+     if (data && data?.cachedAt) {
+      console.log('get from cache')
+      setCategories(data.data);
+      setLoading(false);
+    } else {
+      console.log('get from bags')
+      fetchCategories();
+    }
+    // fetchCategories();
   }, []);
 
   // Placeholder images for categories without images

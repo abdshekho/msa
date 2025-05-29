@@ -24,6 +24,9 @@ export async function GET( request ) {
         if ( category ) query.category = new mongoose.Types.ObjectId( category );
         if ( brand ) query.brand = new mongoose.Types.ObjectId( brand );
         if ( limit ) {
+
+            console.log('🚀 ~ route.js ~ GET ~ limit:', limit);
+
             // query = query.limit( parseInt( limit ) );
             const products = await Product.find( query, projection ).sort( { createdAt: -1 } ).limit( parseInt( limit ) ).lean();
             return NextResponse.json( products );

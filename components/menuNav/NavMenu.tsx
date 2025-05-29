@@ -57,6 +57,11 @@ const NavMenu = () => {
                     throw new Error('Failed to fetch categories');
                 }
                 const data = await response.json();
+                // localStorage.setItem("cachedCategories", JSON.stringify(data));
+                localStorage.setItem("cachedCategories", JSON.stringify({
+                    data: data,
+                    cachedAt: Date.now()
+                }));
                 setCategories(data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
