@@ -1,44 +1,17 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/app/lib/DB/mongoDB';
 import Brand from '@/app/lib/models/Brand';
-import Product from '@/app/lib/models/Product';
+// import Product from '@/app/lib/models/Product';
 
-// Get all brands
-// export async function GET(request) {
-//     try {
-//         const { searchParams } = new URL(request.url);
-//         const includeProductCount = searchParams.get('includeProductCount') === 'true';
-
-//         await connectToDatabase();
-//         const brands = await Brand.find({}).sort({ createdAt: -1 });
-
-//         if (includeProductCount) {
-//             // Get product counts for each brand
-//             const brandsWithCounts = await Promise.all(brands.map(async (brand) => {
-//                 const brandObj = brand.toObject();
-
-//                 const productCount = await Product.countDocuments({ brand: brand._id });
-//                 return { ...brandObj, productCount };
-
-//             }));
-
-
-
-//             return NextResponse.json(brandsWithCounts);
-//         }
-
-//         return NextResponse.json(brands);
-//     } catch (err) {
-//         console.error('Error fetching brands:', err);
-//         return NextResponse.json({ error: 'Failed to read brands' }, { status: 500 });
-//     }
-// }
 // Get all brands
 export async function GET( request ) {
     try {
         const { searchParams } = new URL( request.url );
         const includeProductCount = searchParams.get( 'includeProductCount' ) === 'true';
-
+        const fields = searchParams.get( 'fields' );
+        const projection = fields
+            ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
+            : {};
         await connectToDatabase();
 
         if ( includeProductCount ) {
@@ -72,7 +45,7 @@ export async function GET( request ) {
         }
 
         // في حال عدم طلب عدد المنتجات
-        const brands = await Brand.find( {} ).sort( { createdAt: -1 } );
+        const brands = await Brand.find( {} ,projection).sort( { createdAt: -1 } );
         return NextResponse.json( brands );
 
     } catch ( err ) {

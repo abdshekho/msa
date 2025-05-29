@@ -12,6 +12,10 @@ export async function GET( request ) {
         const category = searchParams.get( 'category' );
         const brand = searchParams.get( 'brand' );
         const limit = searchParams.get( 'limit' );
+        const fields = searchParams.get( 'fields' );
+        const projection = fields
+            ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
+            : {};
 
         // const subcategory = searchParams.get( 'subcategory' );
         await connectToDatabase();
@@ -21,11 +25,11 @@ export async function GET( request ) {
         if ( brand ) query.brand = new mongoose.Types.ObjectId( brand );
         if ( limit ) {
             // query = query.limit( parseInt( limit ) );
-            const products = await Product.find( query ).sort( { createdAt: -1 } ).limit( parseInt( limit ) ).lean();
+            const products = await Product.find( query, projection ).sort( { createdAt: -1 } ).limit( parseInt( limit ) ).lean();
             return NextResponse.json( products );
         }
 
-        const products = await Product.find( query ).sort( { createdAt: -1 } );
+        const products = await Product.find( query, projection ).sort( { createdAt: -1 } );
         return NextResponse.json( products );
     } catch ( error ) {
         console.error( 'Error fetching products:', error );

@@ -8,12 +8,12 @@ export async function GET( request ) {
         const { searchParams } = new URL( request.url );
         const parentId = searchParams.get( 'parentId' );
         const notNull = searchParams.get( 'notNull' ) === 'true';
-        const fields = searchParams.get( 'fields' );
         const slug = searchParams.get( 'slug' );
         const limit = searchParams.get( 'limit' );
         const withProducts = searchParams.get( 'withProducts' ) === 'true';
         const withProductCount = searchParams.get( 'withProductCount' ) === 'true';
         const nested = searchParams.get( 'nested' ) === 'true';
+        const fields = searchParams.get( 'fields' );
         const projection = fields
             ? fields.split( ',' ).reduce( ( acc, f ) => ( { ...acc, [ f ]: 1 } ), {} )
             : {};

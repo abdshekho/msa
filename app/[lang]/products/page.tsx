@@ -80,12 +80,12 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
         if (minPriceParam) productQuery.set('minPrice', String(minPriceParam));
         if (maxPriceParam) productQuery.set('maxPrice', String(maxPriceParam));
 
-        const productUrl = `/api/products${productQuery.toString() ? '?' + productQuery.toString() : ''}`;
+        const productUrl = `/api/products${productQuery.toString() ? '?' + productQuery.toString() + '&fields=_id,name,price,imageCover' : ''}`;
 
         const [productsRes, categoriesRes, brandsRes] = await Promise.all([
           fetch(productUrl),
-          fetch('/api/categories'),
-          fetch('/api/brands')
+          fetch('/api/categories?fields=_id,name'),
+          fetch('/api/brands?fields=_id,name')
         ]);
 
         const [productsData, categoriesData, brandsData] = await Promise.all([
@@ -226,7 +226,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
             </div>
           </div>
 
-          <div className="flex items-end">
+          <div className="flex items-end justify-end">
             <button
               onClick={ clearFilters }
               className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-2 px-4 rounded"
