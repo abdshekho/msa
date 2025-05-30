@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 import Image from 'next/image';
 import ProductTable2 from '@/components/products/ProductTabel2';
 import AddToCartButton from '@/components/products/AddToCartButton';
+import Link from 'next/link';
 
 // Define types for the product and related data
 interface ProductType {
@@ -89,150 +90,164 @@ async function ProductPage(
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Breadcrumb */}
+            {/* Breadcrumb */ }
             <nav className="flex mb-8 text-sm text-gray-500">
-                <a href={`/${lang}`} className="hover:text-blue-600">{isArabic ? 'الرئيسية' : 'Home'}</a>
+                <Link href={ `/${lang}` } className="hover:text-blue-600 dark:hover:text-secondary">{ isArabic ? 'الرئيسية' : 'Home' }</Link>
                 <span className="mx-2">/</span>
-                <a href={`/${lang}/products`} className="hover:text-blue-600">{isArabic ? 'المنتجات' : 'Products'}</a>
-                {ParentCategory && (
+                <Link href={ `/${lang}/products` } className="hover:text-blue-600 dark:hover:text-secondary">{ isArabic ? 'المنتجات' : 'Products' }</Link>
+                { ParentCategory && (
                     <>
                         <span className="mx-2">/</span>
-                        <a href={`/${lang}/categories/${ParentCategory.slug}`} className="hover:text-blue-600">
-                            {ParentCategoryName}
-                        </a>
+                        <Link href={ `/${lang}/categories/${ParentCategory.slug}` } className="hover:text-blue-600 dark:hover:text-secondary">
+                            { ParentCategoryName }
+                        </Link>
                     </>
-                )}
-                {category && (
+                ) }
+                { category && (
                     <>
                         <span className="mx-2">/</span>
-                        <a href={`/${lang}/categories/${category.slug}`} className="hover:text-blue-600">
-                            {categoryName}
-                        </a>
+                        <Link href={ `/${lang}/categories/${ParentCategory.slug}/${category.slug}` } className="hover:text-blue-600 dark:hover:text-secondary">
+                            { categoryName }
+                        </Link>
                     </>
-                )}
+                ) }
                 <span className="mx-2">/</span>
-                <span className="text-primary font-medium">{productName}</span>
+                <span className="text-primary font-medium">{ productName }</span>
             </nav>
 
-            {/* Product Header */}
+            {/* Product Header */ }
             <div className="flex flex-col md:flex-row gap-8 mb-12">
-                {/* Product Images */}
+                {/* Product Images */ }
                 <div className="md:w-1/2">
                     <div className="relative h-96 w-full mb-4 bg-card-10 dark:bg-card rounded-lg overflow-hidden">
-                        {product.imageCover && (
+                        { product.imageCover && (
                             <Image
-                                src={product.imageCover}
-                                alt={productName}
+                                src={ product.imageCover }
+                                alt={ productName }
                                 fill
                                 className="object-contain bg-card-10 dark:bg-card"
                                 sizes="(max-width: 768px) 100vw, 50vw"
                                 priority
                             />
-                        )}
+                        ) }
                     </div>
 
-                    {/* Thumbnail Gallery */}
-                    {product.images && product.images.length > 0 && (
+                    {/* Thumbnail Gallery */ }
+                    { product.images && product.images.length > 0 && (
                         <div className="grid grid-cols-5 gap-2">
-                            {product.images.map((image, index) => (
+                            { product.images.map((image, index) => (
                                 image && (
-                                    <div key={index} className="relative h-20 bg-card-10 dark:bg-card rounded-md overflow-hidden">
+                                    <div key={ index } className="relative h-20 bg-card-10 dark:bg-card rounded-md overflow-hidden">
                                         <Image
-                                            src={image}
-                                            alt={`${productName} - image ${index + 1}`}
+                                            src={ image }
+                                            alt={ `${productName} - image ${index + 1}` }
                                             fill
                                             className="object-cover hover:opacity-80 cursor-pointer bg-card-10 dark:bg-card"
                                             sizes="(max-width: 768px) 20vw, 10vw"
                                         />
                                     </div>
                                 )
-                            ))}
+                            )) }
                         </div>
-                    )}
+                    ) }
                 </div>
 
-                {/* Product Info */}
+                {/* Product Info */ }
                 <div className="md:w-1/2">
-                    <div className='flex justify-between items-center'>
-                        <h1 className="head-1 mb-4">{productName}</h1>
-
-                        {product.price && (
-                            <div className="head-21 font-mono mb-6">
-                                ${product.price.toFixed(2)}
+                    <div className='flex justify-center items-center'>
+                        <h1 className="head-1 mb-4">{ productName }</h1>
+{/* 
+                        { product.price && (
+                            <div className="head-21 font-mono">
+                                ${ product.price.toFixed(2) }
                             </div>
-                        )}
+                        ) } */}
                     </div>
-                    {/* Description */}
+                    {/* Description */ }
                     <div className="prose max-w-none mb-8">
                         <h3 className="head-22 mb-2">
-                            {isArabic ? 'الوصف' : 'Description'}
+                            { isArabic ? 'الوصف' : 'Description' }
                         </h3>
-                        <p className="desc">{productDesc}</p>
+                        <p className="desc">{ productDesc }</p>
                     </div>
 
-                    {/* Features */}
-                    {productFeatures && productFeatures.length > 0 && (
+                    {/* Features */ }
+                    { productFeatures && productFeatures.length > 0 && (
                         <div className="mb-8">
                             <h3 className="head-22 mb-2">
-                                {isArabic ? 'المميزات' : 'Features'}
+                                { isArabic ? 'المميزات' : 'Features' }
                             </h3>
                             <ul className="list-disc pl-5 space-y-1 desc">
-                                {productFeatures.map((feature, index) => (
-                                    feature && <li key={index}>{feature}</li>
-                                ))}
+                                { productFeatures.map((feature, index) => (
+                                    feature && <li key={ index }>{ feature }</li>
+                                )) }
                             </ul>
                         </div>
-                    )}
+                    ) }
 
-                    {/* Additional Info */}
+                    {/* Additional Info */ }
                     <div className="grid grid-cols-2 gap-4 text-sm mb-8">
-                        {categoryName && (
+                        { categoryName && (
                             <div>
-                                <span className="head-22">
-                                    {isArabic ? 'الفئة:' : 'Category:'}
+                                <span className="head-22 mx-1">
+                                    { isArabic ? 'الفئة:' : 'Category:' }
                                 </span>
-                                <span className="ml-2 desc">{categoryName}</span>
+                                <Link href={ `/${lang}/categories/${ParentCategory.slug}/${category.slug}` } className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
+                                    { categoryName }
+                                </Link>
+                                {/* <span className="ml-2 desc">{ categoryName }</span> */ }
                             </div>
-                        )}
+                        ) }
 
-                        {brandName && (
+                        { brandName && (
                             <div>
-                                <span className="head-22">
-                                    {isArabic ? 'العلامة التجارية:' : 'Brand:'}
+                                <span className="head-22 mx-1">
+                                    { isArabic ? 'العلامة التجارية:' : 'Brand:' }
                                 </span>
-                                <span className="ml-2 desc">{brandName}</span>
+                                <Link href={ `/${lang}/brands/${brandName}` } className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
+                                    { brandName }
+                                </Link>
+
+                                {/* <span className="ml-2 desc">{ brandName }</span> */ }
                             </div>
-                        )}
+                        ) }
                     </div>
 
-                    {/* Add to Cart Button */}
-                    <AddToCartButton productId={product._id.toString()} lang={lang} />
+                    {/* Add to Cart Button */ }
+                    <div className='flex justify-between items-center'>
+                        <AddToCartButton productId={ product._id.toString() } lang={ lang } />
+                        { product.price && (
+                            <div className="head-1">
+                                ${ product.price.toFixed(2) }
+                            </div>
+                        ) }
+                    </div>
                 </div>
             </div>
 
-            {/* Technical Specifications Table */}
+            {/* Technical Specifications Table */ }
             {
                 product.table && (
                     <div className="mb-12">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                            {isArabic ? 'المواصفات الفنية' : 'Technical Specifications'}
+                            { isArabic ? 'المواصفات الفنية' : 'Technical Specifications' }
                         </h2>
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <ProductTable2 tableDataProps={product.table} />
+                            <ProductTable2 tableDataProps={ product.table } />
                         </div>
                     </div>
                 )
             }
 
-            {/* Related Products Section */}
+            {/* Related Products Section */ }
             <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    {isArabic ? 'منتجات ذات صلة' : 'Related Products'}
+                    { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {/* Placeholder for related products */}
+                    {/* Placeholder for related products */ }
                     <div className="bg-gray-50 p-4 rounded-lg h-64 flex items-center justify-center text-gray-400">
-                        {isArabic ? 'منتجات ذات صلة ستظهر هنا' : 'Related products will appear here'}
+                        { isArabic ? 'منتجات ذات صلة ستظهر هنا' : 'Related products will appear here' }
                     </div>
                 </div>
             </div>

@@ -24,11 +24,11 @@ export default async function Root(props: {
   const { children } = props;
   const dictionary = await getDictionary(params.lang);
   return (
-    <html lang={ params.lang } suppressHydrationWarning>
+    <html lang={ params.lang } suppressHydrationWarning dir={params.lang === 'ar'? 'rtl':'ltr'}>
       <head>
         <ThemeModeScript />
       </head>
-      <body className="min-h-screen bg-white dark:bg-gray-900">
+      <body className={`min-h-screen  bg-white dark:bg-gray-900`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

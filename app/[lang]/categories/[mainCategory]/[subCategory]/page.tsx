@@ -61,7 +61,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <Link href={ `/${lang}/categories` } className="hover:text-secondary hover:underline">
+                <Link href={ `/${lang}/categories` } className="text-gray-800 dark:text-[lightgray] hover:text-secondary hover:underline">
                     ← { dictionary.common?.backToCategories || 'Back to Categories' }
                 </Link>
             </div>
@@ -88,7 +88,8 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                 </div>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2>
+            {/* <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2> */}
+            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">Products in {category.name}</h2>
 
             { products?.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

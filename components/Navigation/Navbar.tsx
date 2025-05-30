@@ -90,7 +90,7 @@ export default function NavbarMain({ lang }: any) {
     return (
         <Navbar className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> 
         {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */}
-                <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse">
+                <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse" style={{direction:"ltr"}}>
                     {/* <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse rounded-2xl bg-radial-[at_10%_75%] from-[#d2881121] via-[#d24e111e] to-[#1F2937] to-99%"> */ }
                     <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-1 h-9" alt="Flowbite React Logo" />
                     <div className="hidden lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">

@@ -281,7 +281,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href={ `/${resolvedParams.lang}/auth/signin` } className="font-medium text-secondary dark:text-secondary-10 hover:text-secondary-10 hover:dark:text-secondary hover:underline">
+              <Link href={ `/${resolvedParams.lang}/auth/signin` } className="font-medium text-secondary dark:text-secondary-10 hover:text-secondary-10 dark:hover:text-secondary hover:underline">
                 لديك حساب بالفعل؟ سجل دخول
               </Link>
             </div>

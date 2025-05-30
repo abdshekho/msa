@@ -28,7 +28,7 @@ export default function PartnerLogos({ lang }: { lang: string }) {
   // const repeatedPartners = [...partners];
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 py-12">
+    <div className="bg-gray-100 dark:bg-gray-800 py-12" style={{direction:"ltr"}}>
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-center mb-8 dark:text-white">
           { isArabic ? 'شركاؤنا' : 'Our Partners' }
