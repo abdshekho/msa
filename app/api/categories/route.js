@@ -63,6 +63,7 @@ export async function GET( request ) {
                         items = subcategories.map( sub => ( {
                             _id: sub._id,
                             name: sub.name,
+                            nameAr: sub.nameAr,
                             slug: sub.slug,
                             image: sub.image,
                             items: ( productMap.get( sub._id.toString() ) || [] ).map( prod => ( {
@@ -102,6 +103,7 @@ export async function GET( request ) {
                         items = subcategories.map( sub => ( {
                             _id: sub._id,
                             name: sub.name,
+                            nameAr: sub.nameAr,
                             slug: sub.slug,
                             image: sub.image,
                             productCount: categoriesWithCounts.find( c => c._id.toString() === sub._id.toString() )
@@ -109,11 +111,12 @@ export async function GET( request ) {
                         } ) );
 
                     }
-                    // withot products or products counts
+                    // without products or products counts
                     else {
                         items = subcategories.map( sub => ( {
                             _id: sub._id,
                             name: sub.name,
+                            nameAr: sub.nameAr,
                             slug: sub.slug,
                             image: sub.image,
                         } ) );
@@ -122,6 +125,7 @@ export async function GET( request ) {
                     return {
                         _id: parent._id,
                         name: parent.name,
+                        nameAr: parent.nameAr,
                         slug: parent.slug,
                         image: parent.image,
                         items,
@@ -138,9 +142,6 @@ export async function GET( request ) {
         }
         //get Child by slug of parent
         else if ( slug && notNull ) {
-
-            console.log( '🚀 ~ route.js ~ GET ~ slug:', slug );
-
             const categoryWithSubs = await Category.aggregate( [
                 {
                     $match: { slug: slug.trim() } // جلب الكاتيجوري الأب
@@ -176,7 +177,7 @@ export async function GET( request ) {
                     $group: {
                         _id: "$_id",
                         name: { $first: "$name" },
-                        nameAr: { $first: "$name" },
+                        nameAr: { $first: "$nameAr" },
                         slug: { $first: "$slug" },
                         image: { $first: "$image" },
                         description: { $first: "$description" },
@@ -186,7 +187,7 @@ export async function GET( request ) {
                             $push: {
                                 _id: "$subcategories._id",
                                 name: "$subcategories.name",
-                                name: "$subcategories.nameAr",
+                                nameAr: "$subcategories.nameAr",
                                 slug: "$subcategories.slug",
                                 image: "$subcategories.image",
                                 productCount: "$subcategories.productCount"
@@ -196,7 +197,7 @@ export async function GET( request ) {
                 }
             ] );
 
-            console.log( categoryWithSubs );
+            // console.log( categoryWithSubs );
             return NextResponse.json( categoryWithSubs );
         }
 

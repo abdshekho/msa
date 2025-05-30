@@ -91,7 +91,7 @@ async function ProductPage(
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Breadcrumb */ }
-            <nav className="flex mb-8 text-sm text-gray-500">
+            <nav className="flex flex-wrap mb-8 text-xs md:text-sm text-gray-500">
                 <Link href={ `/${lang}` } className="hover:text-blue-600 dark:hover:text-secondary">{ isArabic ? 'الرئيسية' : 'Home' }</Link>
                 <span className="mx-2">/</span>
                 <Link href={ `/${lang}/products` } className="hover:text-blue-600 dark:hover:text-secondary">{ isArabic ? 'المنتجات' : 'Products' }</Link>

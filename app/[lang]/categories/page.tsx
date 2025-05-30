@@ -28,81 +28,95 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
   const dictionary = await getDictionary(lang);
   const categories = await getCategories();
 
+  // console.log('🚀 ~ page.tsx ~ CategoriesPage ~ categories:', categories);
 
 
   return (
     <div className="mx-auto">
-      <CategoriesHero />
+      <CategoriesHero lang={lang} />
       <div className='container mx-auto px-4 py-16'>
-        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">{ dictionary.categories?.allCategories || 'All Categories' }</h1>
-        <p className="text-sm md:text-lg text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
-          We offer a wide range of solar power services to meet your energy needs. Our team of experts is dedicated to providing high-quality solutions tailored to your specific requirements.
+        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
+          {lang === 'en' ? 'Find What You\'re Looking For' : 'ابحث عما تبحث عنه'}
+        </h1>
+        <p className="text-sm md:text-lg text-center text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
+          {lang === 'en' 
+            ? 'Browse our categories to quickly find the products that best suit your solar energy needs. Each category is carefully curated to help you make the right choice with ease.'
+            : 'تصفح فئاتنا للعثور بسرعة على المنتجات التي تناسب احتياجاتك من الطاقة الشمسية. تم تنظيم كل فئة بعناية لمساعدتك على اتخاذ الخيار الصحيح بسهولة.'
+          }
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          { categories.map((category: any) => (
-            <div key={ category._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-              <div className="p-6">
+          {categories.map((category: any) => (
+            <div key={category._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+              <div className="p-6" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
                 <div className='flex justify-between items-center'>
-                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">{ category.name }</h2>
+                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">
+                    {lang === 'en' ? category.name : (category.nameAr || category.name)}
+                  </h2>
                   <span className="px-3 py-2 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
-                    { category?.items.length } { category?.items.length === 1 ? 'category' : 'categories' }
+                    {category?.items.length} {lang === 'en' 
+                      ? (category?.items.length === 1 ? 'category' : 'categories') 
+                      : 'فئة'}
                   </span>
                 </div>
 
-                { category.image && (
+                {category.image && (
                   <div className="relative h-40 mb-4">
                     <Image
-                      src={ category.image }
-                      alt={ category.name }
+                      src={category.image}
+                      alt={lang === 'en' ? category.name : (category.nameAr || category.name)}
                       fill
                       className="object-contain rounded-md"
                     />
                   </div>
-                ) }
+                )}
 
                 <div className="mt-4">
-                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
+                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">
+                    {lang === 'en' ? (dictionary.page.categories?.subcategories || 'Subcategories') : 'الفئات الفرعية'}
+                  </h3>
                   <ul className="space-y-2">
-                    { category.items && category.items.map((subcategory: any) => (
-                      <li key={ subcategory._id }>
+                    {category.items && category.items.map((subcategory: any) => (
+                      <li key={subcategory._id}>
                         <Link
-                          href={ `/${lang}/categories/${category.slug}/${subcategory.slug}` }
-                          className="text-blue-600 dark:text-blue-400  flex justify-between items-center"
+                          href={`/${lang}/categories/${category.slug}/${subcategory.slug}`}
+                          className="text-blue-600 dark:text-blue-400 flex justify-between items-center"
                         >
-                          <div className='flex hover:underline '>
+                          <div className='flex hover:underline'>
                             <div className="relative w-8 h-8 mr-2">
-                              { subcategory.image && (
+                              {subcategory.image && (
                                 <Image
-                                  src={ subcategory.image }
-                                  alt={ subcategory.name }
+                                  src={subcategory.image}
+                                  alt={lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name)}
                                   fill
                                   className="object-cover rounded-full"
                                 />
-                              ) }
+                              )}
                             </div>
-                            { subcategory.name }</div>
-                          {/* <span className="text-sm md:text-base">{ subcategory.name }</span> */ }
-                          { subcategory.productCount !== undefined && (
+                            {lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name)}
+                          </div>
+                          {subcategory.productCount !== undefined && (
                             <span className="px-3 py-2 text-black dark:text-white bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
-                              { subcategory.productCount } { subcategory.productCount === 1 ? 'product' : 'products' }
+                              {subcategory.productCount} {lang === 'en'
+                                ? (subcategory.productCount === 1 ? 'product' : 'products')
+                                : 'منتج'}
                             </span>
-                          ) }
+                          )}
                         </Link>
                       </li>
-                    )) }
+                    ))}
                   </ul>
                 </div>
 
                 <Link
-                  href={ `/${lang}/categories/${category.slug}` }
+                  href={`/${lang}/categories/${category.slug}`}
                   className="mt-6 inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-10 transition"
                 >
-                  { dictionary.common?.viewAll || 'View All' }
+                  {lang === 'en' ? (dictionary.common?.viewAll || 'View All') : 'عرض الكل'}
                 </Link>
               </div>
             </div>
-          )) }
+          ))}
         </div>
       </div>
     </div>

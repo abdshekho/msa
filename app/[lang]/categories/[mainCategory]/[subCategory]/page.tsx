@@ -39,8 +39,8 @@ async function getProductsByCategory(categoryId: string) {
     }
 }
 
-export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale,mainCategory: string, subCategory: string }> }) {
-    const { lang,  mainCategory, subCategory } = await props.params;
+export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale, mainCategory: string, subCategory: string }> }) {
+    const { lang, mainCategory, subCategory } = await props.params;
     const resolve = await props.params;
     const dictionary = await getDictionary(lang);
     const category = await getCategoryBySlug(subCategory);
@@ -61,8 +61,8 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <Link href={ `/${lang}/categories` } className="text-gray-800 dark:text-[lightgray] hover:text-secondary hover:underline">
-                    ← { dictionary.common?.backToCategories || 'Back to Categories' }
+                <Link href={ `/${lang}/categories` } className="text-blue-600 dark:text-blue-400 hover:underline">
+                    { lang === 'en' ? "← Back to categories" : "→ الرجوع لتصنيفات المنتجات" }
                 </Link>
             </div>
 
@@ -81,15 +81,25 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                 ) }
 
                 <div className="md:w-2/3">
-                    <h1 className="text:lg text-3xl text-primary font-bold mb-4 ">{ category.name }</h1>
+                    <h1 className="text:lg text-3xl text-primary font-bold mb-4 text-center ">{ lang === 'en' ? category.name : category.nameAr }</h1>
                     { category.description && (
-                        <p className="text-gray-700 dark:text-gray-400 font-bold mb-4">{ category.description }</p>
+                        <p className="text-gray-700 dark:text-gray-400 font-bold mb-4 leading-8">{ lang === 'en' ? category.description : category.descriptionAr }</p>
                     ) }
                 </div>
             </div>
 
-            {/* <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2> */}
-            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">Products in {category.name}</h2>
+            {/* <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2> */ }
+            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">
+                { lang === 'en' ?
+                    'Products in ' :
+                    'المنتجات في ' }
+                <span className='text-primary dark:text-primary-10'>
+                    { lang === 'en' ?
+                        category.name 
+                        : category.nameAr }
+                </span>
+
+            </h2>
 
             { products?.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -104,10 +114,10 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                                 />
                             </div>
                             <div className="p-4">
-                                <h3 className="text-lg text-primary font-semibold mb-2">{ product.name }</h3>
+                                <h3 className="text-lg text-primary font-semibold mb-2 text-center">{ product.name }</h3>
                                 <p className="text-secondary dark:text-secondary-10 font-bold mb-2">${ product.price.toFixed(2) }</p>
                                 <Link
-                                    href={ `/${lang}/products/${product._id}` }
+                                    href={ `/${lang}/products/${product._id}`}
                                     className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"
                                 >
                                     { dictionary.common?.viewDetails || 'View Details' }

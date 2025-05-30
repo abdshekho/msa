@@ -45,8 +45,8 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <Link href={ `/${lang}/categories` } className="font-bold hover:text-secondary hover:underline">
-                    ← { dictionary.common?.backToCategories || 'Back to Categories' }
+                <Link href={ `/${lang}/categories` } className="text-blue-600 dark:text-blue-400 hover:underline">
+                    { lang === 'en' ? "← Back to categories" : "→ الرجوع لتصنيفات المنتجات" }
                 </Link>
             </div>
 
@@ -65,9 +65,9 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                 ) }
 
                 <div className="md:w-2/3">
-                    <h1 className="text:lg text-3xl text-primary font-bold mb-4 ">{ category.name }</h1>
+                    <h1 className="text:lg text-3xl text-primary font-bold mb-4 text-center">{ lang === 'en' ? category.name : category.nameAr }</h1>
                     { category.description && (
-                        <p className="text-gray-700 dark:text-gray-400 font-bold mb-4">{ category.description }</p>
+                        <p className="text-gray-700 dark:text-gray-400 font-bold mb-4 leading-8">{ lang === 'en' ? category.description : category.descriptionAr }</p>
                     ) }
                 </div>
             </div>
@@ -93,7 +93,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                                             />
                                         ) }
                                     </div>
-                                    { subcategory.name }
+                                    { lang == 'en' ? subcategory.name : subcategory.nameAr }
                                 </div>
                                 {/* <span className="text-sm md:text-base">{ subcategory.name }</span> */ }
                                 { subcategory.productCount !== undefined && (
