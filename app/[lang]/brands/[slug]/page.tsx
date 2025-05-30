@@ -58,7 +58,7 @@ export default async function BrandDetailPage(props: { params: Promise<{ lang: L
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <Link href={ `/${lang}/brands` } className="text-blue-600 dark:text-blue-400 hover:underline">
-          ← { dictionary.common?.backToBrands || 'Back to Brands' }
+          { lang === 'en' ? "← Back to Brands" : "→ الرجوع للعلامات التجارية" }
         </Link>
       </div>
 
@@ -77,14 +77,14 @@ export default async function BrandDetailPage(props: { params: Promise<{ lang: L
         ) }
 
         <div className="md:w-2/3">
-          <h1 className="text-3xl font-bold mb-4">{ brand.name }</h1>
+          <h1 className="text-3xl font-bold mb-4 text-center text-primary dark:text-primary-10">{ brand.name }</h1>
           { brand.description && (
-            <p className="text-gray-700 dark:text-gray-300 mb-4">{ brand.description }</p>
+            <p className="text-gray-700 dark:text-gray-300 mb-4 leading-10">{ lang === 'en' ? brand.description : brand.descriptionAr }</p>
           ) }
         </div>
       </div>
 
-      <h2 className="text-2xl font-bold mb-6">{ dictionary.products?.byThisBrand || 'Products by this brand' }</h2>
+      <h2 className="text-2xl font-bold mb-6">{ dictionary.page.brands?.productsBy } <span className='text-primary dark:text-primary-10'>{ brand.name }</span></h2>
 
       { products.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -95,7 +95,7 @@ export default async function BrandDetailPage(props: { params: Promise<{ lang: L
                   src={ product.imageCover }
                   alt={ product.name }
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="p-4">

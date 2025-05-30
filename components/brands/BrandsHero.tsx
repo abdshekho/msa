@@ -1,15 +1,16 @@
 import { FaSolarPanel } from 'react-icons/fa';
 import UndrawTeamwork from '@/public/svg/undraw_real-time-analytics_50za.svg';
-export default function BrandsHero() {
+export default function BrandsHero({ lang }) {
     return (
-        <div className="relative bg-gradient-to-r from-green-800 to-green-500 text-white md:py-20 md:px-4">
+        <div className="relative bg-gradient-to-r from-green-800 to-green-500 text-white md:py-20 md:px-4" style={{direction:"ltr"}}>
             <div className="">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between container mx-auto px-4">
-                    <div className="w-full lg:w-1/3 mb-10 md:mb-0 px-4">
-                        <h1 className="text-2xl md:text-5xl font-bold mb-4">Solar Power Services</h1>
+                    <div className="w-full lg:w-1/3 mb-10 md:mb-0 px-4" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
+                        <h1 className="text-2xl md:text-5xl font-bold mb-4">{lang === 'en' ?'Trusted Brands':'علامات تجارية موثوقة'}</h1>
                         <p className="text-md md:text-xl mb-8">
-                            Harness the power of the sun with our comprehensive solar energy solutions.
-                            We provide end-to-end services from consultation to installation and maintenance.
+                            { lang === 'en' ?
+                                'Discover a wide range of trusted and high-quality brands in the world of solar energy. We partner with leading global manufacturers to bring you innovative and reliable products that meet your energy needs.'
+                                : 'اكتشف مجموعة واسعة من العلامات التجارية الموثوقة وعالية الجودة في عالم الطاقة الشمسية. نحن نستقطب الشركات العالمية الرائدة لتقديم منتجات مبتكرة وموثوقة تلبي جميع احتياجاتك من الطاقة.' }
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
                             <button className="bg-[#d28711] hover:bg-yellow-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
@@ -21,10 +22,10 @@ export default function BrandsHero() {
                         </div>
                     </div>
                     <div className="w-full  md:w-2/3 flex justify-center overflow-hidden">
-                            <div >
-                                {/* <FaSolarPanel className="w-32 h-32" /> */}
-                                <UndrawTeamwork className="md:w-[800px] md:h-[600px] overflow-hidden scale-[0.40] md:scale-50 lg:scale-[0.8]" />
-                            </div>
+                        <div >
+                            {/* <FaSolarPanel className="w-32 h-32" /> */ }
+                            <UndrawTeamwork className="md:w-[800px] md:h-[600px] overflow-hidden scale-[0.40] md:scale-50 lg:scale-[0.8]" />
+                        </div>
                     </div>
                 </div>
             </div>

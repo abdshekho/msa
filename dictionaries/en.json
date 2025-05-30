@@ -11,6 +11,11 @@
       "title": "Welcome to NextJs i18n",
       "description": "This is a sample app to showcase i18n in Next.js 13 app directory"
     },
+    "brands":{
+      "ourBrands":"Our Brnads",
+      "descCard":"We offer a wide range of solar power services to meet your energy needs. Our team of experts is dedicated to providing high-quality solutions tailored to your specific requirements.",
+      "productsBy":"Products By"
+    },
     "about": {
       "title": "About Us",
       "description": "Learn more about our company, mission, and values",
