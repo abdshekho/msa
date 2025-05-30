@@ -15,6 +15,7 @@ interface Product {
     _id?: string;
     name: string;
     nameAr: string;
+    slug: string;
     price: number;
     imageCover: string;
     images: string[];
@@ -47,7 +48,8 @@ const BasicInfoSection = memo(({
     isLoading,
     parentCategories,
     brands,
-    handleFileChange
+    handleFileChange,
+    generateSlug
 }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,6 +60,7 @@ const BasicInfoSection = memo(({
                     name="name"
                     value={ product.name }
                     onChange={ handleChange }
+                    onBlur={ generateSlug }
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     required
                 />
@@ -74,6 +77,21 @@ const BasicInfoSection = memo(({
                     required
                     dir="rtl"
                 />
+            </div>
+            {/* Slug */ }
+            <div>
+                <label className="block mb-1 font-medium dark:text-white">Slug</label>
+                <input
+                    type="text"
+                    name="slug"
+                    value={ product.slug }
+                    onChange={ handleChange }
+                    className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    required
+                />
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Used in URLs. Auto-generated from name, but you can customize it.
+                </p>
             </div>
 
             <div>
@@ -99,6 +117,9 @@ const BasicInfoSection = memo(({
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={ isLoading }
                 >
+                    <option value={ "" }>
+                        select category
+                    </option>
                     { parentCategories?.map(parent => (
                         <option key={ parent._id } value={ parent._id }>
                             { parent.name }
@@ -116,6 +137,9 @@ const BasicInfoSection = memo(({
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={ isLoading }
                 >
+                    <option value={ "" }>
+                        select category
+                    </option>
                     { brands?.map(parent => (
                         <option key={ parent._id } value={ parent._id }>
                             { parent.name }
@@ -223,7 +247,7 @@ const FeaturesSection = memo(({
     product,
     handleArrayChange,
     addArrayItem,
-    removeArrayItem
+    removeArrayItem,
 }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -326,6 +350,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
     const [product, setProduct] = useState<Product>({
         name: '',
         nameAr: '',
+        slug:'',
         price: 0,
         imageCover: '',
         images: [''],
@@ -337,6 +362,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
         featuresAr: [''],
         table: tableData
     });
+
 
     // Fetch product data if in edit mode
     useEffect(() => {
@@ -359,7 +385,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     });
                 } catch (error) {
                     console.error('Error fetching product:', error);
-                    setMessage('Failed to load product data');
+                    setMessage('Failed to load product data',error);
                 } finally {
                     setIsLoading(false);
                 }
@@ -409,6 +435,16 @@ export default function ProductForm({ productId }: ProductFormProps) {
 
         setProduct(prev => ({ ...prev, [name]: value }));
     }, []);
+    const generateSlug = () => {
+        if (product.name) {
+            const slug = product.name
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+
+            setProduct(prev => ({ ...prev, slug }));
+        }
+    };
 
     // Handle array inputs (features, images)
     const handleArrayChange = useCallback((name: string, index: number, value: string) => {
@@ -583,6 +619,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         isLoading={ isLoading || isPending }
                         parentCategories={ parentCategories }
                         brands={ brands }
+                        generateSlug={ generateSlug }
                         handleFileChange={ handleFileChange }
                     />
 
