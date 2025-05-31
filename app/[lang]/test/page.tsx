@@ -4,7 +4,7 @@ export default function BrandsLoading() {
     return (
         <div className='relative'>
             {/* Hero section skeleton */ }
-            <div className="w-full h-[80vh] bg-gray-200 dark:bg-gray-700 flex flex-col-reverse lg:flex-row justify-between items-center pt-20 md:pt-1">
+            <div className="w-full h-[80vh] bg-gray-200 dark:bg-gray-700 flex flex-col-reverse lg:flex-row justify-between items-center pt-20 md:pt-1 animate-pulse">
                 <div className='w-full lg:w-1/2 mt-10 pt-20'>
                 <div className="h-12 max-w-xl  mx-auto mb-8 flex justify-start">
                     <div className="h-12 w-90  bg-gray-300 dark:bg-gray-500 rounded  mb-8 animate-pulse"></div>
