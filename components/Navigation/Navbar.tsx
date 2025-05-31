@@ -88,107 +88,109 @@ export default function NavbarMain({ lang }: any) {
     };
 
     return (
-        <Navbar className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> 
-        {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */}
-                <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse" style={{direction:"ltr"}}>
-                    {/* <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse rounded-2xl bg-radial-[at_10%_75%] from-[#d2881121] via-[#d24e111e] to-[#1F2937] to-99%"> */ }
-                    <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-1 h-9" alt="Flowbite React Logo" />
-                    <div className="hidden lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">
-                        <span className="text-[#d28711] font-bold">MSA</span>
-                        <span className="mt-[-10px] text-[#05406d] dark:text-[lightgray] font-bold">SunPower</span>
-                    </div>
-                </NavbarBrand>
-                <div className="flex md:order-2 gap-4">
-                    <CartDropdown />
-                    { isLoading ? (
-                        <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
-                    ) : isAuthenticated ? (
-                        <Dropdown
-                            arrowIcon={ false }
-                            inline
-                            label={
-                                <Avatar
-                                    alt={ session?.user?.name || "User" }
-                                    img={ session?.user?.image || "/profile.webp" }
-                                    rounded
-                                    className=""
-                                />
-                            }
-                        >
-                            <DropdownHeader>
-                                <span className="block text-sm text-center text-primary">{ session?.user?.name }</span>
-                                <span className="block truncate text-sm font-medium text-secondary dark:text-secondary-10">{ session?.user?.email }</span>
-                            </DropdownHeader>
-                            <DropdownDivider />
-                            { session?.user?.role === 'admin' &&
-                                (<DropdownItem className="dark:text-[#ffffffcf]">
-                                    <Link href={ `/${lang}/dashboard` }>لوحة التحكم</Link>
-                                </DropdownItem>) }
-
-                            <Link href={ `/${lang}/profile` }>
-                                <DropdownItem>
-                                    <FaRegAddressCard className="mx-2" />
-                                    {/* الإعدادات */ }
-                                    setting
-                                </DropdownItem >
-                            </Link>
-                            { session?.user?.role === "admin" && (
-                                <Link href={ `/${lang}/dashboard` }>
-                                    <DropdownItem>
-                                        <FaCog className="mx-2" />
-                                        Dashborad
-                                    </DropdownItem>
-                                </Link>
-                            ) }
-                            { session?.user?.role === "user" && (
-                                <Link href={ `/${lang}/orders` }>
-                                    <DropdownItem>
-                                        <FaClipboardList className="mx-2" />
-                                        My orders
-                                    </DropdownItem>
-                                </Link>
-                            ) }
-                            <DropdownDivider />
-                            <DropdownItem onClick={ handleSignOut }>
-                                <FaSignOutAlt className="mx-2" />
-                                تسجيل الخروج
-                            </DropdownItem>
-                        </Dropdown>
-                    ) : (
-                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                            <Link
-                                href={ `/${lang}/auth/signin` }
-                                className="text-sm font-medium text-primary dark:text-primary hover:underline hover:text-primary-10  mx-2"
-                            >
-                                تسجيل الدخول
-                            </Link>
-                            <Link
-                                href={ `/${lang}/auth/signup` }
-                                className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
-                             dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
-                            >
-                                إنشاء حساب
-                            </Link>
-                        </div>
-                    ) }
-
-                    <ThemeToggle />
-                    <LocaleSwitcher />
-                    <NavbarToggle />
+        <Navbar style={ { direction: 'ltr' } }
+            // className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }>
+            className={ `bg-white dark:bg-[#1F2937]` }>
+            {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */ }
+            <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse" style={ { direction: "ltr" } }>
+                {/* <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse rounded-2xl bg-radial-[at_10%_75%] from-[#d2881121] via-[#d24e111e] to-[#1F2937] to-99%"> */ }
+                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-1 h-9" alt="Flowbite React Logo" />
+                <div className="hidden lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">
+                    <span className="text-[#d28711] font-bold">MSA</span>
+                    <span className="mt-[-10px] text-[#05406d] dark:text-[lightgray] font-bold">SunPower</span>
                 </div>
-                <NavbarCollapse>
-                    <NavbarLink >
-                        <NavMenu />
-                    </NavbarLink>
-                    <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>Home</Link>
+            </NavbarBrand>
+            <div className="flex md:order-2 gap-4">
+                <CartDropdown />
+                { isLoading ? (
+                    <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
+                ) : isAuthenticated ? (
+                    <Dropdown
+                        arrowIcon={ false }
+                        inline
+                        label={
+                            <Avatar
+                                alt={ session?.user?.name || "User" }
+                                img={ session?.user?.image || "/profile.webp" }
+                                rounded
+                                className=""
+                            />
+                        }
+                    >
+                        <DropdownHeader>
+                            <span className="block text-sm text-center text-primary">{ session?.user?.name }</span>
+                            <span className="block truncate text-sm font-medium text-secondary dark:text-secondary-10">{ session?.user?.email }</span>
+                        </DropdownHeader>
+                        <DropdownDivider />
+                        { session?.user?.role === 'admin' &&
+                            (<DropdownItem className="dark:text-[#ffffffcf]">
+                                <Link href={ `/${lang}/dashboard` }>لوحة التحكم</Link>
+                            </DropdownItem>) }
+
+                        <Link href={ `/${lang}/profile` }>
+                            <DropdownItem>
+                                <FaRegAddressCard className="mx-2" />
+                                {/* الإعدادات */ }
+                                setting
+                            </DropdownItem >
+                        </Link>
+                        { session?.user?.role === "admin" && (
+                            <Link href={ `/${lang}/dashboard` }>
+                                <DropdownItem>
+                                    <FaCog className="mx-2" />
+                                    Dashborad
+                                </DropdownItem>
+                            </Link>
+                        ) }
+                        { session?.user?.role === "user" && (
+                            <Link href={ `/${lang}/orders` }>
+                                <DropdownItem>
+                                    <FaClipboardList className="mx-2" />
+                                    My orders
+                                </DropdownItem>
+                            </Link>
+                        ) }
+                        <DropdownDivider />
+                        <DropdownItem onClick={ handleSignOut }>
+                            <FaSignOutAlt className="mx-2" />
+                            تسجيل الخروج
+                        </DropdownItem>
+                    </Dropdown>
+                ) : (
+                    <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                        <Link
+                            href={ `/${lang}/auth/signin` }
+                            className="text-sm font-medium text-primary dark:text-primary hover:underline hover:text-primary-10  mx-2"
+                        >
+                            تسجيل الدخول
+                        </Link>
+                        <Link
+                            href={ `/${lang}/auth/signup` }
+                            className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
+                             dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
+                        >
+                            إنشاء حساب
+                        </Link>
+                    </div>
+                ) }
+
+                <ThemeToggle />
+                <LocaleSwitcher />
+                <NavbarToggle />
+            </div>
+            <NavbarCollapse >
+                <NavbarLink >
+                    <NavMenu />
+                </NavbarLink>
+                <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>Home</Link>
 
 
-                    <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>Categories</Link>
-                    <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>Brands</Link>
-                    <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>Services</Link>
-                    <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>About</Link>
-                    <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>Contact</Link>
-                </NavbarCollapse>
-            </Navbar >
-            );
+                <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>Categories</Link>
+                <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>Brands</Link>
+                <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>Services</Link>
+                <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>About</Link>
+                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>Contact</Link>
+            </NavbarCollapse>
+        </Navbar >
+    );
 }
