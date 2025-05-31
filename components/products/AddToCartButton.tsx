@@ -11,7 +11,7 @@ interface AddToCartButtonProps {
   children?: React.ReactNode;
 }
 
-export default function AddToCartButton({ productId, className, children }: AddToCartButtonProps) {
+export default function AddToCartButton({ productId, className }: AddToCartButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleAddToCart = async () => {
@@ -39,7 +39,7 @@ export default function AddToCartButton({ productId, className, children }: AddT
       className={ className || "flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  rounded-lg" }
     >
       <FaCartPlus />
-      { loading ? 'Adding...' : children || 'Add to Cart' }
+      { loading ? 'Adding...' : 'Add to Cart' }
     </button>
   );
 }
