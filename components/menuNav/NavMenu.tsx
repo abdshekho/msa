@@ -27,7 +27,7 @@ interface ParentCategory {
     items: SubCategory[];
 }
 
-const NavMenu = () => {
+const NavMenu = ({ lang }) => {
     const [visible, setVisible] = useState(false);
     const [categories, setCategories] = useState<ParentCategory[]>([]);
     const [loading, setLoading] = useState(true);
@@ -82,7 +82,10 @@ const NavMenu = () => {
                     onMouseEnter={ handleMouseEnter }
                     onMouseLeave={ handleMouseLeave }
                 >
-                    <span>Product ▾</span>
+                    <span className='menu__link'>
+                        { lang === 'en' ? 'Product ▾' : '▾ المنتجات' }
+                    </span>
+
                     { visible && (
                         <div className={ 'dropDown_Product' }>
                             { categories.map((item) => (
@@ -90,11 +93,6 @@ const NavMenu = () => {
                             )) }
                         </div>
                     ) }
-
-
-                    {/* <div>
-                <img src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e' width={70} height={70} />
-            </div> */}
                 </div>
             ) }
         </div >

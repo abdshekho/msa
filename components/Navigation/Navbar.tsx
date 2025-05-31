@@ -68,7 +68,7 @@ const them = {
         "title": "sr-only"
     }
 }
-export default function NavbarMain({ lang }: any) {
+export default function NavbarMain({ lang, dictionary }: any) {
     const { data: session, status } = useSession();
 
     // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
@@ -178,18 +178,19 @@ export default function NavbarMain({ lang }: any) {
                 <LocaleSwitcher />
                 <NavbarToggle />
             </div>
-            <NavbarCollapse >
-                <NavbarLink >
-                    <NavMenu />
-                </NavbarLink>
-                <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>Home</Link>
-
-
-                <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>Categories</Link>
-                <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>Brands</Link>
-                <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>Services</Link>
-                <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>About</Link>
-                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>Contact</Link>
+            <NavbarCollapse style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
+                { lang === 'en' && <NavbarLink >
+                    <NavMenu lang={ lang } />
+                </NavbarLink> }
+                <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>{ dictionary.navbar.home }</Link>
+                <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>{ dictionary.navbar.categories }</Link>
+                <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>{ dictionary.navbar.brands }</Link>
+                <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>{ dictionary.navbar.services }</Link>
+                <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>{ dictionary.navbar.about }</Link>
+                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>{ dictionary.navbar.contact }</Link>
+                { lang === 'ar' && <NavbarLink >
+                    <NavMenu lang={ lang } />
+                </NavbarLink> }
             </NavbarCollapse>
         </Navbar >
     );

@@ -9,6 +9,14 @@
   "common": {
     "viewAll": "View All"
   },
+  "navbar":{
+    "home":"Home",
+    "categories":"Categories",
+    "brands":"Brands",
+    "services":"Services",
+    "about":"About",
+    "contact":"Contact"
+  },
   "page": {
     "home": {
       "title": "Welcome to NextJs i18n",

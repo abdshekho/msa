@@ -1,61 +1,61 @@
 import React from 'react';
 
-export default function BrandsLoading() {
+export default function HomeLoading() {
     return (
-        <div className='relative'>
-            {/* Hero section skeleton */ }
-            <div className="w-full h-[80vh] bg-gray-200 dark:bg-gray-700 flex flex-col-reverse lg:flex-row justify-between items-center pt-20 md:pt-1 animate-pulse">
-                <div className='w-full lg:w-1/2 mt-10 pt-20'>
-                <div className="h-12 max-w-xl  mx-auto mb-8 flex justify-start">
-                    <div className="h-12 w-90  bg-gray-300 dark:bg-gray-500 rounded  mb-8 animate-pulse"></div>
-                </div>
-                    <div className="h-35 bg-gray-300 dark:bg-gray-500 rounded max-w-xl mx-auto mb-12 animate-pulse"></div>
-                    <div className='flex justify-start gap-4 h-30 max-w-xl   mx-auto mb-12'>
-                        <div className="h-13 w-40  bg-gray-300 dark:bg-gray-500 rounded animate-pulse"></div>
-                        <div className="h-13 w-45  bg-gray-300 dark:bg-gray-500 rounded animate-pulse"></div>
+        <div className="relative">
+            {/* Hero Carousel skeleton */ }
+            <div className="w-full h-96 bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
 
-                    </div>
-
-                </div>
-                <div className=" h-200 md:h-100 w-full  lg:w-1/2  bg-gray-300 dark:bg-gray-500 rounded  mr-0 lg:mr-30 mb-8 animate-pulse"></div>
-
-            </div>
-
-            <div className="container mx-auto px-4 py-16">
-                {/* Title skeleton */ }
+            {/* Featured Categories skeleton */ }
+            <div className="container mx-auto px-4 py-12">
                 <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto mb-8 animate-pulse"></div>
-
-                {/* Description skeleton */ }
-                <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded max-w-2xl mx-auto mb-12 animate-pulse"></div>
-
-                {/* Brands grid skeleton */ }
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                    { [...Array(10)].map((_, index) => (
-                        <div
-                            key={ index }
-                            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-                        >
-                            <div className="p-2 md:p-4 flex flex-col items-center">
-                                {/* Image skeleton */ }
-                                <div className="h-30 w-30 mb-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-
-                                {/* Title skeleton */ }
-                                <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2 animate-pulse"></div>
-
-                                {/* Description skeleton */ }
-                                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
-
-                                {/* Product count skeleton */ }
-                                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16 mt-2 animate-pulse"></div>
-                            </div>
-                        </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    { [...Array(4)].map((_, index) => (
+                        <div key={ index } className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                     )) }
                 </div>
             </div>
-            <div className="custom-shape-divider-top-1747581643">
-                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
-                </svg>
+
+            {/* Featured Products skeleton */ }
+            <div className="container mx-auto px-4 py-12 bg-gray-50 dark:bg-gray-800">
+                <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto mb-8 animate-pulse"></div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    { [...Array(4)].map((_, index) => (
+                        <div key={ index } className="bg-white dark:bg-gray-700 rounded-lg shadow-md h-64 animate-pulse"></div>
+                    )) }
+                </div>
+            </div>
+
+            {/* Partner Logos skeleton */ }
+            <div className="container mx-auto px-4 py-12">
+                <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto mb-8 animate-pulse"></div>
+                <div className="flex flex-wrap justify-center gap-8">
+                    { [...Array(5)].map((_, index) => (
+                        <div key={ index } className="w-32 h-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                    )) }
+                </div>
+            </div>
+
+            {/* About Section skeleton */ }
+            <div className="container mx-auto px-4 py-16">
+                <div className="flex flex-col md:flex-row gap-8">
+                    <div className="md:w-1/2 h-80 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                    <div className="md:w-1/2">
+                        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4 animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Call to Action skeleton */ }
+            <div className="w-full py-16 bg-gray-200 dark:bg-gray-700 animate-pulse">
+                <div className="container mx-auto px-4">
+                    <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-64 mx-auto mb-4 animate-pulse"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-96 mx-auto mb-8 animate-pulse"></div>
+                    <div className="h-10 bg-gray-300 dark:bg-gray-600 rounded-lg w-32 mx-auto animate-pulse"></div>
+                </div>
             </div>
         </div>
     );

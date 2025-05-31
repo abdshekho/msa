@@ -37,7 +37,7 @@ export default async function Root(props: {
         >
           <AuthProvider>
             <CartProvider>
-              <NavbarMain lang={ params.lang } />
+              <NavbarMain lang={ params.lang } dictionary={dictionary} />
               <div className="min-h-screen bg-white dark:bg-gray-900">
                 <Providers>
                   { children }

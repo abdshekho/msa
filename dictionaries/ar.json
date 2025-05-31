@@ -9,6 +9,14 @@
   "common": {
     "viewAll": "عرض الكل"
   },
+  "navbar": {
+    "home": "الرئيسية",
+    "categories": "الفئات",
+    "brands": "العلامات التجارية",
+    "services": "الخدمات",
+    "about": "من نحن",
+    "contact": "اتصل بنا"
+  },
   "page": {
     "home": {
       "title": "مرحبًا بك في NextJs i18n",
