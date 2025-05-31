@@ -1,8 +1,13 @@
 import React from 'react'
-import styles from './NavMenu.module.css';
-export default function ProductMenuItem({ item, onSelect }: any) {
+import { useRouter } from 'next/navigation';
+export default function ProductMenuItem({ item, onSelect, lang }: any) {
+    const router = useRouter();
+    const handleClick = () => {
+        router.push(`/${lang}/products/${item._id}`);
+    };
     return (
-        <div className={ styles.dropdownItemProduct } onMouseEnter={() => onSelect(item)}>
+        <div className="p-2.5 cursor-pointer whitespace-nowrap relative text-gray-800 dark:text-white 
+        hover:text-primary dark:hover:text-primary-10" onMouseEnter={ () => onSelect(item) } onClick={ handleClick }>
             { item.name }
         </div>
     )

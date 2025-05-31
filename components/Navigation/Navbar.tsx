@@ -179,18 +179,18 @@ export default function NavbarMain({ lang, dictionary }: any) {
                 <NavbarToggle />
             </div>
             <NavbarCollapse style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
-                { lang === 'en' && <NavbarLink >
+                { lang === 'en' && < >
                     <NavMenu lang={ lang } />
-                </NavbarLink> }
+                </> }
                 <Link href={ `/${lang}` } className={ pathname === '/' + lang ? "active__link" : "menu__link" }>{ dictionary.navbar.home }</Link>
                 <Link href={ `/${lang}/categories` } className={ pathname.split('/')[2] === 'categories' ? "active__link" : "menu__link" }>{ dictionary.navbar.categories }</Link>
                 <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>{ dictionary.navbar.brands }</Link>
                 <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>{ dictionary.navbar.services }</Link>
                 <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>{ dictionary.navbar.about }</Link>
                 <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>{ dictionary.navbar.contact }</Link>
-                { lang === 'ar' && <NavbarLink >
+                { lang === 'ar' && < >
                     <NavMenu lang={ lang } />
-                </NavbarLink> }
+                </> }
             </NavbarCollapse>
         </Navbar >
     );

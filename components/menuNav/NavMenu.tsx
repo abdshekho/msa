@@ -1,7 +1,6 @@
 //@ts-nocheck
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './NavMenu.module.css';
 import MainMenuItem from './MainMenuItem';
 
 interface Product {
@@ -35,9 +34,9 @@ const NavMenu = ({ lang }) => {
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const timeoutRef2 = useRef<NodeJS.Timeout | null>(null);
     const handleMouseEnter = () => {
+        setVisible(true)
         if (timeoutRef.current) { clearTimeout(timeoutRef.current); }
         if (timeoutRef2.current) { clearTimeout(timeoutRef2.current); }
-        setVisible(true)
     };
     const handleMouseLeave = () => {
 
@@ -77,25 +76,26 @@ const NavMenu = ({ lang }) => {
     return (
         <div>
             { !loading && (
-
-                <div className={ styles.menu }
+                <div className="relative"
                     onMouseEnter={ handleMouseEnter }
                     onMouseLeave={ handleMouseLeave }
+                    style={ { direction: 'ltr' } }
                 >
-                    <span className='menu__link'>
+                    <span className=''>
                         { lang === 'en' ? 'Product ▾' : '▾ المنتجات' }
                     </span>
 
                     { visible && (
-                        <div className={ 'dropDown_Product' }>
+                        <div className="dropDown_Product absolute top-0 right-0 min-w-[200px] bg-white text-gray-800  z-[1000] 
+                        origin-top animate-[topToBottom_0.6s_alternate_forwards]">
                             { categories.map((item) => (
-                                <MainMenuItem item={ item } key={ item._id } />
+                                <MainMenuItem item={ item } key={ item._id } lang={ lang } />
                             )) }
                         </div>
                     ) }
                 </div>
             ) }
-        </div >
+        </div>
     );
 };
 
@@ -151,4 +151,3 @@ const mockProducts2 = [
 
     }
 ];
-
