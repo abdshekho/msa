@@ -113,8 +113,26 @@
     "profile": {
       "title": "Profile",
       "email": "Email",
-      "password": "XXXXXXXX",
-      "submit": "Sign Up"
+      "emailNotEditable": "Email cannot be changed",
+      "name": "Name",
+      "phone": "Phone Number",
+      "address": "Address",
+      "saveChanges": "Save Changes",
+      "savingChanges": "Saving...",
+      "updateSuccess": "Profile updated successfully",
+      "updateError": "An error occurred while updating your profile",
+      "formErrors": "Please correct the errors in the form",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePasswordBtn": "Change Password",
+      "changingPassword": "Changing password...",
+      "passwordChangeSuccess": "Password changed successfully",
+      "passwordChangeError": "An error occurred while changing your password",
+      "userImage": "User Image",
+      "editImage": "Edit profile image",
+      "imageUploadFailed": "Image upload failed"
     }
   }
 }

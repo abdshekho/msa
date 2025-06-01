@@ -111,10 +111,28 @@
       "submitLoading": "جاري التحميل ..."
     },
     "profile": {
-      "title": "Profile",
-      "email": "Email",
-      "password": "XXXXXXXX",
-      "submit": "Sign Up"
+      "title": "الملف الشخصي",
+      "email": "البريد الإلكتروني",
+      "emailNotEditable": "لا يمكن تغيير البريد الإلكتروني",
+      "name": "الاسم",
+      "phone": "رقم الهاتف",
+      "address": "العنوان",
+      "saveChanges": "حفظ التغييرات",
+      "savingChanges": "جاري الحفظ...",
+      "updateSuccess": "تم تحديث البيانات بنجاح",
+      "updateError": "حدث خطأ أثناء تحديث البيانات",
+      "formErrors": "يرجى تصحيح الأخطاء في النموذج",
+      "changePassword": "تغيير كلمة المرور",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "changePasswordBtn": "تغيير كلمة المرور",
+      "changingPassword": "جاري تغيير كلمة المرور...",
+      "passwordChangeSuccess": "تم تغيير كلمة المرور بنجاح",
+      "passwordChangeError": "حدث خطأ أثناء تغيير كلمة المرور",
+      "userImage": "صورة المستخدم",
+      "editImage": "تعديل الصورة الشخصية",
+      "imageUploadFailed": "فشل تحميل الصورة"
     }
   }
 }

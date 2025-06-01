@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
 import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "./schema";
 import { z } from "zod";
+import { getClientDictionary } from "../../../get-dictionary-client";
 
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
+  const resolvedParams = use(params);
+  const dictionary = getClientDictionary(resolvedParams.lang as any);
 
   const [name, setName] = useState(session?.user?.name || "");
   const [phone, setPhone] = useState(session?.user?.phone || "");
@@ -66,7 +69,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
           body: formData,
         });
 
-        if (!response.ok) throw new Error('Image upload failed');
+        if (!response.ok) throw new Error(dictionary.page.profile.imageUploadFailed);
 
         const data = await response.json();
 
@@ -74,12 +77,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
       } catch (error: any) {
         console.error('Error uploading image:', error);
-        setMessage({ text: error || "حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: error || dictionary.page.profile.updateError, type: "error" });
       } finally {
         setIsLoading(false);
       }
     }
-  }, []);
+  }, [dictionary.page.profile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,12 +106,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage({ text: data.message || "حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: data.message || dictionary.page.profile.updateError, type: "error" });
         setIsLoading(false);
         return;
       }
 
-      // تحديث بيانات الجلسة
+      // Update session data
       await update({
         user: {
           name,
@@ -118,7 +121,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
         }
       });
 
-      setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
+      setMessage({ text: dictionary.page.profile.updateSuccess, type: "success" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Handle validation errors
@@ -129,9 +132,9 @@ export default function Profile({ params }: { params: { lang: string } }) {
           }
         });
         setErrors(errorMap);
-        setMessage({ text: "يرجى تصحيح الأخطاء في النموذج", type: "error" });
+        setMessage({ text: dictionary.page.profile.formErrors, type: "error" });
       } else {
-        setMessage({ text: "حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: dictionary.page.profile.updateError, type: "error" });
       }
     } finally {
       setIsLoading(false);
@@ -162,11 +165,11 @@ export default function Profile({ params }: { params: { lang: string } }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setPasswordMessage({ text: data.message || "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+        setPasswordMessage({ text: data.message || dictionary.page.profile.passwordChangeError, type: "error" });
         return;
       }
 
-      setPasswordMessage({ text: "تم تغيير كلمة المرور بنجاح", type: "success" });
+      setPasswordMessage({ text: dictionary.page.profile.passwordChangeSuccess, type: "success" });
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -180,9 +183,9 @@ export default function Profile({ params }: { params: { lang: string } }) {
           }
         });
         setPasswordErrors(errorMap);
-        setPasswordMessage({ text: "يرجى تصحيح الأخطاء في النموذج", type: "error" });
+        setPasswordMessage({ text: dictionary.page.profile.formErrors, type: "error" });
       } else {
-        setPasswordMessage({ text: "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+        setPasswordMessage({ text: dictionary.page.profile.passwordChangeError, type: "error" });
       }
     } finally {
       setIsChangingPassword(false);
@@ -191,7 +194,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-6">الملف الشخصي</h1>
+      <h1 className="text-3xl font-bold mb-6">{ dictionary.page.profile.title }</h1>
 
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mb-6">
         { message.text && (
@@ -215,13 +218,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
               <div className="relative w-24 h-24">
                 <Image
                   src={ image || '/en/profile.webp' }
-                  alt={ name || "صورة المستخدم" }
+                  alt={ name || dictionary.page.profile.userImage }
                   width={ 96 }
                   height={ 96 }
                   className="rounded-full object-cover"
                 />
               </div>
-              <Tooltip content='Edit profile image'>
+              <Tooltip content={ dictionary.page.profile.editImage }>
                 <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
               </Tooltip>
             </div> }
@@ -231,7 +234,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
               type="file"
               name="image"
               id="profile-image"
-              disabled={ isLoading || isChangingPassword}
+              disabled={ isLoading || isChangingPassword }
               onChange={ handleFileChange }
               className="w-full p-2 border rounded hidden"
               accept="image/*"
@@ -240,7 +243,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              البريد الإلكتروني
+              { dictionary.page.profile.email }
             </label>
             <input
               type="email"
@@ -250,19 +253,19 @@ export default function Profile({ params }: { params: { lang: string } }) {
               className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none"
             />
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              لا يمكن تغيير البريد الإلكتروني
+              { dictionary.page.profile.emailNotEditable }
             </p>
           </div>
 
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              الاسم
+              { dictionary.page.profile.name }
             </label>
             <input
               type="text"
               id="name"
               value={ name }
-              disabled={ isLoading|| isChangingPassword }
+              disabled={ isLoading || isChangingPassword }
               onChange={ (e) => setName(e.target.value) }
               className={ `w-full px-3 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
             />
@@ -271,32 +274,32 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              رقم الهاتف
+              { dictionary.page.profile.phone }
             </label>
             <input
-              type="tel"
+              type="number"
               id="phone"
               value={ phone }
-              disabled={ isLoading|| isChangingPassword }
+              disabled={ isLoading || isChangingPassword }
               onChange={ (e) => setPhone(e.target.value) }
-              className={ `w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
-              placeholder="رقم الهاتف"
+              className={ `w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none` }
+              placeholder={ dictionary.page.profile.phone }
             />
             { errors.phone && <p className="mt-1 text-sm text-red-600">{ errors.phone }</p> }
           </div>
 
           <div>
             <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              العنوان
+              { dictionary.page.profile.address }
             </label>
             <input
               type="text"
               id="address"
-              disabled={ isLoading|| isChangingPassword }
+              disabled={ isLoading || isChangingPassword }
               value={ address }
               onChange={ (e) => setAddress(e.target.value) }
               className={ `w-full px-3 py-2 border ${errors.address ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
-              placeholder="العنوان"
+              placeholder={ dictionary.page.profile.address }
             />
             { errors.address && <p className="mt-1 text-sm text-red-600">{ errors.address }</p> }
           </div>
@@ -307,14 +310,14 @@ export default function Profile({ params }: { params: { lang: string } }) {
               disabled={ isLoading }
               className="fButton"
             >
-              { isLoading ? "جاري الحفظ..." : "حفظ التغييرات" }
+              { isLoading ? dictionary.page.profile.savingChanges : dictionary.page.profile.saveChanges }
             </button>
           </div>
         </form>
       </div>
 
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">تغيير كلمة المرور</h2>
+        <h2 className="text-xl font-semibold mb-4">{ dictionary.page.profile.changePassword }</h2>
 
         { passwordMessage.text && (
           <div
@@ -330,7 +333,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
         <form onSubmit={ handlePasswordChange } className="space-y-4">
           <div>
             <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              كلمة المرور الحالية
+              { dictionary.page.profile.currentPassword }
             </label>
             <input
               type="password"
@@ -345,7 +348,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
           <div>
             <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              كلمة المرور الجديدة
+              { dictionary.page.profile.newPassword }
             </label>
             <input
               type="password"
@@ -360,7 +363,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              تأكيد كلمة المرور الجديدة
+              { dictionary.page.profile.confirmPassword }
             </label>
             <input
               type="password"
@@ -378,7 +381,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
             disabled={ isChangingPassword || isLoading }
             className="fButton"
           >
-            { isChangingPassword ? "جاري تغيير كلمة المرور..." : "تغيير كلمة المرور" }
+            { isChangingPassword ? dictionary.page.profile.changingPassword : dictionary.page.profile.changePasswordBtn }
           </button>
         </form>
       </div>
