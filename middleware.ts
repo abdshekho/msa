@@ -78,12 +78,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // إعادة التوجيه إلى الصفحة الرئيسية إذا كان المستخدم يحاول الوصول إلى صفحة الإدارة وليس لديه صلاحيات
-  const isAdminPath = pathname.startsWith(`/${locale}/admin`);
-  if (isAdminPath && (!isAuth || token?.role !== 'admin')) {
-    return NextResponse.redirect(
-      new URL(`/${locale}`, request.url)
-    );
-  }
+  // const isAdminPath = pathname.startsWith(`/${locale}/admin`);
+  // if (isAdminPath && (!isAuth || token?.role !== 'admin')) {
+  //   return NextResponse.redirect(
+  //     new URL(`/${locale}`, request.url)
+  //   );
+  // }
 
   return NextResponse.next();
 }

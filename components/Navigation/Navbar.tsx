@@ -164,7 +164,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                             className="flex items-center text-sm font-medium text-primary dark:text-primary  hover:text-primary-10  mx-2"
                         >
                             <FaUserAlt className="mx-1" />
-                            { lang === 'en' ? 'Loing' : 'تسجيل الدخول' }
+                            { lang === 'en' ? 'Login' : 'تسجيل الدخول' }
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
@@ -172,7 +172,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                              dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
                             <FaUserPlus className="mx-1" />
-                            { lang === 'en' ? 'Sign up' : 'إنشاء حساب' }
+                            { lang === 'en' ? 'Signup' : 'إنشاء حساب' }
                         </Link>
                     </div>
                 ) }

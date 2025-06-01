@@ -9,6 +9,7 @@ import { FloatingLabel } from "flowbite-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { getClientDictionary } from "@/get-dictionary-client";
 const customTheme = {
   input: {
     "default": {
@@ -39,6 +40,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function SignIn({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
+  const dictionary = getClientDictionary(resolvedParams.lang);
+
   const router = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -91,11 +94,11 @@ export default function SignIn({ params }: { params: { lang: string } }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className={`flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${isLoading ? 'animate-pulse':''}`}>
       <div className="w-full max-w-md space-y-8 py-8 px-8 bg-white dark:bg-card rounded-3xl shadow-2xl">
         <div>
           <h2 className="mt-6 text-center head-1">
-            تسجيل الدخول
+            { dictionary.page.signin.title }
           </h2>
         </div>
         { error && (
@@ -111,7 +114,8 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             className="w-full flex justify-center items-center gap-2  bg-card-10 dark:bg-bgm rounded-md py-2 px-4 text-sm font-medium text-gray-700 dark:text-white hover:opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             <FcGoogle className="h-5 w-5" />
-            { isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل" }
+
+            { isGoogleLoading ? dictionary.page.signin.googleLoading : dictionary.page.signin.google }
           </button>
         </div>
 
@@ -120,7 +124,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <div className="w-full border-t border-secondary dark:border-secondary-10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">أو تسجيل الدخول باستخدام البريد الإلكتروني</span>
+            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">{ dictionary.page.signin.orRegister }</span>
           </div>
         </div>
 
@@ -129,7 +133,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="Email"
+                label={dictionary.page.signin.Email}
                 type="email"
                 theme={ customTheme }
                 autoComplete="email"
@@ -143,7 +147,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="Password"
+                label={dictionary.page.signin.password}
                 type="password"
                 theme={ customTheme }
                 autoComplete="current-password"
@@ -158,7 +162,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <Link href={ `/${resolvedParams.lang}/auth/signup` } className="font-medium text-secondary  dark:text-secondary-10 hover:text-secondary-10 dark:hover:text-secondary hover:underline">
-                ليس لديك حساب؟ سجل الآن
+                { dictionary.page.signin.registerNow }
               </Link>
             </div>
           </div>
@@ -169,7 +173,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
               disabled={ isLoading }
               className="fButton"
             >
-              { isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول" }
+              { isLoading ? dictionary.page.signin.submitLoading : dictionary.page.signin.submit }
             </button>
           </div>
         </form>

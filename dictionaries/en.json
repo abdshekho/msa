@@ -84,25 +84,31 @@
       }
     },
     "signin": {
-      "title": "Sign In",
+      "title": "Login",
       "google": "Sign in with Google",
+      "googleLoading": "loading ...",
       "orRegister": "Or sign in with your email",
       "Email": "Email",
       "password": "password",
       "registerNow": "Don't have an account? Sign up now",
-      "submit": "Sign In"
+      "submit": "Login",
+      "submitLoading": "Logging in ..."
     },
     "signup": {
       "title": "Create a new account",
-      "google": "Sign in with Google",
+      "google": "Sign up with Google",
+      "googleLoading": "loading ...",
       "orRegister": "Or sign in with your email",
+      "addImage": "Add profile imag",
+      "editImage": "Edit profile image",
       "Name": "Name",
       "Email": "Email",
       "password": "password",
       "phonNumber": "phone number",
       "Address": "Address",
       "signin": "Already have an account? Sign in",
-      "submit": "Create an account"
+      "submit": "Create an account",
+      "submitLoading": "loading ..."
     },
     "profile": {
       "title": "Profile",

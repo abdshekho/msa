@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import profileImage from "@/public/en/profile.webp"
 import { FaEdit } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
+import { getClientDictionary } from "@/get-dictionary-client";
 
 const customTheme = {
   input: {
@@ -48,6 +49,7 @@ type SignupFormData = z.infer<typeof signupSchema>;
 
 export default function SignUp({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
+  const dictionary = getClientDictionary(resolvedParams.lang);
   const router = useRouter();
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
@@ -149,11 +151,11 @@ export default function SignUp({ params }: { params: { lang: string } }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className={ `flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${isLoading ? 'animate-pulse' : ''}` }>
       <div className="w-full max-w-md space-y-8 py-8 px-8 bg-white dark:bg-card rounded-3xl shadow-2xl">
         <div>
           <h2 className="mt-6 text-center head-1">
-            إنشاء حساب جديد
+            { dictionary.page.signup.title }
           </h2>
         </div>
         { error && (
@@ -169,7 +171,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             className="w-full flex justify-center items-center gap-2 bg-card-10 dark:bg-bgm rounded-md py-2 px-4 text-sm font-medium text-gray-700 dark:text-white hover:opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             <FcGoogle className="h-5 w-5" />
-            { isGoogleLoading ? "جاري التحميل..." : "تسجيل الدخول باستخدام جوجل" }
+            { isGoogleLoading ? dictionary.page.signup.googleLoading : dictionary.page.signup.google }
           </button>
         </div>
 
@@ -178,33 +180,39 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <div className="w-full border-t border-secondary dark:border-secondary-10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">أو التسجيل باستخدام البريد الإلكتروني</span>
+            <span className="px-2 bg-white font-medium dark:bg-card text-secondary dark:text-secondary-10">{ dictionary.page.signup.orRegister }</span>
           </div>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={ handleFormSubmit(handleSubmit) }>
-          <div className="flex justify-center mb-6">
-            <div className="relative w-24 h-24">
-              <Image
-                src={ image || profileImage }
-                alt="صورة المستخدم"
-                width={ 96 }
-                height={ 96 }
-                className="rounded-full object-cover"
-              />
+          { isLoading ?
+            <div className="flex justify-center">
+              <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
             </div>
-            <Tooltip content={image ? "Edit profile image" : "Add profile image" }>
-              <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
-            </Tooltip>
-          </div>
+            :
+            <div className="flex justify-center mb-6">
+              <div className="relative w-24 h-24">
+                <Image
+                  src={ image || profileImage }
+                  alt="صورة المستخدم"
+                  width={ 96 }
+                  height={ 96 }
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <Tooltip content={ image ? dictionary.page.signup.editImage : dictionary.page.signup.addImage }>
+                <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+              </Tooltip>
+            </div> }
 
           <div className="flex flex-col gap-2 md:gap-4">
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="الاسم"
+                label={ dictionary.page.signup.Name }
                 type="text"
                 theme={ customTheme }
+                disabled={ isLoading }
                 { ...register("name") }
               />
               { errors.name && (
@@ -215,8 +223,9 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="البريد الإلكتروني"
+                label={ dictionary.page.signup.Email }
                 type="email"
+                disabled={ isLoading }
                 theme={ customTheme }
                 autoComplete="email"
                 { ...register("email") }
@@ -229,9 +238,10 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="كلمة المرور"
+                label={ dictionary.page.signup.password }
                 type="password"
                 theme={ customTheme }
+                disabled={ isLoading }
                 autoComplete="new-password"
                 { ...register("password") }
               />
@@ -243,8 +253,9 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="رقم الهاتف"
+                label={ dictionary.page.signup.phonNumber }
                 type="tel"
+                disabled={ isLoading }
                 theme={ customTheme }
                 { ...register("phone") }
               />
@@ -256,8 +267,9 @@ export default function SignUp({ params }: { params: { lang: string } }) {
             <div>
               <FloatingLabel
                 variant="outlined"
-                label="العنوان"
+                label={ dictionary.page.signup.Address }
                 type="text"
+                disabled={ isLoading }
                 theme={ customTheme }
                 { ...register("address") }
               />
@@ -266,12 +278,13 @@ export default function SignUp({ params }: { params: { lang: string } }) {
               ) }
             </div>
 
-            <div>
+            <div className="hidden">
               <label className="block mb-2 font-medium" htmlFor="profile-image">صورة الملف الشخصي</label>
               <input
                 type="file"
                 name="image"
                 id="profile-image"
+                disabled={ isLoading }
                 onChange={ handleFileChange }
                 className="w-full p-2 border rounded"
                 accept="image/*"
@@ -282,7 +295,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <Link href={ `/${resolvedParams.lang}/auth/signin` } className="font-medium text-secondary dark:text-secondary-10 hover:text-secondary-10 dark:hover:text-secondary hover:underline">
-                لديك حساب بالفعل؟ سجل دخول
+                { dictionary.page.signup.signin }
               </Link>
             </div>
           </div>
@@ -293,7 +306,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
               disabled={ isLoading }
               className="fButton"
             >
-              { isLoading ? "جاري التسجيل..." : "إنشاء حساب" }
+              { isLoading ? dictionary.page.signup.submitLoading : dictionary.page.signup.submit }
             </button>
           </div>
         </form>
