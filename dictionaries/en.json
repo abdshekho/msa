@@ -9,13 +9,13 @@
   "common": {
     "viewAll": "View All"
   },
-  "navbar":{
-    "home":"Home",
-    "categories":"Categories",
-    "brands":"Brands",
-    "services":"Services",
-    "about":"About",
-    "contact":"Contact"
+  "navbar": {
+    "home": "Home",
+    "categories": "Categories",
+    "brands": "Brands",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact"
   },
   "page": {
     "home": {
@@ -82,6 +82,33 @@
         "street": "Main Street, Building 123",
         "sendMessage": "Send Us a Message"
       }
+    },
+    "signin": {
+      "title": "Sign In",
+      "google": "Sign in with Google",
+      "orRegister": "Or sign in with your email",
+      "Email": "Email",
+      "password": "password",
+      "registerNow": "Don't have an account? Sign up now",
+      "submit": "Sign In"
+    },
+    "signup": {
+      "title": "Create a new account",
+      "google": "Sign in with Google",
+      "orRegister": "Or sign in with your email",
+      "Name": "Name",
+      "Email": "Email",
+      "password": "password",
+      "phonNumber": "phone number",
+      "Address": "Address",
+      "signin": "Already have an account? Sign in",
+      "submit": "Create an account"
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "password": "XXXXXXXX",
+      "submit": "Sign Up"
     }
   }
 }

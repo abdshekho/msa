@@ -82,6 +82,33 @@
         "street": "شارع الرئيسي، مبنى رقم 123",
         "sendMessage": "أرسل لنا رسالة"
       }
+    },
+    "signin": {
+      "title": "تسجيل الدخول",
+      "google": "تسجيل الدخول باستخدام google",
+      "orRegister": "أو تسجيل الدخول باستخدام البريد الإلكتروني",
+      "Email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "registerNow": "ليس لديك حساب؟ سجل الآن",
+      "submit": "تسجيل الدخول"
+    },
+    "signup": {
+      "title": "إنشاء حساب جديد",
+      "google": "تسجيل الدخول باستخدام google",
+      "orRegister": "أو تسجيل الدخول باستخدام البريد الإلكتروني",
+      "Name": "الاسم",
+      "Email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "phonNumber": "الموبايل",
+      "Address": "العنوان",
+      "signin": "لديك حساب بالفعل؟ سجل دخول",
+      "submit": "إنشاء حساب"
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "password": "XXXXXXXX",
+      "submit": "Sign Up"
     }
   }
 }

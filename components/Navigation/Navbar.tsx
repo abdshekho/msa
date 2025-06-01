@@ -19,7 +19,7 @@ import ThemeToggle from "@/app/them/theme-toggle";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from 'next/navigation';
 import CartDropdown from "../cart/CartDropdown";
-import { FaClipboardList, FaCog, FaRegAddressCard, FaSignOutAlt } from "react-icons/fa";
+import { FaClipboardList, FaCog, FaRegAddressCard, FaSignOutAlt, FaUserAlt, FaUserPlus } from "react-icons/fa";
 
 const them = {
     "root": {
@@ -101,7 +101,8 @@ export default function NavbarMain({ lang, dictionary }: any) {
                 </div>
             </NavbarBrand>
             <div className="flex md:order-2 gap-4">
-                <CartDropdown />
+                { session?.user?.role === 'user' && <CartDropdown /> }
+
                 { isLoading ? (
                     <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
                 ) : isAuthenticated ? (
@@ -160,16 +161,18 @@ export default function NavbarMain({ lang, dictionary }: any) {
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <Link
                             href={ `/${lang}/auth/signin` }
-                            className="text-sm font-medium text-primary dark:text-primary hover:underline hover:text-primary-10  mx-2"
+                            className="flex items-center text-sm font-medium text-primary dark:text-primary  hover:text-primary-10  mx-2"
                         >
-                            تسجيل الدخول
+                            <FaUserAlt className="mx-1" />
+                            { lang === 'en' ? 'Loing' : 'تسجيل الدخول' }
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
-                            className="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
+                            className="flex items-center text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
                              dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
-                            إنشاء حساب
+                            <FaUserPlus className="mx-1" />
+                            { lang === 'en' ? 'Sign up' : 'إنشاء حساب' }
                         </Link>
                     </div>
                 ) }
