@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HomeLoading() {
   return (
-    <div className="relative">
+    <div className="relative" style={{direction:'ltr'}}>
       {/* Hero Carousel skeleton */}
       <div className="w-full h-96 bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
       

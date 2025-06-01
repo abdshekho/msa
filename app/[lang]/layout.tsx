@@ -9,6 +9,8 @@ import ThemeProvider from "../them/theme-provider";
 import { FooterMSA } from '../../components/ui/Footer';
 import Providers from '@/components/ProgressProvider';
 import { CartProvider } from '../lib/cart/CartContext';
+import {almarai} from '../ui/fonts'
+
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -28,7 +30,7 @@ export default async function Root(props: {
       <head>
         <ThemeModeScript />
       </head>
-      <body className={`min-h-screen  bg-white dark:bg-gray-900`}>
+      <body className={`min-h-screen  bg-white dark:bg-gray-900 ${almarai.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

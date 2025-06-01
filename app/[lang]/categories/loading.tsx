@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function BrandsLoading() {
     return (
-        <div className='relative'>
+        <div className='relative' style={{direction:'ltr'}}>
             {/* Hero section skeleton */ }
             <div className="w-full h-[80vh] bg-gray-200 dark:bg-gray-700 animate-pulse flex flex-col-reverse lg:flex-row justify-between items-center pt-20 md:pt-1">
                 <div className='w-full lg:w-1/2 mt-10 pt-20'>

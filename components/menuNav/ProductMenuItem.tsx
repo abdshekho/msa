@@ -6,9 +6,10 @@ export default function ProductMenuItem({ item, onSelect, lang }: any) {
         router.push(`/${lang}/products/${item._id}`);
     };
     return (
-        <div className="p-2.5 cursor-pointer whitespace-nowrap relative text-gray-800 dark:text-white 
-        hover:text-primary dark:hover:text-primary-10" onMouseEnter={ () => onSelect(item) } onClick={ handleClick }>
+        <span className="p-2.5 cursor-pointer whitespace-nowrap relative text-gray-800 dark:text-white 
+        hover:text-primary dark:hover:text-primary-10 border-b-[1px]  border-secondary dark:border-secondary-10" 
+        onMouseEnter={ () => onSelect(item) } onClick={ handleClick }>
             { item.name }
-        </div>
+        </span>
     )
 }

@@ -63,7 +63,7 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
                   </div>
                 ) }
                 <h2 className="text-lg md:text-xl font-semibold text-primary text-center">{ lang === 'en' ? brand.name : brand.nameAr }</h2>
-                <span className='text-sm md:text-md text-secondary-10 text-center'>{ truncate(lang === 'en' ? brand.description : brand.descriptionAr) }</span>
+                <span className='text-sm md:text-md text-secondary-10 my-2 text-center'>{ truncate(lang === 'en' ? brand.description : brand.descriptionAr) }</span>
                 { brand.productCount !== undefined && (
                   <span className="mt-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
                     { brand.productCount }
