@@ -194,9 +194,9 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-6">{ dictionary.page.profile.title }</h1>
 
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mb-6">
+      <h1 className="text-3xl font-bold mb-10 mt-2 text-center text-primary dark:text-primary-10">{ dictionary.page.profile.title }</h1>
         { message.text && (
           <div
             className={ `mb-4 p-4 rounded ${message.type === "success"
@@ -242,7 +242,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.email }
             </label>
             <input
@@ -250,7 +250,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
               id="email"
               value={ session?.user?.email || "" }
               disabled
-              className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none"
+              className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 w-full px-3 py-2 border border-secondary-10 dark:border-gray-600 rounded-md shadow-sm focus:outline-none"
             />
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               { dictionary.page.profile.emailNotEditable }
@@ -258,7 +258,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
           </div>
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.name }
             </label>
             <input
@@ -267,13 +267,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
               value={ name }
               disabled={ isLoading || isChangingPassword }
               onChange={ (e) => setName(e.target.value) }
-              className={ `w-full px-3 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
+              className={ `w-full px-3 py-2 border ${errors.name ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
             />
             { errors.name && <p className="mt-1 text-sm text-red-600">{ errors.name }</p> }
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="phone" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.phone }
             </label>
             <input
@@ -282,14 +282,14 @@ export default function Profile({ params }: { params: { lang: string } }) {
               value={ phone }
               disabled={ isLoading || isChangingPassword }
               onChange={ (e) => setPhone(e.target.value) }
-              className={ `w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none` }
+              className={ `w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none` }
               placeholder={ dictionary.page.profile.phone }
             />
             { errors.phone && <p className="mt-1 text-sm text-red-600">{ errors.phone }</p> }
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="address" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.address }
             </label>
             <input
@@ -298,7 +298,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
               disabled={ isLoading || isChangingPassword }
               value={ address }
               onChange={ (e) => setAddress(e.target.value) }
-              className={ `w-full px-3 py-2 border ${errors.address ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
+              className={ `w-full px-3 py-2 border ${errors.address ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
               placeholder={ dictionary.page.profile.address }
             />
             { errors.address && <p className="mt-1 text-sm text-red-600">{ errors.address }</p> }
@@ -317,7 +317,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
       </div>
 
       <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">{ dictionary.page.profile.changePassword }</h2>
+        <h2 className="text-3xl font-bold mb-10 mt-2 text-center text-primary dark:text-primary-10">{ dictionary.page.profile.changePassword }</h2>
 
         { passwordMessage.text && (
           <div
@@ -332,7 +332,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
         <form onSubmit={ handlePasswordChange } className="space-y-4">
           <div>
-            <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="currentPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.currentPassword }
             </label>
             <input
@@ -341,13 +341,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
               disabled={ isChangingPassword || isLoading }
               value={ currentPassword }
               onChange={ (e) => setCurrentPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.currentPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
+              className={ `w-full px-3 py-2 border ${passwordErrors.currentPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
             />
             { passwordErrors.currentPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.currentPassword }</p> }
           </div>
 
           <div>
-            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="newPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.newPassword }
             </label>
             <input
@@ -356,13 +356,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
               disabled={ isChangingPassword || isLoading }
               value={ newPassword }
               onChange={ (e) => setNewPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.newPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
+              className={ `w-full px-3 py-2 border ${passwordErrors.newPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
             />
             { passwordErrors.newPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.newPassword }</p> }
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.confirmPassword }
             </label>
             <input
@@ -371,7 +371,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
               value={ confirmPassword }
               disabled={ isChangingPassword || isLoading }
               onChange={ (e) => setConfirmPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
+              className={ `w-full px-3 py-2 border ${passwordErrors.confirmPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
             />
             { passwordErrors.confirmPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.confirmPassword }</p> }
           </div>
