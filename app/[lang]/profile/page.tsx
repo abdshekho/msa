@@ -5,11 +5,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
+import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "./schema";
+import { z } from "zod";
 
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
-
-  
 
   const [name, setName] = useState(session?.user?.name || "");
   const [phone, setPhone] = useState(session?.user?.phone || "");
@@ -22,24 +22,16 @@ export default function Profile({ params }: { params: { lang: string } }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>({});
 
-  // تحديث الحقول عندما تكون بيانات الجلسة متاحة
-  // useEffect(() => {
-  //   if (session?.user) {
-  //     setName(session.user.name || "");
-  //     setPhone(session.user.phone || "");
-  //     setAddress(session.user.address || "");
-  //     setImage(session.user.image || "/en/profile.webp");
-  //   }
-  // }, [session]);
   useEffect(() => {
+    setIsLoading(true);
     const fetchUserData = async () => {
       try {
         const response = await fetch('/api/user/me');
         if (response.ok) {
           const userData = await response.json();
-
-          
 
           setName(userData.name || "");
           setPhone(userData.phone || "");
@@ -48,6 +40,8 @@ export default function Profile({ params }: { params: { lang: string } }) {
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -55,6 +49,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
       fetchUserData();
     }
   }, [session]);
+
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -77,11 +72,9 @@ export default function Profile({ params }: { params: { lang: string } }) {
 
         setImage(data?.imageUrl);
 
-
-        // setProduct(prev => ({ ...prev, imageCover: data.imageUrl }));
       } catch (error: any) {
         console.error('Error uploading image:', error);
-        setMessage({ text: error || "222حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: error || "حدث خطأ أثناء تحديث البيانات", type: "error" });
       } finally {
         setIsLoading(false);
       }
@@ -92,8 +85,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
     e.preventDefault();
     setIsLoading(true);
     setMessage({ text: "", type: "" });
+    setErrors({});
 
     try {
+      // Validate form data with Zod
+      const formData: ProfileFormData = { name, phone, address, image };
+      profileSchema.parse(formData);
+
       const response = await fetch("/api/user/update", {
         method: "PUT",
         headers: {
@@ -105,7 +103,7 @@ export default function Profile({ params }: { params: { lang: string } }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessage({ text: data.message || "000حدث خطأ أثناء تحديث البيانات", type: "error" });
+        setMessage({ text: data.message || "حدث خطأ أثناء تحديث البيانات", type: "error" });
         setIsLoading(false);
         return;
       }
@@ -120,10 +118,21 @@ export default function Profile({ params }: { params: { lang: string } }) {
         }
       });
 
-
       setMessage({ text: "تم تحديث البيانات بنجاح", type: "success" });
     } catch (error) {
-      setMessage({ text: "1111حدث خطأ أثناء تحديث البيانات", type: "error" });
+      if (error instanceof z.ZodError) {
+        // Handle validation errors
+        const errorMap: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errorMap[err.path[0]] = err.message;
+          }
+        });
+        setErrors(errorMap);
+        setMessage({ text: "يرجى تصحيح الأخطاء في النموذج", type: "error" });
+      } else {
+        setMessage({ text: "حدث خطأ أثناء تحديث البيانات", type: "error" });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -133,24 +142,15 @@ export default function Profile({ params }: { params: { lang: string } }) {
     e.preventDefault();
     setIsChangingPassword(true);
     setPasswordMessage({ text: "", type: "" });
-
-    // Validate passwords
-    if (newPassword !== confirmPassword) {
-      setPasswordMessage({ text: "كلمات المرور الجديدة غير متطابقة", type: "error" });
-      setIsChangingPassword(false);
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      setPasswordMessage({ text: "يجب أن تكون كلمة المرور الجديدة 6 أحرف على الأقل", type: "error" });
-      setIsChangingPassword(false);
-
-      
-      return;
-    }
-    const email = session?.user?.email;
+    setPasswordErrors({});
 
     try {
+      // Validate password data with Zod
+      const passwordData: PasswordFormData = { currentPassword, newPassword, confirmPassword };
+      passwordSchema.parse(passwordData);
+
+      const email = session?.user?.email;
+
       const response = await fetch("/api/user/change-password", {
         method: "POST",
         headers: {
@@ -171,7 +171,19 @@ export default function Profile({ params }: { params: { lang: string } }) {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      setPasswordMessage({ text: "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+      if (error instanceof z.ZodError) {
+        // Handle validation errors
+        const errorMap: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errorMap[err.path[0]] = err.message;
+          }
+        });
+        setPasswordErrors(errorMap);
+        setPasswordMessage({ text: "يرجى تصحيح الأخطاء في النموذج", type: "error" });
+      } else {
+        setPasswordMessage({ text: "حدث خطأ أثناء تغيير كلمة المرور", type: "error" });
+      }
     } finally {
       setIsChangingPassword(false);
     }
@@ -194,29 +206,32 @@ export default function Profile({ params }: { params: { lang: string } }) {
         ) }
 
         <form onSubmit={ handleSubmit } className="space-y-6">
-          <div className="flex justify-center mb-6">
-            <div className="relative w-24 h-24">
-              <Image
-                src={ image || '/en/profile.webp' }
-                alt={ name || "صورة المستخدم" }
-                width={ 96 }
-                height={ 96 }
-                className="rounded-full object-cover"
-              />
+          { isLoading || isChangingPassword ?
+            <div className="flex justify-center">
+              <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
             </div>
-            <Tooltip content='Edit profile image'>
-              <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
-            </Tooltip>
-
-          </div>
+            :
+            <div className="flex justify-center mb-6">
+              <div className="relative w-24 h-24">
+                <Image
+                  src={ image || '/en/profile.webp' }
+                  alt={ name || "صورة المستخدم" }
+                  width={ 96 }
+                  height={ 96 }
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <Tooltip content='Edit profile image'>
+                <label className="cursor-pointer" htmlFor="profile-image"><FaEdit /></label>
+              </Tooltip>
+            </div> }
 
           <div>
-
-            {/* <label className="block mb-2 font-medium" htmlFor="profile-image">Cover Image</label> */ }
             <input
               type="file"
               name="image"
               id="profile-image"
+              disabled={ isLoading || isChangingPassword}
               onChange={ handleFileChange }
               className="w-full p-2 border rounded hidden"
               accept="image/*"
@@ -247,9 +262,11 @@ export default function Profile({ params }: { params: { lang: string } }) {
               type="text"
               id="name"
               value={ name }
+              disabled={ isLoading|| isChangingPassword }
               onChange={ (e) => setName(e.target.value) }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
             />
+            { errors.name && <p className="mt-1 text-sm text-red-600">{ errors.name }</p> }
           </div>
 
           <div>
@@ -260,10 +277,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
               type="tel"
               id="phone"
               value={ phone }
+              disabled={ isLoading|| isChangingPassword }
               onChange={ (e) => setPhone(e.target.value) }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
               placeholder="رقم الهاتف"
             />
+            { errors.phone && <p className="mt-1 text-sm text-red-600">{ errors.phone }</p> }
           </div>
 
           <div>
@@ -273,11 +292,13 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="text"
               id="address"
+              disabled={ isLoading|| isChangingPassword }
               value={ address }
               onChange={ (e) => setAddress(e.target.value) }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${errors.address ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white` }
               placeholder="العنوان"
             />
+            { errors.address && <p className="mt-1 text-sm text-red-600">{ errors.address }</p> }
           </div>
 
           <div>
@@ -314,11 +335,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="password"
               id="currentPassword"
+              disabled={ isChangingPassword || isLoading }
               value={ currentPassword }
               onChange={ (e) => setCurrentPassword(e.target.value) }
-              required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${passwordErrors.currentPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
             />
+            { passwordErrors.currentPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.currentPassword }</p> }
           </div>
 
           <div>
@@ -328,12 +350,12 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <input
               type="password"
               id="newPassword"
+              disabled={ isChangingPassword || isLoading }
               value={ newPassword }
               onChange={ (e) => setNewPassword(e.target.value) }
-              required
-              minLength={ 6 }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${passwordErrors.newPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
             />
+            { passwordErrors.newPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.newPassword }</p> }
           </div>
 
           <div>
@@ -344,16 +366,16 @@ export default function Profile({ params }: { params: { lang: string } }) {
               type="password"
               id="confirmPassword"
               value={ confirmPassword }
+              disabled={ isChangingPassword || isLoading }
               onChange={ (e) => setConfirmPassword(e.target.value) }
-              required
-              minLength={ 6 }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              className={ `w-full px-3 py-2 border ${passwordErrors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white` }
             />
+            { passwordErrors.confirmPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.confirmPassword }</p> }
           </div>
 
           <button
             type="submit"
-            disabled={ isChangingPassword }
+            disabled={ isChangingPassword || isLoading }
             className="fButton"
           >
             { isChangingPassword ? "جاري تغيير كلمة المرور..." : "تغيير كلمة المرور" }
