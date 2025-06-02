@@ -592,7 +592,7 @@ export default function CategoriesAdminPage() {
             {/* Category list */}
             {loading && !showForm ? (
                 <div className="text-center py-8 dark:text-white">
-                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 dark:border-blue-400 mb-2"></div>
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary dark:border-primary-10 mb-2"></div>
                     <p>Loading categories...</p>
                 </div>
             ) : (

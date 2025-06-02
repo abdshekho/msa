@@ -72,7 +72,7 @@ export async function createOrder(shippingAddress: {
   address: string;
   city: string;
   postalCode: string;
-  country: string;
+  // country: string;
   phone: string;
 }) {
   try {

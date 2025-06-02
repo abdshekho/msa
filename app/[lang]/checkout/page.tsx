@@ -5,19 +5,20 @@ import { useRouter } from 'next/navigation';
 import { getCart } from '@/app/lib/cart/actions';
 import { createOrder } from '@/app/lib/orders/actions';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 interface CheckoutFormData {
   name: string;
   address: string;
   city: string;
   postalCode: string;
-  country: string;
   phone: string;
 }
 
 export default function CheckoutPage({ params }: { params: { lang: string } }) {
   // const lang = params.lang;
   const { lang } = React.use(params)
+  const { data: session, status } = useSession();
   const isArabic = lang === 'ar';
   const router = useRouter();
 
@@ -27,12 +28,12 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState<CheckoutFormData>({
-    name: '',
-    address: '',
+    name: session?.user?.name || '',
+    address: session?.user?.address || '',
     city: '',
     postalCode: '',
     country: '',
-    phone: ''
+    phone: session?.user?.phone || ''
   });
 
   // Fetch cart data
@@ -100,18 +101,18 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8 flex justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary-10"></div>
       </div>
     );
   }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 dark:text-white">
+      <h1 className="text-3xl font-bold mb-8 text-primary dark:text-primary-10">
         { isArabic ? 'إتمام الطلب' : 'Checkout' }
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col-reverse lg:flex-row gap-8">
         {/* Shipping Form */ }
         <div className="lg:w-2/3">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
@@ -156,21 +157,9 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
                 </div>
               </div>
 
-              <div className="mb-4">
-                <label className="block mb-1 dark:text-white">
-                  { isArabic ? 'العنوان' : 'Address' } *
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={ formData.address }
-                  onChange={ handleChange }
-                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                  required
-                />
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block mb-1 dark:text-white">
                     { isArabic ? 'المدينة' : 'City' } *
@@ -187,7 +176,7 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
 
                 <div>
                   <label className="block mb-1 dark:text-white">
-                    { isArabic ? 'الرمز البريدي' : 'Postal Code' } *
+                    { isArabic ? 'الرمز البريدي (اختياري)' : 'Postal Code (optional)' }
                   </label>
                   <input
                     type="text"
@@ -199,7 +188,7 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block mb-1 dark:text-white">
                     { isArabic ? 'البلد' : 'Country' } *
                   </label>
@@ -211,9 +200,22 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
                     required
                   />
-                </div>
+                </div> */}
               </div>
 
+              <div className="mb-4">
+                <label className="block mb-1 dark:text-white">
+                  { isArabic ? 'العنوان' : 'Address' } *
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={ formData.address }
+                  onChange={ handleChange }
+                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                  required
+                />
+              </div>
               <div className="flex justify-between mt-6">
                 <Link
                   href={ `/${lang}/cart` }
@@ -225,11 +227,11 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
                 <button
                   type="submit"
                   disabled={ submitting }
-                  className="py-2 px-6 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-70"
+                  className="py-2 px-6 bg-primary dark:bg-primary text-white rounded hover:opacity-80 disabled:opacity-70"
                 >
                   { submitting
                     ? (isArabic ? 'جاري المعالجة...' : 'Processing...')
-                    : (isArabic ? 'إتمام الطلب' : 'Place Order') }
+                    : (isArabic ? 'إتمام الطلب' : 'Complete The Order') }
                 </button>
               </div>
             </form>
@@ -239,14 +241,14 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
         {/* Order Summary */ }
         <div className="lg:w-1/3">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow sticky top-4">
-            <h2 className="text-xl font-bold mb-4 dark:text-white">
+            <h2 className="text-xl font-bold mb-4 text-primary dark:text-primary-10 text-center">
               { isArabic ? 'ملخص الطلب' : 'Order Summary' }
             </h2>
 
             <div className="space-y-3 mb-4">
               { cart.items.map((item: any) => (
                 <div key={ item._id } className="flex justify-between dark:text-white">
-                  <span>
+                  <span className='text-secondary dark:text-secondary-10'>
                     { isArabic ? item.product.nameAr : item.product.name } x { item.quantity }
                   </span>
                   <span>${ (item.price * item.quantity).toFixed(2) }</span>
@@ -256,16 +258,16 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
 
             <div className="border-t pt-3 mb-4">
               <div className="flex justify-between dark:text-white">
-                <span>{ isArabic ? 'المجموع الفرعي' : 'Subtotal' }</span>
+                <span className='text-secondary dark:text-secondary-10'>{ isArabic ? 'المجموع الفرعي' : 'Subtotal' }</span>
                 <span>${ cart.totalPrice.toFixed(2) }</span>
               </div>
               <div className="flex justify-between dark:text-white">
-                <span>{ isArabic ? 'الشحن' : 'Shipping' }</span>
-                <span>{ isArabic ? 'مجاني' : 'Free' }</span>
+                <span className='text-secondary dark:text-secondary-10'>{ isArabic ? 'الشحن' : 'Shipping' }</span>
+                <span>{ isArabic ? 'حسب العنوان' : 'Based on your address' }</span>
               </div>
               <div className="border-t mt-3 pt-3 font-bold flex justify-between dark:text-white">
-                <span>{ isArabic ? 'المجموع' : 'Total' }</span>
-                <span>${ cart.totalPrice.toFixed(2) }</span>
+                <span className='text-secondary dark:text-secondary-10'>{ isArabic ? 'المجموع' : 'Total' }</span>
+                <span className='text-primary dark:text-primary-10 text-md md:text-lg font-bold'>${ cart.totalPrice.toFixed(2) }</span>
               </div>
             </div>
 

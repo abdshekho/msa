@@ -269,12 +269,12 @@ export default async function AdminOrderDetailPage({
                   <p className="dark:text-white">{serializedOrder.shippingAddress.postalCode}</p>
                 </div>
                 
-                <div>
+                {/* <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                     {isArabic ? 'البلد:' : 'Country:'}
                   </p>
                   <p className="dark:text-white">{serializedOrder.shippingAddress.country}</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
