@@ -23,9 +23,10 @@ export default function MainMenuItem({ item,lang }: any) {
         <div
             onMouseEnter={ handleMouseEnter }
             onMouseLeave={ handleMouseLeave }
-            className="p-2.5 cursor-pointer whitespace-nowrap relative bg-white dark:bg-gray-700 dark:text-white
+            className="flex justify-between p-2.5 cursor-pointer whitespace-nowrap relative bg-white dark:bg-gray-700 dark:text-white
                 hover:bg-gray-100 hover:text-primary dark:hover:text-primary-10 dark:hover:bg-gray-600">
-            <span>{ item.name } ▸</span>
+            <span>{ item.name } </span>
+            {item.items?.length > 0 ? '▸':''} 
             { openSub && (
                 <div className="absolute top-0 left-full  min-w-[200px] shadow-md origin-left animate-[rightToleft_0.3s_alternate]
                 bg-white dark:bg-gray-700 dark:text-white 

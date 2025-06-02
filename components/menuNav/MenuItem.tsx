@@ -17,11 +17,14 @@ export default function MenuItem({ title, items, lang }: any) {
     }
 
     return (
-        <div className="p-2.5 cursor-pointer whitespace-nowrap relative bg-white hover:bg-gray-100
+        <div className="flex justify-between p-2.5 cursor-pointer whitespace-nowrap relative bg-white hover:bg-gray-100
             dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 hover:text-primary dark:hover:text-primary-10"
             onMouseEnter={ () => setOpenSub2(true) }
             onMouseLeave={ () => setOpenSub2(true) }
-        >{ title } ▸
+        >
+            <span>{ title }</span>
+            {items?.length > 0 ? '▸':''} 
+            {/* ▸ */}
             { (openSub2 && items && items.length) && (
                 <div className="absolute top-0 left-full bg-white  dark:bg-gray-700 dark:text-white min-w-[200px] shadow-md 
                 w-[600px] min-h-[430px] origin-left animate-[rightToleft_0.4s_alternate]">
@@ -32,7 +35,7 @@ export default function MenuItem({ title, items, lang }: any) {
                     </span>
                     <div className="absolute top-0 right-0 bg-transparent text-gray-800 h-full flex flex-col items-center justify-center p-2.5 overflow-hidden">
                         <Link href={ `/${lang}/products/${selecetedItem._id}` }>
-                            <Image alt={selecetedItem.name} src={ selecetedItem.imageCover || items[0]?.imageCover || '' } width={ 300 } height={ 300 } className='overflow-hidden object-contain hover:opacity-75' />
+                            <Image alt={ selecetedItem.name } src={ selecetedItem.imageCover || items[0]?.imageCover || '' } width={ 300 } height={ 300 } className='overflow-hidden object-contain hover:opacity-75' />
                             <div className='text-primary dark:text-primary-10 my-4 text-center'>{ selecetedItem.name }</div>
                         </Link>
                         <div className='flex w-[80%] my-4 justify-between items-center'>
