@@ -10,6 +10,7 @@ import ProductTable2 from '@/components/products/ProductTabel2';
 import AddToCartButton from '@/components/products/AddToCartButton';
 import Link from 'next/link';
 import ProductImages from '@/components/products/ProductImages';
+import { FaFileAlt, FaLayerGroup, FaMagic,FaTag } from 'react-icons/fa';
 
 // Define types for the product and related data
 interface ProductType {
@@ -132,19 +133,21 @@ async function ProductPage(
                     </div>
                     {/* Description */}
                     <div className="prose max-w-none mb-8">
-                        <h3 className="head-22 mb-2">
+                        <h3 className="head-22 mb-2 flex gap-1 items-center">
+                            <FaFileAlt />
                             {isArabic ? 'الوصف' : 'Description'}
                         </h3>
                         <p className="desc">{productDesc}</p>
                     </div>
 
                     {/* Features */}
-                    {productFeatures && productFeatures.length > 0 && (
+                {productFeatures && productFeatures.length > 0 && (
                         <div className="mb-8">
-                            <h3 className="head-22 mb-2">
+                            <h3 className="head-22 mb-2 flex gap-1 items-center">
+                                <FaMagic />
                                 {isArabic ? 'المميزات' : 'Features'}
                             </h3>
-                            <ul className="list-disc pl-5 space-y-1 desc">
+                            <ul className="list-disc pl-5 space-y-1 desc mx-1">
                                 {productFeatures.map((feature, index) => (
                                     feature && <li key={index}>{feature}</li>
                                 ))}
@@ -153,10 +156,11 @@ async function ProductPage(
                     )}
 
                     {/* Additional Info */}
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-8">
+                    <div className="grid grid-col-1 md:grid-cols-2 gap-4 text-sm mb-8">
                         {categoryName && (
-                            <div>
-                                <span className="head-22 mx-1">
+                            <div className='flex gap-1 items-center'>
+                                <span className="head-22 mx-1 flex gap-1 items-center">
+                                    <FaLayerGroup />
                                     {isArabic ? 'الفئة:' : 'Category:'}
                                 </span>
                                 <Link href={`/${lang}/categories/${ParentCategory.slug}/${category.slug}`} className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
@@ -166,8 +170,9 @@ async function ProductPage(
                         )}
 
                         {brandName && (
-                            <div>
-                                <span className="head-22 mx-1">
+                            <div className='flex gap-1 items-center'>
+                                <span className="head-22 mx-1 flex gap-1 items-center">
+                                    <FaTag />
                                     {isArabic ? 'العلامة التجارية:' : 'Brand:'}
                                 </span>
                                 <Link href={`/${lang}/brands/${brandName}`} className="hover:text-blue-600 dark:hover:text-secondary hover:underline">

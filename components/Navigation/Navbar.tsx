@@ -118,43 +118,41 @@ export default function NavbarMain({ lang, dictionary }: any) {
                             />
                         }
                     >
-                        <DropdownHeader>
+                        <DropdownHeader className="min-w-[200px]">
                             <span className="block text-sm text-center text-primary">{ session?.user?.name }</span>
-                            <span className="block truncate text-sm font-medium text-secondary dark:text-secondary-10">{ session?.user?.email }</span>
+                            <span className="block truncate text-center text-sm font-medium text-secondary dark:text-secondary-10">{ session?.user?.email }</span>
                         </DropdownHeader>
                         <DropdownDivider />
-                        { session?.user?.role === 'admin' &&
-                            (<DropdownItem className="dark:text-[#ffffffcf]">
-                                <Link href={ `/${lang}/dashboard` }>لوحة التحكم</Link>
-                            </DropdownItem>) }
-
                         <Link href={ `/${lang}/profile` }>
-                            <DropdownItem>
+                            <DropdownItem style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
                                 <FaRegAddressCard className="mx-2" />
                                 {/* الإعدادات */ }
-                                setting
+                                { lang === 'en' ? 'porfile' : 'الملف الشخصي' }
+                                {/* setting */ }
                             </DropdownItem >
+                            <DropdownDivider />
                         </Link>
                         { session?.user?.role === "admin" && (
                             <Link href={ `/${lang}/dashboard` }>
-                                <DropdownItem>
+                                <DropdownItem style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
                                     <FaCog className="mx-2" />
-                                    Dashborad
+                                    { lang === 'en' ? 'Dashboard' : 'لوحة التحكم' }
                                 </DropdownItem>
+                                <DropdownDivider />
                             </Link>
                         ) }
                         { session?.user?.role === "user" && (
                             <Link href={ `/${lang}/orders` }>
-                                <DropdownItem>
+                                <DropdownItem style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
                                     <FaClipboardList className="mx-2" />
-                                    My orders
+                                    { lang === 'en' ? 'My orders' : 'طلباتي' }
                                 </DropdownItem>
+                                <DropdownDivider />
                             </Link>
                         ) }
-                        <DropdownDivider />
-                        <DropdownItem onClick={ handleSignOut }>
+                        <DropdownItem onClick={ handleSignOut } style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
                             <FaSignOutAlt className="mx-2" />
-                            تسجيل الخروج
+                            { lang === 'en' ? 'Sign out' : 'تسجيل الخروج' }
                         </DropdownItem>
                     </Dropdown>
                 ) : (
@@ -190,7 +188,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                 <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>{ dictionary.navbar.brands }</Link>
                 <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>{ dictionary.navbar.services }</Link>
                 <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>{ dictionary.navbar.about }</Link>
-                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" }>{ dictionary.navbar.contact }</Link>
+                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" } style={{border:'none'}}>{ dictionary.navbar.contact }</Link>
                 { lang === 'ar' && < >
                     <NavMenu lang={ lang } />
                 </> }
