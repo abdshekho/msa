@@ -59,7 +59,7 @@ export async function getOrderById(orderId: string) {
       throw new Error('Order not found');
     }
     
-    return order;
+    return  JSON.parse(JSON.stringify(order));
   } catch (error) {
     console.error('Error fetching order:', error);
     throw error;

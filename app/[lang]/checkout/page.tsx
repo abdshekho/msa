@@ -72,7 +72,7 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
 
     try {
       // Validate form
-      const requiredFields = ['name', 'address', 'city', 'postalCode', 'country', 'phone'];
+      const requiredFields = ['name', 'address', 'city','phone'];
       const missingFields = requiredFields.filter(field => !formData[field as keyof CheckoutFormData]);
 
       if (missingFields.length > 0) {
@@ -184,7 +184,6 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
                     value={ formData.postalCode }
                     onChange={ handleChange }
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                    required
                   />
                 </div>
 
