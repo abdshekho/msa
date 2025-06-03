@@ -1,8 +1,12 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
+import { useIsMobile } from '../useIsmobile';
 export default function ProductMenuItem({ item, onSelect, lang }: any) {
     const router = useRouter();
+    const isMobile = useIsMobile();
     const handleClick = () => {
+        console.log(isMobile);
+        if(isMobile)    return;
         router.push(`/${lang}/products/${item._id}`);
     };
     return (

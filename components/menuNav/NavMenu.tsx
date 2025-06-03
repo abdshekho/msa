@@ -76,7 +76,7 @@ const NavMenu = ({ lang }) => {
     return (
         <div>
             { !loading && (
-                <div className="relative"
+                <div className="relative menu__link"
                     onMouseEnter={ handleMouseEnter }
                     onMouseLeave={ handleMouseLeave }
                     style={ { direction: 'ltr' } }
@@ -86,7 +86,7 @@ const NavMenu = ({ lang }) => {
                     </span>
 
                     { visible && (
-                        <div className="dropDown_Product absolute top-0 right-0 min-w-[200px] bg-white text-gray-800  z-[1000] 
+                        <div className="dropDown_Product relative md:absolute top-0 left-0 md:right-0 min-w-[200px] bg-white text-gray-800  z-[1000] 
                         origin-top animate-[topToBottom_0.6s_alternate_forwards]">
                             { categories.map((item) => (
                                 <MainMenuItem item={ item } key={ item._id } lang={ lang } />
