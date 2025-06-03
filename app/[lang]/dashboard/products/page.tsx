@@ -32,6 +32,16 @@ interface Category {
   items: SubCategory[];
 }
 
+const ProductSkeleton = () => (
+  <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden animate-pulse">
+    <div className="h-48 w-full bg-gray-300 dark:bg-gray-700"></div>
+    <div className="p-4">
+      <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+      <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+    </div>
+  </div>
+);
+
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -166,7 +176,7 @@ export default function AdminProducts() {
 
   if (error) {
     return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 px-4 py-3 rounded relative" role="alert">
         <strong className="font-bold">Error!</strong>
         <span className="block sm:inline"> {error}</span>
       </div>
@@ -176,7 +186,7 @@ export default function AdminProducts() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{isArabic ? 'إدارة المنتجات' : 'Product Management'}</h1>
+        <h1 className="text-2xl font-bold dark:text-white">{isArabic ? 'إدارة المنتجات' : 'Product Management'}</h1>
         <Link
           href={`/${lang}/dashboard/Product`}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -186,118 +196,103 @@ export default function AdminProducts() {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            {isArabic ? 'البحث' : 'Search'}
-          </label>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={isArabic ? 'البحث عن منتج...' : 'Search products...'}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+      <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder={isArabic ? 'البحث عن منتج...' : 'Search products...'}
+          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
+        />
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            {isArabic ? 'الفئة' : 'Category'}
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
-              setSelectedSubCategory('all');
-            }}
-            className="w-full p-2 border rounded"
-          >
-            <option value="all">{isArabic ? 'جميع الفئات' : 'All Categories'}</option>
-            {categories.map(category => (
-              <option key={category._id} value={category._id}>
-                {isArabic ? category.nameAr : category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            {isArabic ? 'الفئة الفرعية' : 'Subcategory'}
-          </label>
-          <select
-            value={selectedSubCategory}
-            onChange={(e) => setSelectedSubCategory(e.target.value)}
-            className="w-full p-2 border rounded"
-            disabled={selectedCategory === 'all'}
-          >
-            <option value="all">{isArabic ? 'جميع الفئات الفرعية' : 'All Subcategories'}</option>
-            {getSubCategories().map(subCategory => (
-              <option key={subCategory._id} value={subCategory._id}>
-                {isArabic ? subCategory.nameAr : subCategory.name}
-              </option>
-            ))}
-          </select>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {isArabic ? 'الفئة' : 'Category'}
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+                setSelectedSubCategory('all');
+              }}
+              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            >
+              <option value="all">{isArabic ? 'جميع الفئات' : 'All Categories'}</option>
+              {categories.map(category => (
+                <option key={category._id} value={category._id}>
+                  {isArabic ? category.nameAr : category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {isArabic ? 'الفئة الفرعية' : 'Subcategory'}
+            </label>
+            <select
+              value={selectedSubCategory}
+              onChange={(e) => setSelectedSubCategory(e.target.value)}
+              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              disabled={selectedCategory === 'all'}
+            >
+              <option value="all">{isArabic ? 'جميع الفئات الفرعية' : 'All Subcategories'}</option>
+              {getSubCategories().map(subCategory => (
+                <option key={subCategory._id} value={subCategory._id}>
+                  {isArabic ? subCategory.nameAr : subCategory.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-          <thead>
-            <tr className="bg-gray-100 dark:bg-gray-700">
-              <th className="px-4 py-2 border">{isArabic ? 'الصورة' : 'Image'}</th>
-              <th className="px-4 py-2 border">{isArabic ? 'الاسم' : 'Name'}</th>
-              <th className="px-4 py-2 border">{isArabic ? 'الاسم بالعربية' : 'Arabic Name'}</th>
-              <th className="px-4 py-2 border">{isArabic ? 'السعر' : 'Price'}</th>
-              <th className="px-4 py-2 border">{isArabic ? 'الإجراءات' : 'Actions'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-2 text-center border dark:text-white">
-                  {isArabic ? 'لم يتم العثور على منتجات' : 'No products found'}
-                </td>
-              </tr>
-            ) : (
-              filteredProducts.map((product) => (
-                <tr key={product._id} className="dark:text-white">
-                  <td className="px-4 py-2 border">
-                    <div className="relative h-16 w-16">
-                      <Image
-                        src={product.imageCover}
-                        alt={isArabic ? product.nameAr : product.name}
-                        fill
-                        className="object-cover rounded"
-                        sizes="64px"
-                      />
-                    </div>
-                  </td>
-                  <td className="px-4 py-2 border">{product.name}</td>
-                  <td className="px-4 py-2 border">{product.nameAr}</td>
-                  <td className="px-4 py-2 border">${product.price}</td>
-                  <td className="px-4 py-2 border">
-                    <div className="flex space-x-2">
-                      <Link 
-                        href={`/${lang}/dashboard/Product?id=${product._id}`} 
-                        className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                      >
-                        {isArabic ? 'تعديل' : 'Edit'}
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(product._id)}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                      >
-                        {isArabic ? 'حذف' : 'Delete'}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {filteredProducts.length === 0 ? (
+        <div className="text-center py-12 dark:text-white">
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            {isArabic ? 'لم يتم العثور على منتجات' : 'No products found'}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <div key={product._id} className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+              <div className="relative h-48 w-full">
+                <Image
+                  src={product.imageCover.startsWith('/') ? product.imageCover : `/${product.imageCover}`}
+                  alt={product.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="font-semibold text-lg mb-2 dark:text-white">
+                  {product.name}
+                </h3>
+                <p className="text-blue-600 dark:text-blue-400 font-bold mb-3">
+                  ${product.price.toFixed(2)}
+                </p>
+                <div className="flex justify-between mt-2">
+                  <Link 
+                    href={`/${lang}/dashboard/Product?id=${product._id}`} 
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm"
+                  >
+                    {isArabic ? 'تعديل' : 'Edit'}
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(product._id)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
+                  >
+                    {isArabic ? 'حذف' : 'Delete'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

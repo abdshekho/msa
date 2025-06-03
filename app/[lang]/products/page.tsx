@@ -57,7 +57,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(8);
+  const [productsPerPage] = useState(1);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -216,7 +216,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
         <input
           type="text"
           placeholder={isArabic ? "البحث عن منتجات..." : "Search products..."}
-          className="w-full p-2 mb-4 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+          className="w-full my-6 p-2 shadow-md rounded  bg-card-10 dark:bg-gray-700 dark:text-white border-2 border-card-10 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
@@ -224,9 +224,9 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           }}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 py-4">
           <div>
-            <label className="block mb-2 font-medium dark:text-white">
+            <label className="block mb-2 font-bold text-secondary dark:text-secondary-10">
               {isArabic ? 'الفئة' : 'Category'}
             </label>
             <select
@@ -239,9 +239,9 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                   subcategory: null
                 });
               }}
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full p-3 border-none outline-0 shadow-md rounded bg-card-10 dark:bg-gray-700 dark:text-white"
             >
-              <option value="all">{isArabic ? 'الكل' : 'All'}</option>
+              <option className='p-2 border border-b-[1px]' value="all">{isArabic ? 'الكل' : 'All'}</option>
               {categories.map(cat => (
                 <option key={cat._id} value={cat._id}>
                   {isArabic ? cat.nameAr : cat.name}
@@ -251,7 +251,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           </div>
 
           <div>
-            <label className="block mb-2 font-medium dark:text-white">
+            <label className="block mb-2 font-bold text-secondary dark:text-secondary-10">
               {isArabic ? 'الفئة الفرعية' : 'Subcategory'}
             </label>
             <select
@@ -262,7 +262,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                   subcategory: e.target.value === 'all' ? null : e.target.value 
                 });
               }}
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full p-3 border-none outline-0 shadow-md rounded bg-card-10 dark:bg-gray-700 dark:text-white"
               disabled={selectedCategory === 'all'}
             >
               <option value="all">{isArabic ? 'الكل' : 'All'}</option>
@@ -275,7 +275,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           </div>
 
           <div>
-            <label className="block mb-2 font-medium dark:text-white">
+            <label className="block mb-2 font-bold text-secondary dark:text-secondary-10">
               {isArabic ? 'نطاق السعر' : 'Price Range'}
             </label>
             <div className="flex gap-2 items-center">
@@ -284,7 +284,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                 value={priceRange[0]}
                 min={0}
                 onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                className="w-1/3 p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                className="w-1/3 p-2 shadow-md rounded  bg-card-10 dark:bg-gray-700 dark:text-white border-2 border-card-10 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
               <span className="dark:text-white">-</span>
               <input
@@ -292,7 +292,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                 value={priceRange[1]}
                 min={priceRange[0]}
                 onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                className="w-1/3 p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                className="w-1/3 p-2 shadow-md rounded  bg-card-10 dark:bg-gray-700 dark:text-white border-2 border-card-10 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
               <button
                 onClick={() =>
@@ -301,7 +301,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                     maxPrice: String(priceRange[1])
                   })
                 }
-                className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600"
+                className="text-white px-3 py-2 rounded bg-primary hover:opacity-80"
               >
                 {isArabic ? 'تطبيق' : 'Apply'}
               </button>
@@ -311,7 +311,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           <div className="flex items-end justify-end">
             <button
               onClick={clearFilters}
-              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-2 px-4 rounded"
+              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-secondary dark:text-secondary-10 py-2 px-4 rounded"
             >
               {isArabic ? 'مسح الفلاتر' : 'Clear Filters'}
             </button>
@@ -333,15 +333,15 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                   <div className="relative h-48 w-full">
                     <Image
                       src={product.imageCover.startsWith('/') ? product.imageCover : `/${product.imageCover}`}
-                      alt={isArabic ? product.nameAr : product.name}
+                      alt={product.name}
                       fill
-                      className="object-contain"
+                      className="object-contain hover:opacity-80"
                     />
                   </div>
                 </Link>
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-2 dark:text-white">
-                    {isArabic ? product.nameAr : product.name}
+                  <h3 className="font-semibold text-lg my-6 text-center text-primary dark:text-primary-10">
+                    { product.name}
                   </h3>
                   <div className='flex justify-between items-center'>
                     <span className="text-blue-600 dark:text-blue-400 font-bold">${product.price.toFixed(2)}</span>
@@ -355,11 +355,11 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center mt-8">
-              <nav className="flex items-center">
+              <nav className="flex items-center gap-2">
                 <button
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`px-3 py-1 rounded-l-md ${currentPage === 1 ? 'cursor-not-allowed text-gray-400' : 'hover:bg-gray-300'}`}
+                  className={`px-4 py-2 shadow-2xl rounded-l-md bg-card-10 dark:bg-gray-700 ${currentPage === 1 ? 'cursor-not-allowed text-gray-400' : 'hover:bg-secondary hover:text-white'}`}
                 >
                   {isArabic ? 'السابق' : 'Previous'}
                 </button>
@@ -367,7 +367,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                   <button
                     key={num}
                     onClick={() => paginate(num)}
-                    className={`px-3 py-1 ${num === currentPage ? 'bg-blue-500 text-white' : 'hover:bg-gray-300'}`}
+                    className={`px-4 py-2 shadow-2xl rounded-full mx-1 ${num === currentPage ? 'bg-primary rounded-full text-white' : 'hover:bg-secondary hover:text-white bg-card-10 dark:bg-gray-700  '}`}
                   >
                     {num}
                   </button>
@@ -375,7 +375,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                 <button
                   onClick={() => paginate(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`px-3 py-1 rounded-r-md ${currentPage === totalPages ? 'cursor-not-allowed text-gray-400' : 'hover:bg-gray-300'}`}
+                  className={`px-4 py-2 shadow-2xl rounded-r-md bg-card-10 dark:bg-gray-700 ${currentPage === totalPages ? 'cursor-not-allowed text-gray-400' : 'hover:bg-secondary hover:text-white'}`}
                 >
                   {isArabic ? 'التالي' : 'Next'}
                 </button>
@@ -390,7 +390,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           </p>
           <button
             onClick={clearFilters}
-            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            className="mt-4 bg-primary  text-white py-2 px-4 rounded"
           >
             {isArabic ? 'إعادة ضبط الفلاتر' : 'Reset Filters'}
           </button>
