@@ -159,15 +159,15 @@ export default function NavbarMain({ lang, dictionary }: any) {
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <Link
                             href={ `/${lang}/auth/signin` }
-                            className="flex items-center text-sm font-medium text-primary dark:text-primary  hover:text-primary-10  mx-2"
+                            className="flex items-center text-sm font-medium border-[1px] rounded-lg px-2 sm:px-4 py-2 border-primary text-primary dark:text-primary  hover:text-primary-10  mx-2"
                         >
                             <FaUserAlt className="mx-1" />
                             { lang === 'en' ? 'Login' : 'تسجيل الدخول' }
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
-                            className="flex items-center text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-2 sm:px-4 py-2
-                             dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
+                            className="hidden md:flex items-center text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm 
+                            px-2 sm:px-4 py-2 dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
                             <FaUserPlus className="mx-1" />
                             { lang === 'en' ? 'Signup' : 'إنشاء حساب' }
@@ -188,7 +188,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                 <Link href={ `/${lang}/brands` } className={ pathname.split('/')[2] === 'brands' ? "active__link" : "menu__link" }>{ dictionary.navbar.brands }</Link>
                 <Link href={ `/${lang}/services` } className={ pathname.split('/')[2] === 'services' ? "active__link" : "menu__link" }>{ dictionary.navbar.services }</Link>
                 <Link href={ `/${lang}/about` } className={ pathname.split('/')[2] === 'about' ? "active__link" : "menu__link" }>{ dictionary.navbar.about }</Link>
-                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" } style={{border:'none'}}>{ dictionary.navbar.contact }</Link>
+                <Link href={ `/${lang}/contact` } className={ pathname.split('/')[2] === 'contact' ? "active__link" : "menu__link" } style={ { border: 'none' } }>{ dictionary.navbar.contact }</Link>
                 { lang === 'ar' && < >
                     <NavMenu lang={ lang } />
                 </> }

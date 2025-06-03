@@ -46,14 +46,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // حماية المسارات التي تتطلب مصادقة
-  const token = await getToken({ req: request });
+  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   const isAuth = !!token;
 
   // استخراج اللغة من المسار
   const locale = pathname.split('/')[1];
 
   // المسارات المحمية
-  const protectedPaths = ['/dashboard', '/profile', '/admin'];
+  const protectedPaths = ['/orders', '/profile', '/cart', '/checkout'];
   const isProtectedPath = protectedPaths.some(path =>
     pathname.startsWith(`/${locale}${path}`)
   );
@@ -78,12 +78,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // إعادة التوجيه إلى الصفحة الرئيسية إذا كان المستخدم يحاول الوصول إلى صفحة الإدارة وليس لديه صلاحيات
-  // const isAdminPath = pathname.startsWith(`/${locale}/admin`);
-  // if (isAdminPath && (!isAuth || token?.role !== 'admin')) {
-  //   return NextResponse.redirect(
-  //     new URL(`/${locale}`, request.url)
-  //   );
-  // }
+  const isAdminPath = pathname.startsWith(`/${locale}/dashboard`);
+  if (isAdminPath && (!isAuth || token?.role !== 'admin')) {
+    return NextResponse.redirect(
+      new URL(`/${locale}`, request.url)
+    );
+  }
 
   return NextResponse.next();
 }

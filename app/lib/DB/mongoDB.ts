@@ -35,17 +35,17 @@ async function connectToDatabase() {
         };
 
         cached.promise = mongoose.connect( MONGODB_URI, opts ).then( ( mongoose ) => {
-            console.log( '✅MongoDB is connected✅' );
+            console.log( '✅MongoDB is connecting ....✅' );
             return mongoose;
         } ) as any;
     }
 
     try {
         cached.conn = await cached.promise;
-        log( '✅ اتصال ناجح بقاعدة البيانات MongoDB' );
+        log( '✅ MongoDB connected ✅' );
     } catch ( e ) {
         cached.promise = null;
-        log( '❌ خطأ في الاتصال بقاعدة البيانات MongoDB' ); 
+        log( '❌ Connect Error in MongoDB ❌' ); 
         throw e;
     }
 

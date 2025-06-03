@@ -1,14 +1,13 @@
 import ServicesList from '../../../components/services/ServicesList';
 import ServiceHero from '../../../components/services/ServiceHero';
-import { getDictionary } from '@/get-dictionary';
+// import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 
-export default async function ServicesPage({
-  params: { lang },
-}: {
-  params: { lang: Locale };
-}) {
-  const dictionary = await getDictionary(lang);
+export default async function ServicesPage({params}: {params: { lang: Locale };}) 
+{
+  const resolvedParam = await params;
+  const lang = resolvedParam.lang;
+  // const dictionary = await getDictionary(lang);
   
   return (
     <div className="min-h-screen">
