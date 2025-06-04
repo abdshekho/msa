@@ -106,6 +106,12 @@ input {
         top: 30px;
     }
 }
+.dropDown_normal{
+    transform-origin: top;
+    animation-name: topToBottom;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+}
 .dropDown_Product {
     position: absolute;
     top: 18px;

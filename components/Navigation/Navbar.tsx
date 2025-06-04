@@ -44,10 +44,10 @@ const them = {
         "base": "flex items-center"
     },
     "collapse": {
-        "base": "w-full md:block md:w-auto",
+        "base": "w-full md:block md:w-auto dropDown_normal",
         "list": "mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium",
         "hidden": {
-            "on": "hidden",
+            "on": "hidden ",
             "off": ""
         }
     },
@@ -67,6 +67,10 @@ const them = {
         "icon": "h-6 w-6 shrink-0",
         "title": "sr-only"
     }
+}
+
+const themd = {
+  "content": "py-1 focus:outline-none dropDown_normal",
 }
 export default function NavbarMain({ lang, dictionary }: any) {
     const { data: session, status } = useSession();
@@ -88,7 +92,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
     };
 
     return (
-        <Navbar style={ { direction: 'ltr' } }
+        <Navbar style={ { direction: 'ltr' } } theme={them}
             // className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }>
             className={ `bg-white dark:bg-[#1F2937]` }>
             {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */ }
@@ -109,6 +113,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                     <Dropdown
                         arrowIcon={ false }
                         inline
+                        theme={themd}
                         label={
                             <Avatar
                                 alt={ session?.user?.name || "User" }

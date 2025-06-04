@@ -10,6 +10,9 @@ import { useCart } from '@/app/lib/cart/CartContext';
 
 export default function CartDropdown() {
   const { cart, loading, refreshCart } = useCart();
+
+  console.log('🚀 ~ CartDropdown.tsx ~ CartDropdown ~ useCart():', useCart());
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();

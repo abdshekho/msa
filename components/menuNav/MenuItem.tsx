@@ -12,7 +12,7 @@ export default function MenuItem({ title, items, lang }: any) {
 
     const handleItemSelect = (item: any) => {
         // setSelectedImage(item.imageCover);
-        console.log(item);
+        // console.log(item);
         setSelecetedItem(item);
     }
 
@@ -40,7 +40,7 @@ export default function MenuItem({ title, items, lang }: any) {
                         </Link>
                         <div className='flex w-[80%] my-4 justify-between items-center'>
                             <span className="text-blue-600 dark:text-blue-400 font-bold">${ selecetedItem.price.toFixed(2) }</span>
-                            <AddToCartButton productId={ selecetedItem._id.toString() } className='text-base flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-2 py-2  rounded-lg' />
+                            <AddToCartButton lang={lang} productId={ selecetedItem._id.toString() } className='text-base flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-2 py-2  rounded-lg' />
                         </div>
                     </div>
                 </div>

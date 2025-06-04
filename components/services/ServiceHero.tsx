@@ -5,10 +5,10 @@ import { useParams } from 'next/navigation';
 export default function ServiceHero({lang}) {
     
     return (
-        <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4" style={{direction:'ltr'}}>
+        <div className="relative bg-gradient-to-t md:bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-4" style={{direction:'ltr'}}>
             <div className="container mx-auto px-4">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
-                    <div className="w-full lg:w-1/3 mb-10 md:mb-0" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
+                    <div className="w-full lg:w-1/3 mb-10 md:mb-0 mt-[-200px] md:mt-0" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
                         <h1 className="text-2xl md:text-5xl font-bold mb-4">
                             {lang === 'ar' ? 'خدماتنا' : 'Our Services'}
                         </h1>

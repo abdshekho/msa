@@ -11,9 +11,9 @@ interface AddToCartButtonProps {
   children?: React.ReactNode;
 }
 
-export default function AddToCartButton({ productId, className }: AddToCartButtonProps) {
+export default function AddToCartButton({ productId, lang, className }: AddToCartButtonProps) {
   const [loading, setLoading] = useState(false);
-
+  const [added, setAdded] = useState(false);
   const handleAddToCart = async () => {
     try {
       setLoading(true);
@@ -22,6 +22,8 @@ export default function AddToCartButton({ productId, className }: AddToCartButto
       if (result.success) {
         // Trigger cart update event to refresh cart UI
         triggerCartUpdate();
+        setAdded(true); // Show "Added"
+        setTimeout(() => setAdded(false), 500); // Revert after 2s
       } else {
         console.error('Failed to add to cart:', result.error);
       }
@@ -36,10 +38,17 @@ export default function AddToCartButton({ productId, className }: AddToCartButto
     <button
       onClick={ handleAddToCart }
       disabled={ loading }
-      className={ className || "flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  rounded-lg" }
+      className={ className || `flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  
+        rounded-lg ${loading ? ' animate-pulse' : ''} ${added ? ' animate-ping' : ''}` }
     >
       <FaCartPlus />
-      { loading ? 'Adding...' : 'Add to Cart' }
+      { lang === 'ar' ? (loading ? 'يتم الإضافة...'
+        : added ? 'تمت الإضافة'
+          : 'أضف إلى السلة')
+        : (loading ? 'Adding...'
+          : added ? 'Added'
+            : 'Add to Cart')
+      }
     </button>
   );
 }

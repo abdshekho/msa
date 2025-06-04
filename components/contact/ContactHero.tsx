@@ -2,10 +2,10 @@ import { FaSolarPanel } from 'react-icons/fa';
 import UndrawTeamwork from '@/public/svg/contact2.svg';
 export default function ContactHero() {
     return (
-        <div className="relative bg-gradient-to-r from-teal-600 to-teal-800 text-white py-20 px-4">
+        <div className="relative bg-gradient-to-b md:bg-gradient-to-r from-teal-600 to-teal-800 text-white py-20 px-4">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
-                    <div className="w-full lg:w-1/3 mb-10 md:mb-0">
+                    <div className="w-full lg:w-1/3 mb-10 md:mb-0 mt-[-150px] md:mt-0">
                         <h1 className="text-2xl md:text-5xl font-bold mb-4">Solar Power Services</h1>
                         <p className="text-md md:text-xl mb-8">
                             Harness the power of the sun with our comprehensive solar energy solutions.
