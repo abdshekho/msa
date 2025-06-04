@@ -2,8 +2,8 @@ import React from 'react'
 import { Carousel, createTheme, ThemeProvider } from "flowbite-react";
 import Image from "next/image";
 
-export default function CarouselMain() {
-    const mainTheme ={
+export default function CarouselMain({ lang }) {
+    const mainTheme = {
         "root": {
             "base": "relative h-full w-full",
             "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
@@ -11,11 +11,11 @@ export default function CarouselMain() {
         },
         "indicators": {
             "active": {
-                "off": "bg-white/50 hover:bg-secondary dark:bg-secondary-10 dark:hover:bg-secondary",
+                "off": "bg-secondary hover:bg-secondary dark:bg-secondary-10 dark:hover:bg-secondary",
                 "on": "bg-primary dark:bg-primary"
             },
             "base": "h-3 w-3 rounded-full",
-            "wrapper": "absolute bottom-5 left-1/2 flex -translate-x-1/2 space-x-3"
+            "wrapper": "absolute bottom-5 left-1/2 flex -translate-x-1/2 space-x-3 z-2"
         },
         "item": {
             "base": "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2",
@@ -26,7 +26,7 @@ export default function CarouselMain() {
         },
         "control": {
             "base": "inline-flex h-8 w-8 items-center justify-center bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white sm:h-10 sm:w-10 dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70",
-            "icon": "h-5 w-5 text-white sm:h-6 sm:w-6 dark:text-gray-800"
+            "icon": "h-5 w-5 text-white sm:h-6 sm:w-6 dark:text-white"
         },
         "scrollContainer": {
             "base": "flex h-full snap-mandatory overflow-y-hidden overflow-x-hidden  scroll-smooth",
@@ -34,26 +34,110 @@ export default function CarouselMain() {
         }
     };
     return (
-        <div className="h-[40vh] lg:h-[calc(100vh-66px)]">
-            <Carousel slide={ false } className='relative overflow-x-hidden' theme={ mainTheme } style={{direction: 'ltr'}}>
+        <div className="relative h-[40vh] lg:h-[calc(100vh-66px)]">
+            <div className="custom-shape-divider-bottom-1749044904">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M1200 0L0 0 598.97 114.72 1200 0z" className="shape-fill"></path>
+                </svg>
+            </div>
+            <Carousel slide={ false } className='relative overflow-x-hidden' theme={ mainTheme } style={ { direction: 'ltr' } }>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
-                        src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1920&auto=format&fit=crop"
+                        // src='/en/carousel/technical.webp'
+                        // src='/en/carousel/technical.png'
+                        src='/en/carousel/technicalm.webp'
                         alt="الطاقة الشمسية للمنازل"
                         // className="object-fill opacity-60 h-full md:h-auto w-full"
-                        className="opacity-40 h-full w-full"
+                        className=" h-full w-full"
                     />
-                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">حلول الطاقة الشمسية للمنازل</h2>
-                        <p className="text-md lg:text-xl mb-6 text-[lightgrey]">وفر في فواتير الكهرباء واستثمر في مستقبل أكثر استدامة مع أنظمة الطاقة الشمسية عالية الكفاءة</p>
-                        <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
-                            استكشف الحلول المنزلية
-                        </button>
-                        {/* <button role="button" className="golden-button">
-                            <span className="golden-text">
-                            استكشف الحلول المنزلية
-                            </span>
-                        </button> */}
+                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-70"></div>
+                    <div className="absolute left-0 z-10 text-center text-white px-4 md:px-12 max-w-2xl top-[90px]">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue]">
+                            { lang === 'en' ? "Free Consultation" : "استشارة مجانية مع خبرائنا" }
+                        </h2>
+                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
+                        <p className="text-sm lg:text-xl mb-2 md:mb-6 text-white ">
+                            { lang === 'en' ?
+                                'Get free consultations and expert solutions to choose the best system for your needs.'
+                                :
+                                'احصل على استشارات وحلول مجانية من خبرائنا لمساعدتك في اختيار النظام الأنسب.'
+                            }
+                        </p>
+                        <div className='flex justify-center gap-2'>
+                            <button className="bg-primary  hover:bg-primary-10   text-white md:font-bold py-1.5 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Services" : "خدماتنا" }
+                            </button>
+                            <button className="border border-white  hover:bg-[#053862] md:font-bold text-sm md:text-base py-1.5 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
+                    <img
+                        // src='/en/carousel/technical.webp'
+                        // src='/en/carousel/technical.png'
+                        src='/en/carousel/handshake.jpg'
+                        alt="الطاقة الشمسية للمنازل"
+                        // className="object-fill opacity-60 h-full md:h-auto w-full"
+                        className=" h-full w-full"
+                    />
+                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40 blur-3xl"></div>
+                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[50px]">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
+                            {/* {lang === 'en'? "" : "" } */ }
+                            { lang === 'en' ? "Our Partners" : "شركاؤنا" }
+                        </h2>
+                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
+                        <p className="text-md lg:text-xl mb-6 text-white ">
+                            { lang === 'en' ?
+                                'We partner with leading global companies to bring you the latest and most reliable energy products — guaranteed quality and performance.'
+                                :
+                                'نتعاون مع كبرى الشركات العالمية لتوفير أحدث وأفضل منتجات الطاقة بكفاءة وجودة مضمونة'
+                            }
+                        </p>
+                        <div className='flex justify-center gap-2'>
+                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Brands" : "العلامات التجارية" }
+                            </button>
+                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Our Partners" : "شركاؤنا" }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
+                    <img
+                        // src='/en/carousel/technical.webp'
+                        // src='/en/carousel/technical.png'
+                        src='/en/carousel/technical.jpeg'
+                        alt="الطاقة الشمسية للمنازل"
+                        // className="object-fill opacity-60 h-full md:h-auto w-full"
+                        className=" h-full w-full"
+                    />
+                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40"></div>
+                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[70px]">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
+                            {/* {lang === 'en'? "" : "" } */ }
+                            { lang === 'en' ? "We provide" : "نقدم لكم" }
+                        </h2>
+                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
+                        <p className="text-md lg:text-xl mb-6 text-white ">
+                            { lang === 'en' ?
+                                'installation, maintenance, and shipping services for all our products across all regions — fast and professionally.'
+                                :
+                                'خدمات تركيب، صيانة، وشحن لجميع منتجاتنا إلى كافة المناطق بسرعة واحترافية.'
+                            }
+                        </p>
+                        <div className='flex justify-center gap-2'>
+                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Discover our products" : "تصفح منتجاتنا" }
+                            </button>
+                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">

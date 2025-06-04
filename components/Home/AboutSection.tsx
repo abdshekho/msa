@@ -12,7 +12,7 @@ export default function AboutSection({ lang }: { lang: string }) {
           <div className="md:w-1/2">
             <div className="relative h-80 w-full rounded-lg overflow-hidden">
               <Image
-                src="/svg/about-image.jpg"
+                src="/en/company.jpg"
                 alt={isArabic ? "من نحن" : "About Us"}
                 fill
                 className="object-cover"

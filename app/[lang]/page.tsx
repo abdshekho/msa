@@ -13,23 +13,23 @@ export default async function IndexPage(props: { params: Promise<{ lang: Locale 
 
   return (
     <div className="relative">
-      {/* Hero Carousel */}
-      <CarouselMain />
-      
-      {/* Featured Categories */}
-      <CategorySection lang={lang} />
-      
-      {/* Featured Products */}
-      <FeaturedProducts lang={lang} />
-      
-      {/* Partner Companies */}
-      <PartnerLogos lang={lang} />
-      
-      {/* About Section */}
-      <AboutSection lang={lang} />
-      
-      {/* Call to Action */}
-      <CallToAction lang={lang} />
+      {/* Hero Carousel */ }
+      <CarouselMain lang={ lang } />
+
+      {/* Featured Categories */ }
+      <CategorySection lang={ lang } />
+
+      {/* Featured Products */ }
+      <FeaturedProducts lang={ lang } />
+
+      {/* Partner Companies */ }
+      <PartnerLogos lang={ lang } />
+
+      {/* About Section */ }
+      <AboutSection lang={ lang } />
+
+      {/* Call to Action */ }
+      <CallToAction lang={ lang } />
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function PartnerLogos({ lang }: { lang: string }) {
     { name: 'APC', logo: '/companies/APC_logo_toggle.svg', back: '#ffffff' },
     { name: 'Jinko', logo: Jinko, back: '#37ab30' },
     { name: 'Jinko', logo: Deye, back: '#ffffff' },
-    { name: 'ASCO', logo: '/companies/ASCO_logo_toggle.svg',back: '#ffffff' },
+    { name: 'ASCO', logo: '/companies/ASCO_logo_toggle.svg', back: '#ffffff' },
     { name: 'Impact', logo: '/companies/Impact Co logo English Black-01-177x54.svg', back: '#ffffff' },
     { name: 'squareD', logo: '/companies/squareD.svg', back: '#50b163' },
     { name: 'sunpower', logo: '/companies/Sunpower-Logo-White.svg', back: '#374151' },
@@ -28,7 +28,12 @@ export default function PartnerLogos({ lang }: { lang: string }) {
   // const repeatedPartners = [...partners];
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 py-12" style={{direction:"ltr"}}>
+    <div className="relative bg-gray-100 dark:bg-gray-800 py-20" style={ { direction: "ltr" } }>
+      {/* <div className="custom-shape-divider-top-1749048043">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M598.97 114.72L0 0 0 120 1200 120 1200 0 598.97 114.72z" className="shape-fill"></path>
+        </svg>
+      </div> */}
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-center mb-8 dark:text-white">
           { isArabic ? 'شركاؤنا' : 'Our Partners' }
@@ -36,10 +41,10 @@ export default function PartnerLogos({ lang }: { lang: string }) {
 
         <div className="overflow-hidden relative w-full">
           <div className="flex animate-marquee w-max">
-          {/* <div className="flex w-max"> */}
+            {/* <div className="flex w-max"> */ }
             { repeatedPartners.map((partner, index) => (
               <div key={ index } className="flex-shrink-0 w-40 mx-8">
-                <div className={ `h-24 rounded-lg shadow flex items-center justify-center p-4` } style={{ backgroundColor: partner.back }}>
+                <div className={ `h-24 rounded-lg shadow flex items-center justify-center p-4` } style={ { backgroundColor: partner.back } }>
                   <Image
                     src={ partner.logo }
                     alt={ partner.name }
@@ -66,6 +71,11 @@ export default function PartnerLogos({ lang }: { lang: string }) {
           </div>
         </div>
       </div>
+      {/* <div className="custom-shape-divider-bottom-1749046574">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M598.97 114.72L0 0 0 120 1200 120 1200 0 598.97 114.72z" className="shape-fill"></path>
+        </svg>
+      </div> */}
     </div>
   );
 }
