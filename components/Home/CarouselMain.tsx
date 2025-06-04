@@ -3,7 +3,7 @@ import { Carousel, createTheme, ThemeProvider } from "flowbite-react";
 import Image from "next/image";
 
 export default function CarouselMain() {
-    const mainTheme = createTheme({
+    const mainTheme ={
         "root": {
             "base": "relative h-full w-full",
             "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
@@ -32,10 +32,10 @@ export default function CarouselMain() {
             "base": "flex h-full snap-mandatory overflow-y-hidden overflow-x-hidden  scroll-smooth",
             "snap": "snap-x"
         }
-    });
+    };
     return (
         <div className="h-[40vh] lg:h-[calc(100vh-66px)]">
-            <Carousel slide={ true } className='overflow-x-hidden' theme={ mainTheme }>
+            <Carousel slide={ false } className='relative overflow-x-hidden' theme={ mainTheme } style={{direction: 'ltr'}}>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
                         src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1920&auto=format&fit=crop"

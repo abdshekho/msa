@@ -164,14 +164,14 @@ export default function NavbarMain({ lang, dictionary }: any) {
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <Link
                             href={ `/${lang}/auth/signin` }
-                            className="flex items-center text-sm font-medium border-[1px] rounded-lg px-2 sm:px-4 py-2 border-primary text-primary dark:text-primary  hover:text-primary-10  mx-2"
+                            className="flex items-center text-sm font-medium border-[1px] rounded-lg px-2 sm:px-4 py-2 border-primary text-primary dark:text-primary  hover:text-primary-10  focus:outline-none dark:focus:ring-primary-10 mx-2"
                         >
                             <FaUserAlt className="mx-1" />
                             { lang === 'en' ? 'Login' : 'تسجيل الدخول' }
                         </Link>
                         <Link
                             href={ `/${lang}/auth/signup` }
-                            className="hidden md:flex items-center text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm 
+                            className="hidden md:flex items-center text-white bg-primary hover:bg-primary-10 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm 
                             px-2 sm:px-4 py-2 dark:bg-primary dark:hover:bg-primary-10 focus:outline-none dark:focus:ring-primary-10"
                         >
                             <FaUserPlus className="mx-1" />

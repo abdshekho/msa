@@ -197,7 +197,12 @@ input {
 
 
 
-
+@keyframes headerSection {
+    0%   {    width: calc(100% + 1.3px); height: 75px;}
+    50%   {    width: calc(125% + 1.3px);height: 20px;}
+    100%   {    width: calc(100% + 1.3px);height: 75px;}
+    
+}
 
 /* Hero section */
 .custom-shape-divider-top-1747581643 {
@@ -212,7 +217,8 @@ input {
 .custom-shape-divider-top-1747581643 svg {
     position: relative;
     display: block;
-    width: calc(100% + 1.3px); 
+    width: calc(100% + 1.3px);
+    /* animation: headerSection 0.7s ease-in-out normal; */
     /* 300% on mobile */
     height: 75px;
 }
@@ -229,6 +235,7 @@ input {
 .dark .custom-shape-divider-top-1747581643 .shape-fill {
     fill: #1f2937; 
 }
+
 
 
 /* footer section */

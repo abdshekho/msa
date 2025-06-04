@@ -4,7 +4,7 @@ export function FooterMSA() {
     return (
         // <footer className="bg-gradient-to-l from-card-10 to-[#b1980b50] dark:from-card dark:to-[#86882856] relative pt-[100px]">
         <footer style={ { direction: 'ltr' } } className="bg-gradient-to-t md:bg-gradient-to-l from-card-10 to-[#b1980b2d]
-            dark:from-card dark:to-[#d2881134] relative pt-[100px] mt-40">
+            dark:from-card dark:to-[#d2881134] relative pt-[50px] md:pt-[100px] mt-40">
             <div className="custom-shape-divider-top-55555555555">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
@@ -18,10 +18,10 @@ export function FooterMSA() {
                             <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">MSA sunpower</span>
                         </a>
                     </div>
-                    <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+                    <div className="grid grid-cols-3 gap-8 sm:gap-6 sm:grid-cols-3 my-8 md:my-0 text-center">
                         <div>
-                            <h2 className="mb-6 text-sm font-bold text-primary  uppercase ">Resources</h2>
-                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                            <h2 className="mb-6  text-sm font-bold text-primary  uppercase ">Resources</h2>
+                            <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm ">
                                 <li className="mb-4">
                                     <a href="/" className="hover:underline text-secondary dark:text-secondary-10">Flowbite</a>
                                 </li>
@@ -32,7 +32,7 @@ export function FooterMSA() {
                         </div>
                         <div>
                             <h2 className="mb-6 text-sm font-bold uppercase text-primary">Follow us</h2>
-                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                            <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm">
                                 <li className="mb-4">
                                     <a href="https://github.com/themesberg/flowbite" className="hover:underline text-secondary dark:text-secondary-10">Github</a>
                                 </li>
@@ -43,7 +43,7 @@ export function FooterMSA() {
                         </div>
                         <div>
                             <h2 className="mb-6 text-sm font-bold uppercase text-primary">Legal</h2>
-                            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                            <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm">
                                 <li className="mb-4">
                                     <a href="#" className="hover:underline text-secondary dark:text-secondary-10">Privacy Policy</a>
                                 </li>
