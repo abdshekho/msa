@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface IOrderItem {
   product: mongoose.Schema.Types.ObjectId;
@@ -65,7 +66,8 @@ const OrderSchema: Schema = new Schema(
       phone: { type: String, required: true }
     }
   },
-  { timestamps: true }
+      syriaTimezoneSchemaOptions
+
 );
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);

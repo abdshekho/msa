@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface IService extends Document {
     title: string;
@@ -24,7 +25,7 @@ const ServiceSchema: Schema = new Schema(
         isActive: { type: Boolean, default: true },
         order: { type: Number, default: 0 }
     },
-    { timestamps: true }
+    syriaTimezoneSchemaOptions
 );
 
 export default mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);

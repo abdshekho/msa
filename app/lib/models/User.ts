@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface IUser extends Document {
     name: string;
@@ -22,7 +23,8 @@ const UserSchema: Schema = new Schema(
         image: { type: String },
         role: { type: String, default: 'user' },
     },
-    { timestamps: true }
+        syriaTimezoneSchemaOptions
+
 );
 
 // Create indexes for better performance

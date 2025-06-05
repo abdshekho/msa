@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface ITemplate extends Document {
     name: string;
@@ -22,7 +23,8 @@ const TemplateSchema: Schema = new Schema(
             isSectionHeader: { type: Boolean, default: false }
         }]
     },
-    { timestamps: true }
+        syriaTimezoneSchemaOptions
+
 );
 
 export default mongoose.models.Template || mongoose.model<ITemplate>('Template', TemplateSchema);

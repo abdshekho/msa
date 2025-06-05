@@ -223,7 +223,7 @@ input {
     height: 75px;
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 780px) {
 .custom-shape-divider-top-1747581643 svg {
     width: calc(130% + 1.3px); 
     }
@@ -259,7 +259,7 @@ input {
     height: 75px;
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 780px) {
 .custom-shape-divider-top-55555555555 svg {
     width: calc(230% + 1.3px); 
     }

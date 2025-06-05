@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface ICategory extends Document {
     name: string;
@@ -44,7 +45,7 @@ const CategorySchema: Schema = new Schema(
         isActive: { type: Boolean, default: true },
         order: { type: Number, default: 0 }
     },
-    { timestamps: true }
+        syriaTimezoneSchemaOptions
 );
 
 // Create indexes for better performance

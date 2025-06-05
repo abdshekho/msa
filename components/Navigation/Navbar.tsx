@@ -75,7 +75,9 @@ const themd = {
 export default function NavbarMain({ lang, dictionary }: any) {
     const { data: session, status } = useSession();
 
-    // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
+    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
+    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ status:', status);
+
 
     const pathname = usePathname();
 
@@ -117,7 +119,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                         label={
                             <Avatar
                                 alt={ session?.user?.name || "User" }
-                                img={ session?.user?.image || "/profile.webp" }
+                                img={session?.user?.image || "/profile.webp" }
                                 rounded
                                 className=""
                             />

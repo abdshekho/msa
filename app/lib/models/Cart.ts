@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface ICartItem {
   product: mongoose.Schema.Types.ObjectId;
@@ -45,7 +46,7 @@ const CartSchema: Schema = new Schema(
       default: 0
     }
   },
-  { timestamps: true }
+      syriaTimezoneSchemaOptions
 );
 
 // Calculate total price before saving

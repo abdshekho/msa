@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface IBrand extends Document {
     name: string;
@@ -20,7 +21,8 @@ const BrandSchema: Schema = new Schema(
         description: { type: String },
         descriptionAr: { type: String },
     },
-    { timestamps: true }
+        syriaTimezoneSchemaOptions
+
 );
 
 // Create indexes for better performance

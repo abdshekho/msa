@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
 export interface IProduct extends Document {
     name: string;
@@ -57,7 +58,7 @@ const ProductSchema: Schema = new Schema(
             }]
         }
     },
-    { timestamps: true }
+    syriaTimezoneSchemaOptions
 );
 
 // Add pre-save hook to generate slug from name if not provided
