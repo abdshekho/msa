@@ -1,5 +1,5 @@
 import React from 'react';
-import { getServerSession } from 'next-auth';
+// import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import { getOrderStatistics } from '@/app/lib/orders/admin-actions';
@@ -14,11 +14,11 @@ export default async function DashboardPage({ params }: { params: { lang: string
   const isArabic = lang === 'ar';
   
   // Check if user is logged in and is admin
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
   
-  if (!session?.user || session.user.role !== 'admin') {
-    redirect(`/${lang}`);
-  }
+  // if (!session?.user || session.user.role !== 'admin') {
+  //   redirect(`/${lang}`);
+  // }
   
   // Get order statistics
   const { success, statistics, error } = await getOrderStatistics();

@@ -14,6 +14,7 @@ import {
   FaTools,
   FaShoppingCart,
   FaUsers,
+  FaClipboardList,
 } from 'react-icons/fa';
 
 // import clsx from 'clsx';
@@ -25,7 +26,8 @@ const links = [
   { name: 'categories', href: '/dashboard/categories', icon: FaTags ,nameAr:'التصنيفات'},
   { name: 'brands', href: '/dashboard/brands', icon: FaIndustry ,nameAr:'العلامات التجارية'},
   { name: 'services', href: '/dashboard/services', icon: FaTools ,nameAr:'الخدمات'},
-  { name: 'orders', href: '/dashboard/orders', icon: FaShoppingCart ,nameAr:'الطلبات'},
+  { name: 'orders', href: '/dashboard/orders', icon: FaClipboardList ,nameAr:'الطلبات'},
+  { name: 'carts', href: '/dashboard/carts', icon: FaShoppingCart ,nameAr:'السلات'},
   { name: 'users', href: '/dashboard/users', icon: FaUsers ,nameAr:'المستخدمين'},
 ];
 

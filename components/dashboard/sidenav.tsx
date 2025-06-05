@@ -11,7 +11,6 @@ import { signOut } from 'next-auth/react';
 
 export default function SideNav({ lang }) {
 
-  console.log('🚀 ~ sidenav.tsx ~ SideNav ~ lang:', lang);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: `/${lang}` });

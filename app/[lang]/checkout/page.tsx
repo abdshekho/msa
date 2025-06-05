@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { getCart } from '@/app/lib/cart/actions';
 import { createOrder } from '@/app/lib/orders/actions';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 
 interface CheckoutFormData {
   name: string;
@@ -17,8 +16,7 @@ interface CheckoutFormData {
 
 export default function CheckoutPage({ params }: { params: { lang: string } }) {
   // const lang = params.lang;
-  const { lang } = React.use(params)
-  const { data: session, status } = useSession();
+  const { lang } = React.use(params);
   const isArabic = lang === 'ar';
   const router = useRouter();
 
@@ -28,18 +26,40 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState<CheckoutFormData>({
-    name: session?.user?.name || '',
-    address: session?.user?.address || '',
+    name: '',
+    address: '',
     city: '',
     postalCode: '',
-    country: '',
-    phone: session?.user?.phone || ''
+    phone: ''
   });
 
   // Fetch cart data
   useEffect(() => {
+
+    const fetchUserData = async () => {
+      try {
+        setSubmitting(true)
+        const response = await fetch('/api/user/me');
+        if (response.ok) {
+          const userData = await response.json();
+          setFormData({
+            name: userData.name,
+            address: userData.address,
+            phone: userData.phone,
+            city: "",
+            postalCode: "",
+          })
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setSubmitting(false)
+      }
+    };
+
     async function loadCart() {
       try {
+        setLoading(true);
         const cartData = await getCart();
         setCart(cartData);
 
@@ -56,6 +76,10 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
     }
 
     loadCart();
+    fetchUserData();
+
+
+
   }, [lang, router, isArabic]);
 
   // Handle form input changes
@@ -72,7 +96,7 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
 
     try {
       // Validate form
-      const requiredFields = ['name', 'address', 'city','phone'];
+      const requiredFields = ['name', 'address', 'city', 'phone'];
       const missingFields = requiredFields.filter(field => !formData[field as keyof CheckoutFormData]);
 
       if (missingFields.length > 0) {
@@ -98,7 +122,7 @@ export default function CheckoutPage({ params }: { params: { lang: string } }) {
     }
   };
 
-  if (loading) {
+  if (loading || submitting) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8 flex justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary-10"></div>

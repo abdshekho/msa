@@ -135,6 +135,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
                 variant="outlined"
                 label={dictionary.page.signin.Email}
                 type="email"
+                dir="ltr"
                 theme={ customTheme }
                 autoComplete="email"
                 { ...register("email") }
@@ -149,6 +150,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
                 variant="outlined"
                 label={dictionary.page.signin.password}
                 type="password"
+                dir="ltr"
                 theme={ customTheme }
                 autoComplete="current-password"
                 { ...register("password") }

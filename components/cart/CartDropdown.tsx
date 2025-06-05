@@ -69,8 +69,8 @@ export default function CartDropdown() {
               </div>
             ) : (
               cart?.items?.map((item) => (
-                <div key={ item._id } className=' p-3 border-b border-gray-200 dark:border-gray-600 last:border-0'>
-                  <div  className="flex items-center">
+                <div key={ item._id } className=' p-3 border-b border-gray-200 dark:border-gray-600 last:border-0 bg-card-10 dark:bg-card'>
+                  <div className="flex items-center">
                     <div className="w-12 h-12 relative flex-shrink-0">
                       <Image
                         src={ item.product.imageCover.startsWith('/') ? item.product.imageCover : `/${item.product.imageCover}` }
@@ -108,13 +108,22 @@ export default function CartDropdown() {
                   ${ cart?.totalPrice?.toFixed(2) || '0.00' }
                 </span>
               </div>
-              <div className="px-4 py-2">
+              <div className='flex gap-2.5 my-4 justify-around text-sm'>
                 <Link
                   href={ `/${lang}/cart` }
-                  className="block w-full text-center py-2 px-4 bg-primary hover:bg-primary-10 text-white rounded-md"
+                  className="block text-center py-2 px-3  border broder-[1px] border-secondary text-secondary dark:border-white
+                    dark:text-white rounded-md hover:bg-secondary-10"
                   onClick={ () => setIsOpen(false) }
                 >
                   { isArabic ? 'عرض السلة' : 'View Cart' }
+                </Link>
+
+                <Link
+                  href={ `/${lang}/checkout` }
+                  className="block text-center py-2 px-3 bg-primary hover:bg-primary-10 text-white rounded-md"
+                  onClick={ () => setIsOpen(false) }
+                >
+                  { isArabic ? 'إنشاء طلب' : 'Create order' }
                 </Link>
               </div>
             </>

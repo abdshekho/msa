@@ -117,7 +117,8 @@ export async function createOrder(shippingAddress: {
     revalidatePath('/[lang]/orders');
     revalidatePath('/[lang]/cart');
     
-    return { success: true, orderId: order._id };
+    // return { success: true, orderId: order._id };
+    return { success: true, orderId: JSON.parse(JSON.stringify(order._id)) };
   } catch (error) {
     console.error('Error creating order:', error);
     return { success: false, error: error.message };

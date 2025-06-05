@@ -134,7 +134,7 @@ export default async function CartPage({ params }: { params: { lang: string } })
           </p>
           <Link
             href={ `/${lang}/products` }
-            className="inline-block py-3 px-8 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+            className="inline-block py-3 px-8 bg-primary text-white font-medium rounded-md hover:bg-primary-10 transition-colors"
           >
             { isArabic ? 'تصفح المنتجات' : 'Browse Products' }
           </Link>
