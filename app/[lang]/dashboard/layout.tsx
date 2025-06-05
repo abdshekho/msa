@@ -1,12 +1,14 @@
 'use client';
 import SideNav from '@/components/dashboard/sidenav';
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
 
+
+    const lang = usePathname().slice(1,3) || 'en';
 
 
     // التحقق من حالة الجلسة
@@ -21,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-[calc(100vh-60px)] flex-col md:flex-row md:overflow-hidden">
             <div className="w-full flex-none md:w-64">
-                <SideNav />
+                <SideNav lang={lang}/>
             </div>
             <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{ children }</div>
         </div>

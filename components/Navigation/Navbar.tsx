@@ -70,13 +70,10 @@ const them = {
 }
 
 const themd = {
-  "content": "py-1 focus:outline-none dropDown_normal",
+    "content": "py-1 focus:outline-none dropDown_normal",
 }
 export default function NavbarMain({ lang, dictionary }: any) {
     const { data: session, status } = useSession();
-
-    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
-    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ status:', status);
 
 
     const pathname = usePathname();
@@ -94,7 +91,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
     };
 
     return (
-        <Navbar style={ { direction: 'ltr' } } theme={them}
+        <Navbar style={ { direction: 'ltr' } } theme={ them }
             // className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }>
             className={ `bg-white dark:bg-[#1F2937]` }>
             {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */ }
@@ -111,19 +108,21 @@ export default function NavbarMain({ lang, dictionary }: any) {
 
                 { isLoading ? (
                     <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
-                ) : isAuthenticated ? (
+                ) : isAuthenticated && session?.user ? (
                     <Dropdown
                         arrowIcon={ false }
                         inline
-                        theme={themd}
-                        label={
-                            <Avatar
-                                alt={ session?.user?.name || "User" }
-                                img={session?.user?.image || "/profile.webp" }
-                                rounded
-                                className=""
-                            />
+                        theme={ themd }
+                        label=
+                        {
+                            <Image src={ session?.user?.image || "/profile.webp" } alt={ "user" } width={ 40 } height={ 40 } className="rounded-full" />
                         }
+                    // <Avatar
+                    //     alt={ session?.user?.name || "User" }
+                    //     img={session?.user?.image || "/profile.webp" }
+                    //     rounded
+                    //     className=""
+                    // />
                     >
                         <DropdownHeader className="min-w-[200px]">
                             <span className="block text-sm text-center text-primary">{ session?.user?.name }</span>
@@ -158,8 +157,10 @@ export default function NavbarMain({ lang, dictionary }: any) {
                             </Link>
                         ) }
                         <DropdownItem onClick={ handleSignOut } style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
-                            <FaSignOutAlt className="mx-2" />
-                            { lang === 'en' ? 'Sign out' : 'تسجيل الخروج' }
+                            <span className="flex items-center text-red-500 dark:text-red-400">
+                                <FaSignOutAlt className="mx-2" />
+                                { lang === 'en' ? 'Sign out' : 'تسجيل الخروج' }
+                            </span>
                         </DropdownItem>
                     </Dropdown>
                 ) : (
