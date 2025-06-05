@@ -225,7 +225,10 @@ input {
 
 @media screen and (max-width: 580px) {
 .custom-shape-divider-top-1747581643 svg {
-    width: calc(230% + 1.3px); 
+    width: calc(130% + 1.3px); 
+    }
+        .custom-shape-divider-top-1747581643 svg {
+        height: 40px;
     }
 }
 .custom-shape-divider-top-1747581643 .shape-fill {
@@ -260,6 +263,7 @@ input {
 .custom-shape-divider-top-55555555555 svg {
     width: calc(230% + 1.3px); 
     }
+
 }
 .custom-shape-divider-top-55555555555 .shape-fill {
     fill: #ffffff;

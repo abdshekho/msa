@@ -354,8 +354,8 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center mt-8">
-              <nav className="flex items-center gap-2">
+            <div className="flex justify-center mt-8" dir='ltr'>
+              <nav className="flex items-center gap-2 md:gap-4 flex-wrap">
                 <button
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}

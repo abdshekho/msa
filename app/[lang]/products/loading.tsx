@@ -3,7 +3,7 @@ import React from 'react';
 export default function ProductsLoading() {
   return (
     <div className='relative container mx-auto'>
-        <div className="h-12 w-[200px] bg-gray-300 dark:bg-gray-600 rounded my-8 animate-pulse mx-auto md:mx-1"></div>
+      <div className="h-12 w-[200px] bg-gray-300 dark:bg-gray-600 rounded my-8 animate-pulse mx-auto"></div>
       {/* Hero section skeleton */ }
       <div className="h-[400px] md:h-[232px] px-10 my-10 bg-gray-200 dark:bg-gray-700 animate-pulse flex flex-col justify-around items-center">
         <div className="h-12 w-full bg-gray-300 dark:bg-gray-600 rounded mb-4 animate-pulse"></div>
@@ -17,7 +17,7 @@ export default function ProductsLoading() {
           </div>
           <div className="h-12 flex justify-end w-full md:w-1/5">
             <div className="h-12 w-30 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
-            {/* <div className="h-12 w-30 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div> */}
+            {/* <div className="h-12 w-30 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div> */ }
           </div>
         </div>
       </div>

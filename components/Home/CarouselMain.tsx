@@ -35,7 +35,7 @@ export default function CarouselMain({ lang }) {
     };
     return (
         <div className="relative h-[40vh] lg:h-[calc(100vh-66px)]">
-            <div className="custom-shape-divider-bottom-1749044904">
+            <div className="custom-shape-divider-bottom-1749044904  hidden md:flex">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M1200 0L0 0 598.97 114.72 1200 0z" className="shape-fill"></path>
                 </svg>
@@ -50,9 +50,9 @@ export default function CarouselMain({ lang }) {
                         // className="object-fill opacity-60 h-full md:h-auto w-full"
                         className=" h-full w-full"
                     />
-                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-70"></div>
-                    <div className="absolute left-0 z-10 text-center text-white px-4 md:px-12 max-w-2xl top-[90px]">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue]">
+                    <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black opacity-70"></div>
+                    <div className="absolute left-0 z-10 text-center text-white px-4 md:px-12 max-w-2xl top-[50%] md:top-[90px]">
+                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue]">
                             { lang === 'en' ? "Free Consultation" : "استشارة مجانية مع خبرائنا" }
                         </h2>
                         {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
@@ -64,10 +64,10 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="bg-primary  hover:bg-primary-10   text-white md:font-bold py-1.5 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                            <button className="bg-primary  hover:bg-primary-10 text-sm  md:text-base  text-white md:font-bold py-1 px-2 md:py-3 md:px-6 rounded-lg transition-all">
                                 { lang === 'en' ? "Services" : "خدماتنا" }
                             </button>
-                            <button className="border border-white  hover:bg-[#053862] md:font-bold text-sm md:text-base py-1.5 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                            <button className="border border-white  hover:bg-[#053862] md:font-bold text-sm md:text-base py-1 px-2 md:py-3 md:px-6 rounded-lg transition-all">
                                 { lang === 'en' ? "Contact us" : "تواصل معنا" }
                             </button>
                         </div>
