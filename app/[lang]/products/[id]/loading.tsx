@@ -32,7 +32,7 @@ export default function ProductDetailLoading() {
             {/* Features */ }
             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-[100px] mb-4 animate-pulse"></div>
             { [...Array(6)].map((_, index) => (
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
+              <div key={index} className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2 animate-pulse"></div>
             )) }
             {/* Brand and category */ }
             <div className='flex justify-between items-center my-6'>

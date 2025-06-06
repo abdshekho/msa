@@ -91,7 +91,7 @@ export default function SolarCalculator() {
 
     return (
         <form onSubmit={ handleSubmit(onSubmit) } className="p-6 max-w-5xl mx-auto space-y-4 text-black dark:text-white mt-10">
-            <h1 className="text-center text-2xl font-bold text-primary my-10">حاسبة الطاقة</h1>
+            <h1 className="text-center text-2xl font-bold text-primary my-10">احسب الطاقة والاجهزة اللازمة</h1>
 
             <div className="grid grid-cols-6 font-semibold text-center text-secondary dark:text-secondary-10">
                 <div>الجهاز</div>
