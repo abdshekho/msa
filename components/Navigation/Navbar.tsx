@@ -75,7 +75,7 @@ const themd = {
 export default function NavbarMain({ lang, dictionary }: any) {
     const { data: session, status } = useSession();
 
-    console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
+    // console.log('🚀 ~ Navbar.tsx ~ NavbarMain ~ session:', session);
 
 
 

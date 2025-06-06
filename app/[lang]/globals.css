@@ -388,3 +388,23 @@ input {
     0%   {transform: scaleX(0);}
     100% {transform: scalex(1);}
 }
+
+@keyframes opacityFull {
+    0%   {opacity: 0;transform: translateY(50px);}
+    100%   {opacity: 1;transform: translateY(0px);}
+}
+@keyframes opacityHidden {
+    0%   {opacity: 1;transform: translateY(50px);}
+    100%   {opacity: 0;transform: translateY(0px);}
+}
+
+.opacityfull {
+    animation-name: opacityFull;
+    animation-duration: 0.7s;
+    animation-direction: normal;
+}
+.opacityhidden {
+    animation-name: opacityHidden;
+    animation-duration: 0.7s;
+    animation-direction: normal;
+}
