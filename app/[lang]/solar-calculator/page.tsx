@@ -3,7 +3,7 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { use, useEffect } from 'react';
+import { use, useEffect, useState } from 'react';
 import { FaCalculator, FaCarBattery, FaPlus, FaSolarPanel } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import { BsDeviceSsd } from 'react-icons/bs';
@@ -30,7 +30,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function SolarCalculator() {
     const lang = usePathname().slice(1, 3) || 'en';
-    const { control, register, handleSubmit, watch, trigger,setValue, formState: { errors } } = useForm<FormData>({
+    const { control, register, handleSubmit, watch, trigger, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [
                 { name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: false }
@@ -45,6 +45,44 @@ export default function SolarCalculator() {
     });
 
     const devices = watch('devices');
+    const [voltageBattery, setVoltageBattery] = useState(12.5);
+    const [voltagePanel, setVoltagePanel] = useState(705);
+
+    const [outputValue, setOutputValue] = useState({
+        nPanel: 0,
+        nBattery: 0,
+        cInverter: 0
+    });
+    const handelVotageBatttery = (e) => {
+        const oldValue = voltageBattery;
+        const newValue = parseFloat(e.target.value);
+        
+        if (newValue && oldValue && outputValue.nBattery > 0) {
+            setOutputValue((prev) => {
+                return {
+                    nPanel: prev.nPanel,
+                    nBattery: (prev.nBattery * oldValue) / newValue,
+                    cInverter: prev.cInverter
+                }
+            });
+        }
+        setVoltageBattery(newValue);
+    }
+    const handelVotagePanel = (e) => {
+        const oldValue = voltagePanel;
+        const newValue = parseFloat(e.target.value);
+        
+        if (newValue && oldValue && outputValue.nPanel > 0) {
+            setOutputValue((prev) => {
+                return {
+                    nPanel: (prev.nPanel * oldValue) / newValue,
+                    nBattery: prev.nBattery,
+                    cInverter: prev.cInverter
+                }
+            });
+        }
+        setVoltagePanel(newValue);
+    }
 
     const onSubmit = (data: FormData) => {
 
@@ -61,11 +99,15 @@ export default function SolarCalculator() {
         }, 0);
         const capacityOfBattery = totalEvening / 0.8
         // 12.5 voltage of battery
-        const NumberOfBattery = capacityOfBattery / 12.5 / 1000 / 0.7
+        const NumberOfBattery = capacityOfBattery / voltageBattery / 1000 / 0.7
 
         // 705 is watt of panel
-        const NumberOfPanel = (capacityOfBattery + totalMorning) / 4.8 / 705 / 0.8
-
+        const NumberOfPanel = (capacityOfBattery + totalMorning) / 4.8 / voltagePanel / 0.8
+        setOutputValue({
+            nPanel: NumberOfPanel,
+            nBattery: NumberOfBattery,
+            cInverter: 0
+        })
         alert(`
                 total watt: ${total}
                 totalMornign: ${totalMorning}
@@ -211,9 +253,9 @@ export default function SolarCalculator() {
                     </label>
                     <input
                         type="number"
+                        value={ voltagePanel } onChange={ (e) => handelVotagePanel(e) }
                         className="w-full text-center my-4 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         placeholder={ lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
-                        onFocus={ (e) => e.target.select() }
                     />
                     <div
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
@@ -225,7 +267,7 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Number of panels' : 'عدد الألواح' }
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                                1
+                                { outputValue.nPanel }
                             </p>
                         </div>
                     </div>
@@ -234,12 +276,17 @@ export default function SolarCalculator() {
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         { lang === 'en' ? 'Battery Voltage (V)' : 'قدرة اللوح (واط)' }
                     </label>
-                    <input
+                    {/* <input
                         type="number"
                         className="w-full text-center my-4 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         placeholder={ lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
-                        onFocus={ (e) => e.target.select() }
-                    />
+                    /> */}
+                    <select className='w-full text-center my-4 px-3 py-2.5 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white'
+                        name="" id="" value={ voltageBattery } onChange={ (e) => handelVotageBatttery(e) }>
+                        <option value="12.5">12 V</option>
+                        <option value="24">24 V</option>
+                        <option value="48">48 V</option>
+                    </select>
                     <div
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
                         <div className="flex flex-col items-center text-center">
@@ -250,7 +297,7 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Number of battery' : 'عدد البطاريات' }
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                                1
+                                { outputValue.nBattery }
                             </p>
                         </div>
                     </div>
@@ -263,7 +310,6 @@ export default function SolarCalculator() {
                         type="number"
                         className="w-full text-center my-4 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         placeholder={ lang === 'en' ? 'Average sun hours (h)' : 'قدرة اللوح (واط)' }
-                        onFocus={ (e) => e.target.select() }
                     />
                     <div
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
