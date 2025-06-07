@@ -30,7 +30,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function SolarCalculator() {
     const lang = usePathname().slice(1, 3) || 'en';
-    const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+    const { control, register, handleSubmit, watch, trigger,setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [
                 { name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: false }
@@ -87,6 +87,7 @@ export default function SolarCalculator() {
                     const justChangedName = initialDevice?.name !== d.name;
                     if (justChangedName) {
                         setValue(`devices.${i}.wattage`, selectedOption.wattage);
+                        trigger(`devices.${i}.wattage`)
                     }
                 }
             }
@@ -95,7 +96,7 @@ export default function SolarCalculator() {
 
     return (
         <div className='p-2 sm:p-6 max-w-7xl mx-auto space-y-4 text-black dark:text-white mt-10 bg-gray-50 dark:bg-gray-700 rounded-2xl'>
-            <form onSubmit={ handleSubmit(onSubmit) } className="">
+            <form onSubmit={ handleSubmit(onSubmit) } className="" dir='ltr'>
                 <h1 className="text-center text-2xl font-bold text-primary my-10">احسب الطاقة والاجهزة اللازمة</h1>
 
                 <div className="grid grid-cols-6 font-semibold text-xs md:text-sm py-4 text-center bg-gray-300 dark:bg-bgm rounded-t-2xl text-secondary dark:text-secondary-10">
@@ -115,7 +116,7 @@ export default function SolarCalculator() {
                             { isCustom ? (
                                 <input
                                     { ...register(`devices.${index}.name`) }
-                                    className="p-2 rounded col-span-1 text-center"
+                                    className="p-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                     placeholder="اسم الجهاز"
                                     onFocus={ (e) => e.target.select() }
 
@@ -123,7 +124,7 @@ export default function SolarCalculator() {
                             ) : (
                                 <select
                                     { ...register(`devices.${index}.name`) }
-                                    className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center bg-white dark:bg-card "
+                                    className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center bg-white dark:bg-card focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                 >
                                     <option value="" className='text-gray-300'>{ lang === 'en' ? 'Select device' : 'اختر جهاز' }</option>
                                     { deviceOptions.map((d, i) => (
@@ -135,15 +136,16 @@ export default function SolarCalculator() {
                             <input
                                 { ...register(`devices.${index}.wattage`) }
                                 type="number"
-                                className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center"
+                                className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                 placeholder="واط"
                                 onFocus={ (e) => e.target.select() }
+
                             />
 
                             <input
                                 { ...register(`devices.${index}.count`) }
                                 type="number"
-                                className="px-0 md:px-2 py-2  rounded col-span-1 text-center"
+                                className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                 placeholder="العدد"
                                 onFocus={ (e) => e.target.select() }
                             />
@@ -151,7 +153,7 @@ export default function SolarCalculator() {
                             <input
                                 { ...register(`devices.${index}.morning`) }
                                 type="number"
-                                className="px-0 md:px-2 py-2  rounded col-span-1 text-center"
+                                className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center border border-[transparent] focus:outline-none focus:ring-primary focus:border-primary"
                                 placeholder="الصباح"
                                 onFocus={ (e) => e.target.select() }
                             />
@@ -159,7 +161,7 @@ export default function SolarCalculator() {
                             <input
                                 { ...register(`devices.${index}.evening`) }
                                 type="number"
-                                className="px-0 md:px-2 py-2  rounded col-span-1 text-center"
+                                className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                 placeholder="المساء"
                                 onFocus={ (e) => e.target.select() }
                             />
@@ -177,11 +179,11 @@ export default function SolarCalculator() {
                     );
                 }) }
 
-                <div className="flex gap-4 mt-8 justify-around">
+                <div className="flex gap-4 mt-8 justify-around" dir='ltr'>
                     <button
                         type="button"
                         onClick={ () => append({ name: '', wattage: deviceOptions[0].wattage, count: 1, morning: 2, evening: 2, isCustom: false }) }
-                        className="bg-green-800 text-white px-4 py-2 rounded flex justify-between items-center"
+                        className="bg-green-800 text-white px-4 py-3 rounded flex justify-between items-center"
                     >
                         <FaPlus className='mx-2' />
                         أضف من القائمة
@@ -190,13 +192,13 @@ export default function SolarCalculator() {
                     <button
                         type="button"
                         onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: true }) }
-                        className="bg-secondary text-white px-4 py-2 rounded flex justify-between items-center"
+                        className="bg-secondary text-white px-4 py-3 rounded flex justify-between items-center"
                     >
                         <FaPlus className='mx-2' />
                         أضف مخصص
                     </button>
                 </div>
-                <button type="submit" className="bg-primary text-white px-4 py-2 rounded flex justify-between items-center my-10 mx-auto">
+                <button type="submit" className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto">
                     <FaCalculator className='mx-2' />
                     احسب الاستطاعة
                 </button>
