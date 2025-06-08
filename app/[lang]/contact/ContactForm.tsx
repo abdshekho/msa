@@ -42,8 +42,8 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 dark:text-white">
+    <div className="border-b-4 border-teal-700 bg-gradient-to-br from-white to-gray-100 dark:from-gray-700 dark:to-gray-800  rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-10 max-w-3xl mx-auto">
+      <h2 className="text-2xl font-bold mb-10 text-gray-800 dark:text-white text-center">
         {dict.info.sendMessage}
       </h2>
 
@@ -60,7 +60,7 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 ">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {dict.form.name}
@@ -124,7 +124,7 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="fButton w-full"
+          className="bg-teal-700 text-white rounded-md w-full p-2.5 hover:opacity-70"
         >
           {isSubmitting ? dict.form.sending : dict.form.submit}
         </button>
