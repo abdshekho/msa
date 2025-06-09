@@ -112,6 +112,12 @@ input {
     animation-duration: 0.4s;
     animation-direction: normal;
 }
+.dropDown_close {
+    transform-origin: top;
+    animation-name: BottomToTop;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+}
 .dropDown_Product {
     position: absolute;
     top: 18px;
@@ -207,7 +213,7 @@ input {
 /* Hero section */
 .custom-shape-divider-top-1747581643 {
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 0;
     width: 100%;
     overflow: hidden;
@@ -394,8 +400,8 @@ input {
     100%   {opacity: 1;transform: translateY(0px);}
 }
 @keyframes opacityHidden {
-    0%   {opacity: 1;transform: translateY(50px);}
-    100%   {opacity: 0;transform: translateY(0px);}
+    0%   {opacity: 1;transform: scaleY(1);}
+    100%   {opacity: 0;transform: scaleY(0);}
 }
 
 .opacityfull {
@@ -404,6 +410,7 @@ input {
     animation-direction: normal;
 }
 .opacityhidden {
+    transform-origin: top;
     animation-name: opacityHidden;
     animation-duration: 0.7s;
     animation-direction: normal;

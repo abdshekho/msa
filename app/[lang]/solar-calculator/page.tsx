@@ -18,10 +18,10 @@ const deviceOptions = [
 const schema = z.object({
     devices: z.array(z.object({
         name: z.string().min(1, 'اسم الجهاز مطلوب'),
-        wattage: z.coerce.number().min(1, 'الواط يجب أن يكون 1 أو أكثر'),
-        count: z.coerce.number().min(1, 'العدد يجب أن يكون 1 أو أكثر'),
-        morning: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر'),
-        evening: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر'),
+        wattage: z.coerce.number().min(1, 'الواط يجب أن يكون 1 أو أكثر').max(10000, 'تأكد من الاستطاعة'),
+        count: z.coerce.number().min(1, 'العدد يجب أن يكون 1 أو أكثر').max(99, 'تأكد من عدد الأجهزة'),
+        morning: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر').max(15, 'تأكد من ساعات التشغيل في الصباح'),
+        evening: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر').max(15, 'تأكد من ساعات التشغيل في المساء'),
         isCustom: z.boolean().optional()
     })),
 });
@@ -33,12 +33,20 @@ export default function SolarCalculator() {
     const { control, register, handleSubmit, watch, trigger, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [
-                { name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: false }
+                { name: '', wattage: 0, count: 1, morning: 6, evening: 6, isCustom: false }
             ]
         },
         resolver: zodResolver(schema),
     });
-
+    const handleRemove = (index) => {
+        const d = document.getElementsByClassName('row-' + index)[0];
+        d.classList.toggle('opacityfull')
+        d.classList.toggle('opacityhidden')
+        console.log(d);
+        setTimeout(() => {
+            remove(index)
+        }, 500)
+    }
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'devices'
@@ -47,6 +55,8 @@ export default function SolarCalculator() {
     const devices = watch('devices');
     const [voltageBattery, setVoltageBattery] = useState(12.5);
     const [voltagePanel, setVoltagePanel] = useState(705);
+    const [capacityInverter, setCapacityInverter] = useState(0);
+
 
     const [outputValue, setOutputValue] = useState({
         nPanel: 0,
@@ -56,7 +66,7 @@ export default function SolarCalculator() {
     const handelVotageBatttery = (e) => {
         const oldValue = voltageBattery;
         const newValue = parseFloat(e.target.value);
-        
+
         if (newValue && oldValue && outputValue.nBattery > 0) {
             setOutputValue((prev) => {
                 return {
@@ -71,7 +81,7 @@ export default function SolarCalculator() {
     const handelVotagePanel = (e) => {
         const oldValue = voltagePanel;
         const newValue = parseFloat(e.target.value);
-        
+
         if (newValue && oldValue && outputValue.nPanel > 0) {
             setOutputValue((prev) => {
                 return {
@@ -99,14 +109,28 @@ export default function SolarCalculator() {
         }, 0);
         const capacityOfBattery = totalEvening / 0.8
         // 12.5 voltage of battery
-        const NumberOfBattery = capacityOfBattery / voltageBattery / 1000 / 0.7
+        let NumberOfBattery = 0;
+        const capacityInverter = total * 1.7;
+        if (capacityInverter < 1600) {
+            NumberOfBattery = capacityOfBattery / 12.5 / 1000 / 0.7
+            setVoltageBattery(12.5);
+
+        } else if ((capacityInverter > 1600) && (capacityInverter < 3100)) {
+            NumberOfBattery = capacityOfBattery / 24 / 1000 / 0.7
+            setVoltageBattery(24);
+
+        } else if (capacityInverter > 3100) {
+            setVoltageBattery(48);
+            NumberOfBattery = capacityOfBattery / 48 / 1000 / 0.7
+        }
+
 
         // 705 is watt of panel
         const NumberOfPanel = (capacityOfBattery + totalMorning) / 4.8 / voltagePanel / 0.8
         setOutputValue({
             nPanel: NumberOfPanel,
             nBattery: NumberOfBattery,
-            cInverter: 0
+            cInverter: total * 1.7
         })
         alert(`
                 total watt: ${total}
@@ -154,7 +178,7 @@ export default function SolarCalculator() {
                     const isCustom = devices[index]?.isCustom;
 
                     return (
-                        <div key={ field.id } className="grid grid-cols-6 gap-2 items-center bg-white dark:bg-card p-2 border-b-[1px] border-gray-200 dark:border-gray-700 opacityfull">
+                        <div key={ field.id } className={ `grid grid-cols-6 gap-2 items-center bg-white dark:bg-card p-2 border-b-[1px] border-gray-200 dark:border-gray-700 ${'row-' + index} opacityfull` }>
                             { isCustom ? (
                                 <input
                                     { ...register(`devices.${index}.name`) }
@@ -208,7 +232,7 @@ export default function SolarCalculator() {
                                 onFocus={ (e) => e.target.select() }
                             />
 
-                            <button type="button" onClick={ () => remove(index) } className="text-red-600 col-span-1">🗑️</button>
+                            <button type="button" onClick={ () => handleRemove(index) } className="text-red-600 col-span-1">🗑️</button>
 
                             { errors.devices?.[index] && (
                                 <div className="col-span-7 text-red-500 text-sm mt-1 text-center">
@@ -224,7 +248,8 @@ export default function SolarCalculator() {
                 <div className="flex gap-4 mt-8 justify-around" dir='ltr'>
                     <button
                         type="button"
-                        onClick={ () => append({ name: '', wattage: deviceOptions[0].wattage, count: 1, morning: 2, evening: 2, isCustom: false }) }
+                        // onClick={ () => append({ name: '', wattage: deviceOptions[0].wattage, count: 1, morning: 2, evening: 2, isCustom: false }) }
+                        onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 6, evening: 6, isCustom: false }) }
                         className="bg-green-800 text-white px-4 py-3 rounded flex justify-between items-center"
                     >
                         <FaPlus className='mx-2' />
@@ -233,7 +258,7 @@ export default function SolarCalculator() {
 
                     <button
                         type="button"
-                        onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 2, evening: 2, isCustom: true }) }
+                        onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 6, evening: 6, isCustom: true }) }
                         className="bg-secondary text-white px-4 py-3 rounded flex justify-between items-center"
                     >
                         <FaPlus className='mx-2' />
@@ -321,7 +346,7 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Inverter size required' : 'سعة الانفرتر' }
                             </h3>
                             <p className="text-gray-600 dark:text-white font-bold">
-                                1500 W
+                                { outputValue.cInverter }W
                             </p>
                         </div>
                     </div>
