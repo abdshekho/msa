@@ -1,40 +1,31 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import connectToDatabase from '@/app/lib/DB/mongoDB';
-import Cart from '@/app/lib/models/Cart';
+import { useCart } from '@/app/lib/cart/CartContext';
+import { updateCartItem, removeFromCart } from '@/app/lib/cart/actions';
+import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
+import { FaTrash, FaMinus, FaPlus } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
+import { Tooltip } from 'flowbite-react';
 
-export default async function CartPage({ params }: { params: { lang: string } }) {
-  const resolvedparams = await params;
-  const lang = resolvedparams.lang
+export default function CartPageClient() {
+  const lang = usePathname().slice(1, 3) || 'en';
+  const { cart, loading } = useCart();
   const isArabic = lang === 'ar';
+  const hasItems = cart?.items && cart.items.length > 0;
 
-  // Get cart data directly from database to avoid circular dependencies
-  let cart = { items: [], totalPrice: 0 };
+  const handleUpdateQuantity = async (itemId: string, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    await updateCartItem(itemId, newQuantity);
+    triggerCartUpdate();
+  };
 
-  try {
-    const session = await getServerSession(authOptions);
-
-    if (session?.user?.id) {
-      await connectToDatabase();
-
-      const userId = session.user.id.toString();
-      const userCart = await Cart.findOne({ user: userId }).populate({
-        path: 'items.product',
-        select: 'name nameAr price imageCover'
-      });
-
-      if (userCart) {
-        cart = JSON.parse(JSON.stringify(userCart));
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching cart:', error);
-  }
-
-  const hasItems = cart.items && cart.items.length > 0;
+  const handleRemoveItem = async (itemId: string) => {
+    await removeFromCart(itemId);
+    triggerCartUpdate();
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -42,43 +33,74 @@ export default async function CartPage({ params }: { params: { lang: string } })
         { isArabic ? 'سلة التسوق' : 'Shopping Cart' }
       </h1>
 
-      { hasItems ? (
+      { loading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
+          <p className="mt-4 dark:text-white">{ isArabic ? 'جاري التحميل...' : 'Loading...' }</p>
+        </div>
+      ) : hasItems ? (
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Cart Items */ }
-          <div className="lg:w-2/3">
+          <div className="lg:w-2/3" dir='ltr'>
             { cart.items.map((item: any) => (
-              <div key={ item._id } className="flex items-center py-5 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex-shrink-0 w-24 h-24 relative rounded overflow-hidden">
-                  { item.product.imageCover && (
-                    <Image
-                      src={ item.product.imageCover.startsWith('/') ? item.product.imageCover : `/${item.product.imageCover}` }
-                      alt={ isArabic ? item.product.nameAr : item.product.name }
-                      fill
-                      className="object-cover"
-                    />
-                  ) }
+              <div key={ item._id } className="flex flex-col justify-between py-5 border-b border-gray-200 dark:border-gray-700 gap-2">
+                <div className='flex items-center'>
+                  <div className="flex-shrink-0 w-24 h-24 relative rounded overflow-hidden">
+                    { item.product.imageCover && (
+                      <Image
+                        src={ item.product.imageCover.startsWith('/') ? item.product.imageCover : `/${item.product.imageCover}` }
+                        alt={ isArabic ? item.product.nameAr : item.product.name }
+                        fill
+                        className="object-cover"
+                      />
+                    ) }
+                  </div>
+                  <div className="flex-grow ml-4">
+                    <h3 className="text-md md:text-lg font-medium text-primary dark:text-primary-10">
+                      { isArabic ? item.product.nameAr : item.product.name }
+                    </h3>
+                    <p className="text-blue-600 dark:text-blue-400 font-bold">
+                      ${ item.price.toFixed(2) }
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex-grow ml-4">
-                  <h3 className="text-lg font-medium text-primary dark:text-primary-10">
-                    { isArabic ? item.product.nameAr : item.product.name }
-                  </h3>
-                  <p className="text-blue-600 dark:text-blue-400 font-bold">
-                    ${ item.price.toFixed(2) }
-                  </p>
+
+                <div className="flex items-center w-full justify-between">
+                  <div className='flex'>
+                    <Tooltip content={ lang === 'en' ? "remove one" : "إنقاص واحد" }>
+                      <button
+                        onClick={ () => handleUpdateQuantity(item._id, item.quantity - 1) }
+                        className="p-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                      >
+                        <FaMinus size={ 12 } />
+                      </button></Tooltip>
+                    <span className="mx-3 w-8 text-center dark:text-white">
+                      { item.quantity }
+                    </span>
+                    <Tooltip content={ lang === 'en' ? "add one" : "إضافة واحد" }>
+                      <button
+                        onClick={ () => handleUpdateQuantity(item._id, item.quantity + 1) }
+                        className="p-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                      >
+                        <FaPlus size={ 12 } />
+                      </button>
+                    </Tooltip>
+                  </div>
+                  <div className="ml-6 text-right font-bold md:text-lg">
+                    <span>${ (item.price * item.quantity).toFixed(2) }</span>
+                  </div>
+                  <Tooltip content={ lang === 'en' ? "remove from cart" : "إزالة من السلة" }>
+                    <button
+                      onClick={ () => handleRemoveItem(item._id) }
+                      className="p-2 mx-2 rounded-full bg-gray-200 dark:bg-gray-700 text-red-600 dark:text-red-500 hover:text-red-800"
+                      aria-label={ isArabic ? 'إزالة من السلة' : 'Remove from cart' }
+                    >
+                      <FaTrash />
+                    </button>
+                  </Tooltip>
                 </div>
 
-                <div className="flex items-center">
-                  <span className="mx-3 w-8 text-center dark:text-white">
-                    { item.quantity }
-                  </span>
-                </div>
-
-                <div className="ml-6 text-right">
-                  <p className="text-lg font-bold dark:text-white">
-                    ${ (item.price * item.quantity).toFixed(2) }
-                  </p>
-                </div>
               </div>
             )) }
           </div>
@@ -86,7 +108,7 @@ export default async function CartPage({ params }: { params: { lang: string } })
           {/* Order Summary */ }
           <div className="lg:w-1/3">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-              <h2 className="text-xl font-bold mb-4  text-primary dark:text-primary-10 text-center">
+              <h2 className="text-xl font-bold mb-4 text-primary dark:text-primary-10 text-center">
                 { isArabic ? 'ملخص الطلب' : 'Order Summary' }
               </h2>
 
@@ -130,7 +152,7 @@ export default async function CartPage({ params }: { params: { lang: string } })
           <p className="text-gray-500 dark:text-gray-400 mb-8">
             { isArabic
               ? 'لم تقم بإضافة أي منتجات إلى سلة التسوق بعد.'
-              : 'You haven\'t added any products to your cart yet.' }
+              : "You haven't added any products to your cart yet." }
           </p>
           <Link
             href={ `/${lang}/products` }

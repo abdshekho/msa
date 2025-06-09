@@ -40,20 +40,10 @@ export default function CategorySection({ lang }: { lang: string }) {
       setLoading(false);
     } else {
       console.log('get from bags')
-      fetchCategories();
+      // fetchCategories();
     }
     // fetchCategories();
   }, []);
-
-  // Placeholder images for categories without images
-  const placeholderImages = [
-    '/svg/category1.jpg',
-    '/svg/category2.jpg',
-    '/svg/category3.jpg',
-    '/svg/category4.jpg',
-    '/svg/category5.jpg',
-    '/svg/category6.jpg',
-  ];
 
   if (loading) {
     return (
@@ -62,9 +52,9 @@ export default function CategorySection({ lang }: { lang: string }) {
           <h2 className="text-2xl font-bold mb-8 text-center dark:text-white">
             { isArabic ? 'تصفح حسب الفئة' : 'Browse by Category' }
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            { [1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={ i } className="bg-gray-200 dark:bg-gray-700 rounded-lg h-32 animate-pulse"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            { [1, 2, 3, 4].map((i) => (
+              <div key={ i } className="bg-gray-200 dark:bg-gray-700 rounded-lg h-90 animate-pulse"></div>
             )) }
           </div>
         </div>
@@ -84,25 +74,77 @@ export default function CategorySection({ lang }: { lang: string }) {
           { isArabic ? 'تصفح حسب الفئة' : 'Browse by Category' }
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          { categories.map((category, index) => (
-            <Link href={ `/${lang}/categories/${category.slug}` } key={ category._id } className="group">
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden transition-transform hover:scale-105">
-                <div className="relative h-32 w-full">
-                  <Image
-                    src={ category.image || placeholderImages[index % placeholderImages.length] }
-                    alt={ isArabic ? category.nameAr : category.name }
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                    <h3 className="text-white text-lg font-medium text-center px-2">
-                      { isArabic ? category.nameAr : category.name }
-                    </h3>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          { categories.map((category: any) => (
+            <div key={ category._id } className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+              <div className="p-6" style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
+                <div className='flex justify-between items-center'>
+                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">
+                    { lang === 'en' ? category.name : (category.nameAr || category.name) }
+                  </h2>
+                  <span className="px-3 py-2 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800 rounded-full text-xs font-medium">
+                    { category?.items.length } { lang === 'en'
+                      ? (category?.items.length === 1 ? 'category' : 'categories')
+                      : 'فئة' }
+                  </span>
                 </div>
+
+                { category.image && (
+                  <div className="relative h-40 mb-4">
+                    <Image
+                      src={ category.image }
+                      alt={ lang === 'en' ? category.name : (category.nameAr || category.name) }
+                      fill
+                      className="object-contain rounded-md"
+                    />
+                  </div>
+                ) }
+
+                <div className="mt-4">
+                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">
+                    { lang === 'en' ? 'Subcategories': 'الفئات الفرعية' }
+                  </h3>
+                  <ul className="space-y-2">
+                    { category.items && category.items.map((subcategory: any) => (
+                      <li key={ subcategory._id }>
+                        <Link
+                          href={ `/${lang}/categories/${category.slug}/${subcategory.slug}` }
+                          className="text-blue-600 dark:text-blue-400 flex justify-between items-center"
+                        >
+                          <div className='flex hover:underline'>
+                            <div className="relative w-8 h-8 mr-2">
+                              { subcategory.image && (
+                                <Image
+                                  src={ subcategory.image }
+                                  alt={ lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name) }
+                                  fill
+                                  className="object-cover rounded-full"
+                                />
+                              ) }
+                            </div>
+                            { lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name) }
+                          </div>
+                          { subcategory.items.length !== undefined && (
+                            <span className="px-3 py-2 text-black dark:text-white bg-gray-100 dark:bg-gray-800 rounded-full text-xs font-medium">
+                              { subcategory.items.length } { lang === 'en'
+                                ? (subcategory.items.length === 1 ? 'product' : 'products')
+                                : 'منتج' }
+                            </span>
+                          ) }
+                        </Link>
+                      </li>
+                    )) }
+                  </ul>
+                </div>
+
+                <Link
+                  href={ `/${lang}/categories/${category.slug}` }
+                  className="mt-6 inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-10 transition"
+                >
+                  { lang === 'en' ?'View All' : 'عرض الكل' }
+                </Link>
               </div>
-            </Link>
+            </div>
           )) }
         </div>
 
