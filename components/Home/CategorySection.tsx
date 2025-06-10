@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCategories } from '@/context/CategoryContext';
 
 interface Category {
   _id: string;
@@ -13,37 +14,39 @@ interface Category {
 }
 
 export default function CategorySection({ lang }: { lang: string }) {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { categories, loading } = useCategories();
+
+  console.log('🚀 ~ CategorySection.tsx ~ categories:', categories);
+
   const isArabic = lang === 'ar';
 
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await fetch('/api/categories?limit=6');
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    const data = JSON.parse(localStorage.getItem('cachedCategories') || null)
-    //1 hour 3600000
-    //  if (data && data.cachedAt && Date.now() - data.cachedAt < 3600000) {
-    if (data && data?.cachedAt) {
-      console.log('get from cache')
-      setCategories(data.data);
-      setLoading(false);
-    } else {
-      console.log('get from bags')
-      // fetchCategories();
-    }
-    // fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchCategories() {
+  //     try {
+  //       const response = await fetch('/api/categories?limit=6');
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setCategories(data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching categories:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   const data = JSON.parse(localStorage.getItem('cachedCategories') || null)
+  //   //1 hour 3600000
+  //   //  if (data && data.cachedAt && Date.now() - data.cachedAt < 3600000) {
+  //   if (data && data?.cachedAt) {
+  //     console.log('get from cache')
+  //     setCategories(data.data);
+  //     setLoading(false);
+  //   } else {
+  //     console.log('get from bags')
+  //     // fetchCategories();
+  //   }
+  //   // fetchCategories();
+  // }, []);
 
   if (loading) {
     return (

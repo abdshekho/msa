@@ -1,7 +1,8 @@
 //@ts-nocheck
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import MainMenuItem from './MainMenuItem';
+import { useCategories } from '@/context/CategoryContext';
 
 interface Product {
     id: string;
@@ -28,9 +29,7 @@ interface ParentCategory {
 
 const NavMenu = ({ lang }) => {
     const [visible, setVisible] = useState(false);
-    const [categories, setCategories] = useState<ParentCategory[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { categories, loading, error } = useCategories();
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const timeoutRef2 = useRef<NodeJS.Timeout | null>(null);
     const handleMouseEnter = () => {
@@ -47,31 +46,32 @@ const NavMenu = ({ lang }) => {
             setVisible(false);
         }, 500);
     };
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('/api/categories?nested=true&withProducts=true');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch categories');
-                }
-                const data = await response.json();
-                // localStorage.setItem("cachedCategories", JSON.stringify(data));
-                localStorage.setItem("cachedCategories", JSON.stringify({
-                    data: data,
-                    cachedAt: Date.now()
-                }));
-                setCategories(data);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'An error occurred');
-                console.error('Error fetching categories:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
+    //     useEffect(() => {
+    //     const fetchCategories = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const response = await fetch('/api/categories?nested=true&withProducts=true');
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch categories');
+    //             }
+    //             const data = await response.json();
+    //             // localStorage.setItem("cachedCategories", JSON.stringify(data));
+    //             localStorage.setItem("cachedCategories", JSON.stringify({
+    //                 data: data,
+    //                 cachedAt: Date.now()
+    //             }));
+    //             setCategories(data);
+    //         } catch (err) {
+    //             setError(err instanceof Error ? err.message : 'An error occurred');
+    //             console.error('Error fetching categories:', err);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchCategories();
-    }, []);
+    //     fetchCategories();
+    // }, []);
+
 
     return (
         <div>

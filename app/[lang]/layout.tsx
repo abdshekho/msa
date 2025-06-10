@@ -9,7 +9,8 @@ import ThemeProvider from "../them/theme-provider";
 import { FooterMSA } from '../../components/ui/Footer';
 import Providers from '@/components/ProgressProvider';
 import { CartProvider } from '../lib/cart/CartContext';
-import {almarai} from '../ui/fonts'
+import { CategoryProvider } from '@/context/CategoryContext';
+import { almarai } from '../ui/fonts'
 
 
 // const inter = Inter({ subsets: ['latin'] });
@@ -26,11 +27,11 @@ export default async function Root(props: {
   const { children } = props;
   const dictionary = await getDictionary(params.lang);
   return (
-    <html lang={ params.lang } suppressHydrationWarning dir={params.lang === 'ar'? 'rtl':'ltr'}>
+    <html lang={ params.lang } suppressHydrationWarning dir={ params.lang === 'ar' ? 'rtl' : 'ltr' }>
       <head>
         <ThemeModeScript />
       </head>
-      <body className={`min-h-screen  bg-white dark:bg-gray-900 ${almarai.className}`}>
+      <body className={ `min-h-screen  bg-white dark:bg-gray-900 ${almarai.className}` }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -38,15 +39,17 @@ export default async function Root(props: {
           disableTransitionOnChange
         >
           <AuthProvider>
-            <CartProvider>
-              <NavbarMain lang={ params.lang } dictionary={dictionary} />
-              <div className="min-h-screen bg-white dark:bg-gray-900">
-                <Providers>
-                  { children }
-                </Providers>
-              </div>
-              <FooterMSA />
-            </CartProvider>
+            <CategoryProvider>
+              <CartProvider>
+                <NavbarMain lang={ params.lang } dictionary={ dictionary } />
+                <div className="min-h-screen bg-white dark:bg-gray-900">
+                  <Providers>
+                    { children }
+                  </Providers>
+                </div>
+                <FooterMSA />
+              </CartProvider>
+            </CategoryProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

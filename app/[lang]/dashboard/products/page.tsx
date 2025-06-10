@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import { useCategories } from '@/context/CategoryContext';
 
 interface Product {
   _id: string;
@@ -52,6 +53,8 @@ export default function AdminProducts() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   
   const params = useParams();
+  const { categories: contextCategories, loading: loadingCategories } = useCategories();
+  
   const lang = params.lang as string;
   const isArabic = lang === 'ar';
 
@@ -61,15 +64,15 @@ export default function AdminProducts() {
         setLoading(true);
         
         // Try to get categories from localStorage first
-        const cachedData = localStorage.getItem('cachedCategories');
+        // const cachedData = localStorage.getItem('cachedCategories');
         
-        if (cachedData) {
-          const parsedData = JSON.parse(cachedData);
-          setCategories(parsedData.data);
+        if (contextCategories && contextCategories?.length) {
+          // const parsedData = JSON.parse(cachedData);
+          setCategories(contextCategories);
           
           // Extract all products from categories
           const allProducts: Product[] = [];
-          parsedData.data.forEach((category: Category) => {
+          contextCategories.forEach((category: Category) => {
             category.items.forEach((subCategory: SubCategory) => {
               if (subCategory.items && subCategory.items.length > 0) {
                 allProducts.push(...subCategory.items);
@@ -81,13 +84,13 @@ export default function AdminProducts() {
           setLoading(false);
         } else {
           // Fallback to API if localStorage data is not available
-          const response = await fetch('/api/products');
-          if (!response.ok) {
-            throw new Error('Failed to fetch products');
-          }
-          const data = await response.json();
-          setProducts(data);
-          setLoading(false);
+          // const response = await fetch('/api/products');
+          // if (!response.ok) {
+          //   throw new Error('Failed to fetch products');
+          // }
+          // const data = await response.json();
+          // setProducts(data);
+          // setLoading(false);
         }
       } catch (err) {
         setError('Error loading products. Please try again later.');
@@ -95,9 +98,9 @@ export default function AdminProducts() {
         setLoading(false);
       }
     };
-
+    if(loadingCategories) return
     fetchProducts();
-  }, []);
+  }, [loadingCategories]);
 
   const handleDelete = async (id: string) => {
     if (!window.confirm(isArabic ? 'هل أنت متأكد أنك تريد حذف هذا المنتج؟' : 'Are you sure you want to delete this product?')) {
@@ -166,7 +169,7 @@ export default function AdminProducts() {
     return matchesSearch && belongsToSelectedCategory && belongsToSelectedSubCategory;
   });
 
-  if (loading) {
+  if (loadingCategories) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary dark:border-primary-10"></div>

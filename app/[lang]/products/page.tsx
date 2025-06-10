@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddToCartButton from '@/components/products/AddToCartButton';
+import { useCategories } from '@/context/CategoryContext';
 
 interface Product {
   _id: string;
@@ -67,6 +68,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
   const pageParam = Number(searchParams.get('page') || '1');
   const minPriceParam = Number(searchParams.get('minPrice') || '0');
   const maxPriceParam = Number(searchParams.get('maxPrice') || '1000');
+  const { categories: contextCategories, loading: loadingCategories } = useCategories();
 
   useEffect(() => {
     setCurrentPage(pageParam);
@@ -80,50 +82,52 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
       setLoading(true);
       try {
         // Try to get categories from localStorage first
-        const cachedData = localStorage.getItem('cachedCategories');
+        // const cachedData = localStorage.getItem('cachedCategories');
         
-        if (cachedData) {
-          const parsedData = JSON.parse(cachedData);
-          setCategories(parsedData.data);
+        if (contextCategories && contextCategories?.length) {
+          // const parsedData = JSON.parse(cachedData);
+          setCategories(contextCategories);
           
           // Extract all products from categories
           const allProducts: Product[] = [];
-          parsedData.data.forEach((category: Category) => {
+          contextCategories.forEach((category: Category) => {
             category.items.forEach((subCategory: SubCategory) => {
               if (subCategory.items && subCategory.items.length > 0) {
                 allProducts.push(...subCategory.items);
               }
             });
           });
-          
+          console.log(allProducts)
+          console.log(contextCategories)
           setProducts(allProducts);
-        } else {
-          // Fallback to API if localStorage data is not available
-          const productQuery = new URLSearchParams();
-          if (categoryParam) productQuery.set('category', categoryParam);
-          if (minPriceParam) productQuery.set('minPrice', String(minPriceParam));
-          if (maxPriceParam) productQuery.set('maxPrice', String(maxPriceParam));
+        } 
+        // else {
+        //   // Fallback to API if localStorage data is not available
+        //   const productQuery = new URLSearchParams();
+        //   if (categoryParam) productQuery.set('category', categoryParam);
+        //   if (minPriceParam) productQuery.set('minPrice', String(minPriceParam));
+        //   if (maxPriceParam) productQuery.set('maxPrice', String(maxPriceParam));
 
-          const productUrl = `/api/products${productQuery.toString() ? '?' + productQuery.toString() + '&fields=_id,name,nameAr,price,imageCover,slug' : ''}`;
-          const categoriesRes = await fetch('/api/categories?fields=_id,name,nameAr,slug');
+        //   const productUrl = `/api/products${productQuery.toString() ? '?' + productQuery.toString() + '&fields=_id,name,nameAr,price,imageCover,slug' : ''}`;
+        //   const categoriesRes = await fetch('/api/categories?fields=_id,name,nameAr,slug');
           
-          const [productsData, categoriesData] = await Promise.all([
-            (await fetch(productUrl)).json(),
-            categoriesRes.json()
-          ]);
+        //   const [productsData, categoriesData] = await Promise.all([
+        //     (await fetch(productUrl)).json(),
+        //     categoriesRes.json()
+        //   ]);
 
-          setProducts(productsData);
-          setCategories(categoriesData);
-        }
+        //   setProducts(productsData);
+        //   setCategories(categoriesData);
+        // }
       } catch (err) {
         console.error('Error fetching data:', err);
       } finally {
         setLoading(false);
       }
     };
-
+    if(loadingCategories) return
     fetchData();
-  }, [categoryParam, minPriceParam, maxPriceParam]);
+  }, [categoryParam, minPriceParam, maxPriceParam,loadingCategories]);
 
   // Get available subcategories based on selected category
   const getSubCategories = () => {
