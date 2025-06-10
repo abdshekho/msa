@@ -283,17 +283,20 @@ export default function SolarCalculator() {
                         placeholder={ lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
                     />
                     <div
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
+                        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 transition-transform hover:shadow-2xl border-b-3 border-secondary dark:border-secondary-10">
                         <div className="flex flex-col items-center text-center">
                             <div className="mb-4">
-                                <GiSolarPower className="w-10 h-10 text-blue-500" />
+                                <GiSolarPower className="w-10 h-10  text-secondary dark:text-secondary-10" />
                             </div>
-                            <h3 className="text-xl font-semibold text-primary dark:text-primary-10 mb-2">
+                            <h3 className="text-xl font-semibold mb-2 text-primary">
                                 { lang === 'en' ? 'Number of panels' : 'عدد الألواح' }
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-300">
+                            <span className="text-xl font-bold text-gray-800 dark:text-white">
+                                { Math.round(outputValue.nPanel) }
+                            </span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">
                                 { outputValue.nPanel }
-                            </p>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -313,17 +316,20 @@ export default function SolarCalculator() {
                         <option value="48">48 V</option>
                     </select>
                     <div
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
+                        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 transition-transform hover:shadow-2xl border-b-3 border-secondary dark:border-secondary-10">
                         <div className="flex flex-col items-center text-center">
                             <div className="mb-4">
-                                <FaCarBattery className="w-10 h-10 text-blue-500" />
+                                <FaCarBattery className="w-10 h-10 text-secondary dark:text-secondary-10" />
                             </div>
                             <h3 className="text-xl font-semibold text-primary dark:text-primary-10 mb-2">
                                 { lang === 'en' ? 'Number of battery' : 'عدد البطاريات' }
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-300">
+                            <span className="text-xl font-bold text-gray-800 dark:text-white">
+                                { Math.round(outputValue.nBattery) }
+                            </span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">
                                 { outputValue.nBattery }
-                            </p>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -337,17 +343,23 @@ export default function SolarCalculator() {
                         placeholder={ lang === 'en' ? 'Average sun hours (h)' : 'قدرة اللوح (واط)' }
                     />
                     <div
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
+                        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 transition-transform hover:shadow-2xl border-b-3 border-secondary dark:border-secondary-10">
                         <div className="flex flex-col items-center text-center">
                             <div className="mb-4">
-                                <BsDeviceSsd className="w-10 h-10 text-blue-500" />
+                                <BsDeviceSsd className="w-10 h-10 text-secondary dark:text-secondary-10" />
                             </div>
                             <h3 className="text-xl font-semibold text-primary dark:text-primary-10 mb-2">
                                 { lang === 'en' ? 'Inverter size required' : 'سعة الانفرتر' }
                             </h3>
-                            <p className="text-gray-600 dark:text-white font-bold">
+                            <span className="text-xl font-bold text-gray-800 dark:text-white">
+                                { Math.round(outputValue.cInverter) }
+                            </span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">
+                                { outputValue.cInverter }
+                            </span>
+                            {/* <p className="text-gray-600 dark:text-white font-bold">
                                 { outputValue.cInverter }W
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </div>

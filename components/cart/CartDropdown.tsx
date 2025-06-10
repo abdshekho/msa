@@ -43,7 +43,7 @@ export default function CartDropdown() {
         <div className="relative">
           <FaShoppingCart className="w-7 h-7" />
           { itemCount > 0 && (
-            <span className="absolute -top-2 -right-4 bg-primary-10 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            <span className={ `${loading ? 'animate-ping ' : ''}absolute -top-2 -right-4 bg-primary-10 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center` }>
               { itemCount }
             </span>
           ) }

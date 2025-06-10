@@ -39,7 +39,7 @@ export default function CartPageClient() {
           <p className="mt-4 dark:text-white">{ isArabic ? 'جاري التحميل...' : 'Loading...' }</p>
         </div>
       ) : hasItems ? (
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col-reverse lg:flex-row gap-8">
           {/* Cart Items */ }
           <div className="lg:w-2/3" dir='ltr'>
             { cart.items.map((item: any) => (
