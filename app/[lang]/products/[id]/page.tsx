@@ -11,6 +11,10 @@ import AddToCartButton from '@/components/products/AddToCartButton';
 import Link from 'next/link';
 import ProductImages from '@/components/products/ProductImages';
 import { FaFileAlt, FaLayerGroup, FaMagic, FaTag } from 'react-icons/fa';
+import RelatedProducts from './RelatedProducts';
+// import dynamic from 'next/dynamic';
+
+// const RelatedProducts = dynamic(() => import('./RelatedProducts'), { ssr: false });
 
 // Define types for the product and related data
 interface ProductType {
@@ -211,11 +215,14 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {/* Placeholder for related products */ }
-                    <div className="bg-gray-50 p-4 rounded-lg h-64 flex items-center justify-center text-gray-400">
-                        { isArabic ? 'منتجات ذات صلة ستظهر هنا' : 'Related products will appear here' }
-                    </div>
+                <div className="client-only">
+                    {/* @ts-ignore */}
+                    <RelatedProducts 
+                        productId={product._id.toString()} 
+                        categoryId={product.category?.toString()} 
+                        brandId={product.brand?.toString()}
+                        lang={lang} 
+                    />
                 </div>
             </div>
         </div>
