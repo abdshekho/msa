@@ -33,8 +33,8 @@ export default function RelatedProducts({ productId, categoryId, brandId, lang }
         if (loading) return
         const allProducts: Product[] = [];
         // Extract all products from the nested structure
-        console.log(loading);
-        console.log(categories);
+        // console.log(loading);
+        // console.log(categories);
         categories?.forEach((category: any) => {
           category.items?.forEach((subCategory: any) => {
             subCategory.items?.forEach((product: any) => {

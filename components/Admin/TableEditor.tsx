@@ -101,11 +101,12 @@ const TableRow = memo(({
     };
 
     return (
-        <tr className={ row.isSectionHeader ? 'bg-gray-200 dark:bg-gray-700' : 'dark:bg-gray-800' }>
-            <td className={ `border p-1 relative ${row.isSectionHeader ? 'bg-gray-400 dark:bg-black' : 'dark:bg-gray-700'}` }
+        <tr className={ row.isSectionHeader ? 'bg-gray-200 dark:bg-gray-800' : 'dark:bg-gray-700' }>
+            <td className={ `border p-1 relative ${row.isSectionHeader ? 'bg-gray-200 dark:bg-gray-800' : 'bg-blue-50   dark:bg-sky-950 text-black dark:text-white'}` }
                 colSpan={ row.isSectionHeader ? headers.length : 1 }>
-                <div className="flex gap-1 mt-1 absolute left-[-90px] top-[10px]">
+                <div className="flex items-center gap-1 mt-1 absolute left-[-90px] top-[10px]">
                     <Checkbox
+                        className='p-2'
                         checked={ row.isSectionHeader }
                         onChange={ () => toggleSectionHeader(rowIndex) }
                     />
@@ -127,16 +128,16 @@ const TableRow = memo(({
                     </Tooltip>
                 </div>
                 <input
-                    value={ parameterValue }
+                    value={ parameterValue } required
                     onChange={ handleParameterChange }
-                    className={ `w-full p-1 border rounded border-none  dark:text-secondary-10 ${row.isSectionHeader ? 'text-center font-bold dark:bg-black' : 'dark:bg-gray-700'}` }
+                    className={ `w-full p-1 border rounded border-none  ${row.isSectionHeader ? 'dark:text-secondary-10 text-center font-bold dark:bg-gray-800' : 'bg-blue-50   dark:bg-sky-950 text-black dark:text-white'}` }
                     placeholder="Parameter name"
                 />
             </td>
             { !row.isSectionHeader && cellValues.map((val, colIndex) => (
                 <td key={ colIndex } className="border p-1">
                     <input
-                        value={ val }
+                        value={ val } required={colIndex === 0}
                         onChange={ (e) => handleCellChange(colIndex, e) }
                         className="w-full p-1 border-none rounded dark:bg-transparent dark:text-[lightgray]"
                         placeholder="Value"
@@ -179,12 +180,12 @@ const TableHeader = memo(({ headers, updateHeader, removeHeader }) => {
     return (
         <tr>
             { headerValues.map((header, i) => (
-                <th key={ i } className="border px-2 py-1 bg-gray-100 dark:bg-gray-600 dark:text-white">
+                <th key={ i } className="border px-2 py-1 bg-gray-100 dark:bg-stone-900 dark:text-white">
                     <div className="flex items-center gap-1">
                         <input
-                            value={ header }
+                            value={ header } required
                             onChange={ (e) => handleHeaderChange(i, e) }
-                            className="w-full p-1 border-none rounded dark:bg-gray-600 dark:text-primary-10"
+                            className="w-full p-1 border-none rounded bg-gray-100 dark:bg-stone-900 text-primary dark:text-primary-10 text-center"
                             placeholder="Column name"
                         />
                         { i > 0 && (
@@ -486,13 +487,13 @@ export default function TableEditor({
         setError('');
 
         try {
-            const response = await fetch('/api/products', {
-                method: 'POST',
+            const response = await fetch(`/api/products/${productId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    productId,
+                    // productId,
                     table: data
                 }),
             });
@@ -500,13 +501,13 @@ export default function TableEditor({
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(result.error || 'Failed to save product');
+                throw new Error(result.error || 'Failed to save template');
             }
 
-            setSuccessMessage('Product saved to MongoDB!');
+            setSuccessMessage(`save template to ${productId} is successfully `);
         } catch (error: any) {
-            console.error('Error saving product:', error);
-            setError(`Failed to save product: ${error.message}`);
+            console.error('Error saving template:', error);
+            setError(`Failed to save template:  ${error.message}`);
         } finally {
             setIsLoading(false);
         }
@@ -586,7 +587,7 @@ export default function TableEditor({
                         className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800"
                         disabled={ isLoading || isPending }
                     >
-                        📥 Save to MongoDB
+                        📥 Save to product by ID
                     </button>
                 ) }
             </div>

@@ -97,8 +97,8 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
               }
             });
           });
-          console.log(allProducts)
-          console.log(contextCategories)
+          // console.log(allProducts)
+          // console.log(contextCategories)
           setProducts(allProducts);
         } 
         // else {

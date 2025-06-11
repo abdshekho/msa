@@ -16,7 +16,7 @@ interface Category {
 export default function CategorySection({ lang }: { lang: string }) {
   const { categories, loading } = useCategories();
 
-  console.log('🚀 ~ CategorySection.tsx ~ categories:', categories);
+  // console.log('🚀 ~ CategorySection.tsx ~ categories:', categories);
 
   const isArabic = lang === 'ar';
 

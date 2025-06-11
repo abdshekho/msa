@@ -27,14 +27,14 @@ const productSchema = z.object({
     descAr: z.string().min(10, 'Arabic description must be at least 10 characters'),
     features: z.array(z.string().min(1, 'Feature cannot be empty')).min(1, 'At least one feature is required'),
     featuresAr: z.array(z.string().min(1, 'Arabic feature cannot be empty')).min(1, 'At least one Arabic feature is required'),
-    // table: z.object({
-    //     headers: z.array(z.string()),
-    //     rows: z.array(z.object({
-    //         parameter: z.string(),
-    //         values: z.array(z.string()),
-    //         isSectionHeader: z.boolean()
-    //     }))
-    // })
+    table: z.object({
+        headers: z.array(z.string()),
+        rows: z.array(z.object({
+            parameter: z.string(),
+            values: z.array(z.string()),
+            isSectionHeader: z.boolean()
+        }))
+    })
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -299,7 +299,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
 
     // Submit form
     const onSubmit = async (data: ProductFormData) => {
-        // console.log(data);
+        console.log(data);
         try {
             setIsLoading(true);
 
@@ -425,7 +425,6 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                         type="number"
                                         min="0"
                                         step="0.01"
-                                        onFocus={ (e) => e.target.select() }
                                         disabled={ isLoading || isPending || isSubmitting }
                                         onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -553,7 +552,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                 <FieldWrapper label="Description (English)" error={ errors.desc?.message } required>
                                     <textarea
                                         { ...field }
-                                        disabled={ isLoading || isPending || isSubmitting }
+                                        disabled={isLoading || isPending || isSubmitting}
                                         className="w-full p-2 border rounded h-32 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     />
                                 </FieldWrapper>
@@ -567,7 +566,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                 <FieldWrapper label="Description (Arabic)" error={ errors.descAr?.message } required>
                                     <textarea
                                         { ...field }
-                                        disabled={ isLoading || isPending || isSubmitting }
+                                        disabled={isLoading || isPending || isSubmitting}
                                         dir="rtl"
                                         className="w-full p-2 border rounded h-32 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     />
