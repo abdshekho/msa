@@ -47,7 +47,7 @@ export default async function Root(props: {
                     { children }
                   </Providers>
                 </div>
-                <FooterMSA />
+                <FooterMSA lang={params.lang}  dictionary={ dictionary } />
               </CartProvider>
             </CategoryProvider>
           </AuthProvider>

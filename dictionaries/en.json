@@ -7,7 +7,9 @@
     "contact": "Contact Us"
   },
   "common": {
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "termsAndConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy"
   },
   "navbar": {
     "home": "Home",
@@ -17,10 +19,68 @@
     "about": "About",
     "contact": "Contact"
   },
+  "footer": {
+    "Services": "Services",
+    "Resources": "Resources",
+    "Follow_us": "Follow us",
+    "Legal": "Legal",
+    "System_Calculator": "System Calculator",
+    "Our_services": "Our Services",
+    "about": "About us",
+    "Our_Location": "Our Location",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions"
+  },
   "page": {
     "home": {
       "title": "Welcome to NextJs i18n",
       "description": "This is a sample app to showcase i18n in Next.js 13 app directory"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last Updated",
+      "introduction": "This Privacy Policy describes how we collect, use, and disclose your personal information when you use our website.",
+      "sections": {
+        "collection": {
+          "title": "Information Collection",
+          "content": "We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us for support."
+        },
+        "use": {
+          "title": "Use of Information",
+          "content": "We use the information we collect to provide, maintain, and improve our services, to communicate with you, and to comply with legal obligations."
+        },
+        "sharing": {
+          "title": "Information Sharing",
+          "content": "We do not share your personal information with third parties except as described in this Privacy Policy or with your consent."
+        },
+        "security": {
+          "title": "Data Security",
+          "content": "We take reasonable measures to help protect your personal information from loss, theft, misuse, and unauthorized access."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "lastUpdated": "Last Updated",
+      "introduction": "Welcome to our website. By accessing and using this website, you accept and agree to be bound by the following terms and conditions.",
+      "sections": {
+        "use": {
+          "title": "Use of Website",
+          "content": "The content of this website is for your general information and use only. It is subject to change without notice."
+        },
+        "privacy": {
+          "title": "Privacy",
+          "content": "Your use of this website is also governed by our Privacy Policy, which is incorporated into these terms and conditions by reference."
+        },
+        "intellectual": {
+          "title": "Intellectual Property",
+          "content": "All trademarks reproduced in this website, which are not the property of, or licensed to the operator, are acknowledged on the website."
+        },
+        "liability": {
+          "title": "Limitation of Liability",
+          "content": "We will not be liable for any loss or damage including without limitation, indirect or consequential loss or damage, arising out of or in connection with the use of this website."
+        }
+      }
     },
     "categories": {},
     "brands": {

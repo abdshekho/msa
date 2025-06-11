@@ -86,7 +86,7 @@ export default async function ContactPage({ params }: { params: { lang: string }
       </div>
 
       {/* Map */ }
-      <div className="w-full h-96 mt-12 container mx-auto rounded-2xl border-b-6 border-teal-700 bg-gradient-to-br from-white to-gray-100 dark:from-gray-700 dark:to-gray-800">
+      <div id='our-location' className="w-full h-96 mt-12 container mx-auto rounded-2xl border-b-6 border-teal-700 bg-gradient-to-br from-white to-gray-100 dark:from-gray-700 dark:to-gray-800">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d26619.66752714984!2d36.2256376!3d33.4894478!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1518de1e9b0110e9%3A0x6841a070df887531!2sAl%20Mazzeh%2C%20Damascus%2C%20Syria!5e0!3m2!1sen!2s!4v1749358097576!5m2!1sen!2s%22%20width=%22600%22%20height=%22450%22%20style=%22border:0;%22%20allowfullscreen=%22%22%20loading=%22lazy%22%20referrerpolicy=%22no-referrer-when-downgrade"
           width="100%"

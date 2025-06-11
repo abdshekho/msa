@@ -60,7 +60,7 @@ export default async function OrdersPage({ params }: { params: { lang: string } 
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 dark:text-white">
+      <h1 className="head-12 text-center my-4">
         { isArabic ? 'طلباتي' : 'My Orders' }
       </h1>
 

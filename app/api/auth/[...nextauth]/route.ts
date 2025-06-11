@@ -93,7 +93,7 @@ export const authOptions = {
                 token.picture = session.user.image;
                 token.address = session.user.address;
                 token.phone = session.user.phone;
-                token.role = session.user.role;
+                // token.role = session.user.role || 'user';
             }
 
             if (user) {
