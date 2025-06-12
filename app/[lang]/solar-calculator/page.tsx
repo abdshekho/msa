@@ -4,10 +4,11 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { use, useEffect, useState } from 'react';
-import { FaCalculator, FaCarBattery, FaPlus, FaSolarPanel } from 'react-icons/fa';
-import { usePathname } from 'next/navigation';
+import { FaAlignLeft, FaCalculator, FaCarBattery, FaListUl, FaLockOpen, FaPlus, FaSolarPanel } from 'react-icons/fa';
+import { redirect, usePathname } from 'next/navigation';
 import { BsDeviceSsd } from 'react-icons/bs';
 import { GiSolarPower } from 'react-icons/gi';
+import { set } from 'cypress/types/lodash';
 
 const deviceOptions = [
     { name: 'نيون', wattage: 40 },
@@ -29,7 +30,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function SolarCalculator() {
-    const lang = usePathname().slice(1, 3) || 'en';
+    const pahtname = usePathname()
+    const lang = pahtname.slice(1, 3) || 'en';
     const { control, register, handleSubmit, watch, trigger, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [
@@ -53,10 +55,21 @@ export default function SolarCalculator() {
     });
 
     const devices = watch('devices');
+    const [submited, setSubmited] = useState(false);
     const [voltageBattery, setVoltageBattery] = useState(12.5);
     const [voltagePanel, setVoltagePanel] = useState(705);
     const [capacityInverter, setCapacityInverter] = useState(0);
-
+    const hadnelEditDevices = () => {
+        setSubmited(false)
+        setVoltageBattery(12.5);
+        setVoltagePanel(705);
+        setCapacityInverter(0);
+        setOutputValue({
+            nPanel: 0,
+            nBattery: 0,
+            cInverter: 0
+        })
+    }
 
     const [outputValue, setOutputValue] = useState({
         nPanel: 0,
@@ -79,6 +92,9 @@ export default function SolarCalculator() {
         setVoltageBattery(newValue);
     }
     const handelVotagePanel = (e) => {
+
+        // console.log('🚀 ~ page.tsx ~ handelVotagePanel ~ e:', e.target.value);
+        // if(!e.target.value) return
         const oldValue = voltagePanel;
         const newValue = parseFloat(e.target.value);
 
@@ -95,7 +111,7 @@ export default function SolarCalculator() {
     }
 
     const onSubmit = (data: FormData) => {
-
+        setSubmited(true);
 
         // to inverter
         const total = data.devices.reduce((acc, d) => {
@@ -141,6 +157,7 @@ export default function SolarCalculator() {
                 Number of battary: ${NumberOfBattery}
                 Number of Panel: ${NumberOfPanel}
             `);
+            redirect('#output1')
     };
 
 
@@ -162,16 +179,18 @@ export default function SolarCalculator() {
 
     return (
         <div className='p-2 sm:p-6 max-w-7xl mx-auto space-y-4 text-black dark:text-white mt-10 bg-gray-50 dark:bg-gray-700 rounded-2xl'>
-            <form onSubmit={ handleSubmit(onSubmit) } className="" dir='ltr'>
-                <h1 className="text-center text-2xl font-bold text-primary my-10">احسب الطاقة والاجهزة اللازمة</h1>
+            <form onSubmit={ handleSubmit(onSubmit) } className="py-10" dir='ltr'>
+                <h1 className="text-center text-2xl font-bold text-primary my-10">{ lang === 'en' ? "Calculate Solar System Size" :
+                    "حساب حجم النظام الشمسي"
+                }</h1>
 
                 <div className="grid grid-cols-6 font-semibold text-xs md:text-sm py-4 text-center bg-gray-300 dark:bg-bgm rounded-t-2xl text-secondary dark:text-secondary-10">
-                    <div>الجهاز</div>
-                    <div>الاستطاعة (الواط)</div>
-                    <div>العدد</div>
-                    <div>ساعات التشغيل في الصباح</div>
-                    <div>ساعات التشغل في المساء</div>
-                    <div>مسح</div>
+                    <div>{ lang === 'en' ? 'Device' : 'الجهاز' }</div>
+                    <div>{ lang === 'en' ? 'Power (Watt)' : 'الاستطاعة (الواط)' }</div>
+                    <div>{ lang === 'en' ? 'Quantity' : 'العدد' }</div>
+                    <div>{ lang === 'en' ? 'Operating Hours (Morning)' : 'ساعات التشغيل في الصباح' }</div>
+                    <div>{ lang === 'en' ? 'Operating Hours (Evening)' : 'ساعات التشغيل في المساء' }</div>
+                    <div>{ lang === 'en' ? 'Clear' : 'مسح' }</div>
                 </div>
 
                 { fields.map((field, index) => {
@@ -182,13 +201,15 @@ export default function SolarCalculator() {
                             { isCustom ? (
                                 <input
                                     { ...register(`devices.${index}.name`) }
+                                    disabled={ submited }
                                     className="p-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
-                                    placeholder="اسم الجهاز"
+                                    placeholder={ lang === 'en' ? "Device name" : "اسم الجهاز" }
                                     onFocus={ (e) => e.target.select() }
 
                                 />
                             ) : (
                                 <select
+                                    disabled={ submited }
                                     { ...register(`devices.${index}.name`) }
                                     className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center bg-white dark:bg-card focus:border focus:outline-none focus:ring-primary focus:border-primary"
                                 >
@@ -202,8 +223,9 @@ export default function SolarCalculator() {
                             <input
                                 { ...register(`devices.${index}.wattage`) }
                                 type="number"
+                                disabled={ submited }
                                 className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
-                                placeholder="واط"
+                                placeholder={ lang === 'en' ? "Power (Watt)" : "الاتسطاعة (واط)" }
                                 onFocus={ (e) => e.target.select() }
 
                             />
@@ -211,28 +233,31 @@ export default function SolarCalculator() {
                             <input
                                 { ...register(`devices.${index}.count`) }
                                 type="number"
+                                disabled={ submited }
                                 className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
-                                placeholder="العدد"
+                                placeholder={ lang === 'en' ? "Quantity" : "العدد" }
                                 onFocus={ (e) => e.target.select() }
                             />
 
                             <input
                                 { ...register(`devices.${index}.morning`) }
                                 type="number"
+                                disabled={ submited }
                                 className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center border border-[transparent] focus:outline-none focus:ring-primary focus:border-primary"
-                                placeholder="الصباح"
+                                placeholder={ lang === 'en' ? "Morning" : "ساعات الصباح" }
                                 onFocus={ (e) => e.target.select() }
                             />
 
                             <input
                                 { ...register(`devices.${index}.evening`) }
                                 type="number"
+                                disabled={ submited }
                                 className="px-0 md:px-2 py-2  md:py-2 rounded col-span-1 text-center focus:border focus:outline-none focus:ring-primary focus:border-primary"
-                                placeholder="المساء"
+                                placeholder={ lang === 'en' ? "ُEvening" : "ساعات المساء" }
                                 onFocus={ (e) => e.target.select() }
                             />
 
-                            <button type="button" onClick={ () => handleRemove(index) } className="text-red-600 col-span-1">🗑️</button>
+                            <button disabled={ submited } type="button" onClick={ () => handleRemove(index) } className="text-red-600 col-span-1">🗑️</button>
 
                             { errors.devices?.[index] && (
                                 <div className="col-span-7 text-red-500 text-sm mt-1 text-center">
@@ -245,39 +270,57 @@ export default function SolarCalculator() {
                     );
                 }) }
 
-                <div className="flex gap-4 mt-8 justify-around" dir='ltr'>
+                <div className="flex gap-2 md:gap-4 mt-8 justify-around" dir='ltr'  id='output1' >
                     <button
                         type="button"
+                        disabled={ submited }
                         // onClick={ () => append({ name: '', wattage: deviceOptions[0].wattage, count: 1, morning: 2, evening: 2, isCustom: false }) }
                         onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 6, evening: 6, isCustom: false }) }
-                        className="bg-green-800 text-white px-4 py-3 rounded flex justify-between items-center"
+                        className="bg-green-800 text-white px-2  py-3 md:px-4  rounded flex justify-between items-center shadow-xl"
                     >
-                        <FaPlus className='mx-2' />
-                        أضف من القائمة
+                        {/* <FaListCheck  /> */ }
+                        {/* <FaListUl /> */ }
+                        <FaListUl className='' />
+                        <FaPlus className='text-[10px] mr-1' />
+                        { lang === 'en' ? " Add Device from List " : " أضف من القائمة" }
                     </button>
 
                     <button
                         type="button"
+                        disabled={ submited }
                         onClick={ () => append({ name: '', wattage: 0, count: 1, morning: 6, evening: 6, isCustom: true }) }
-                        className="bg-secondary text-white px-4 py-3 rounded flex justify-between items-center"
+                        className="bg-secondary text-white px-2 md:px-4 py-3 rounded flex justify-between items-center shadow-xl"
                     >
                         <FaPlus className='mx-2' />
-                        أضف مخصص
+                        { lang === 'en' ? "Add Custom Device" : " أضف جهاز مخصص" }
                     </button>
                 </div>
-                <button type="submit" className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto">
+                <button disabled={ submited } type="submit" className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto shadow-xl">
                     <FaCalculator className='mx-2' />
-                    احسب الاستطاعة
+                    { lang === 'en' ? "Calculate System" : "احسب النظام" }
                 </button>
 
+
+                <button
+                    type="button"
+                    hidden={ !submited }
+                    disabled={ !submited }
+                    onClick={ hadnelEditDevices }
+                    className="bg-secondary text-white px-2 md:px-4 py-3 rounded flex justify-between items-center shadow-xl"
+                >
+                    <FaLockOpen className='mx-2' />
+                    { lang === 'en' ? "eidit on devices" : "تعديل على الأجهزة" }
+                </button>
             </form>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10 text-center" dir='ltr'>
+            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8'/>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' hidden={!submited}>
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         { lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
                     </label>
                     <input
                         type="number"
+                        onFocus={ (e) => e.target.select() }
                         value={ voltagePanel } onChange={ (e) => handelVotagePanel(e) }
                         className="w-full text-center my-4 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         placeholder={ lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
@@ -352,10 +395,10 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Inverter size required' : 'سعة الانفرتر' }
                             </h3>
                             <span className="text-xl font-bold text-gray-800 dark:text-white">
-                                { Math.round(outputValue.cInverter) }
+                                { Math.round(outputValue.cInverter) } W
                             </span>
                             <span className="text-xs text-gray-600 dark:text-gray-300">
-                                { outputValue.cInverter }
+                                { outputValue.cInverter } W
                             </span>
                             {/* <p className="text-gray-600 dark:text-white font-bold">
                                 { outputValue.cInverter }W
