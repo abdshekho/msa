@@ -61,7 +61,28 @@ export default function CategoriesAdminPage() {
 
             console.log('🚀 ~ page.tsx ~ fetchCategories ~ data:', data);
 
-            setCategories(data);
+
+            // Organize categories hierarchically
+            const organizeCategories = (categories: Category[]) => {
+                // Find parent categories (top level)
+                const parentCategories = categories.filter(cat => cat.parentId === null);
+
+                // Sort parent categories by order
+                parentCategories.sort((a, b) => a.order - b.order);
+
+                // For each parent, find and attach its children
+                parentCategories.forEach(parent => {
+                    const children = categories.filter(cat => cat.parentId === parent._id);
+                    // Sort children by order
+                    children.sort((a, b) => a.order - b.order);
+                    parent.subcategories = children;
+                });
+
+                return parentCategories;
+            };
+
+            const organizedCategories = organizeCategories(data);
+            setCategories(organizedCategories);
         } catch (err: any) {
             setError(err.message || 'An error occurred while fetching categories');
         } finally {
@@ -290,49 +311,48 @@ export default function CategoriesAdminPage() {
     // Render category and its subcategories recursively
     const renderCategory = (category: Category, level = 0) => {
         return (
-            <div key={category._id} className="mb-2">
+            <div key={ category._id } className="mb-2">
                 <div
-                    className={`flex items-center justify-between p-3 rounded ${
-                        level === 0 
-                            ? 'bg-blue-50 dark:bg-gray-700' 
-                            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ml-6'
-                    }`}
+                    className={ `flex items-center justify-between p-3 rounded ${level === 0
+                            ? 'bg-green-50 dark:bg-gray-700'
+                            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mx-6'
+                        }` }
                 >
                     <div className="flex items-center">
-                        {category.image && (
+                        { category.image && (
                             <div className="w-10 h-10 mr-3">
                                 <img
-                                    src={category.image}
-                                    alt={category.name}
-                                    width={40}
-                                    height={40}
+                                    src={ category.image }
+                                    alt={ category.name }
+                                    width={ 40 }
+                                    height={ 40 }
                                     className="object-cover rounded"
                                 />
                             </div>
-                        )}
+                        ) }
                         <div>
-                            <div className="font-medium dark:text-white">{category.name} / {category.nameAr}</div>
+                            <div className="font-medium dark:text-white">{ category.name } / { category.nameAr }</div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                                Slug:<span> {category.slug} </span> |
-                                Order:<span> {category.order}</span> |
-                                {category.isActive ? (
+                                Slug:<span> { category.slug } </span> |
+                                Order:<span> { category.order }</span> |
+                                { category.isActive ? (
                                     <span className="text-green-500 dark:text-green-400">Active</span>
                                 ) : (
                                     <span className="text-red-500 dark:text-red-400">Inactive</span>
-                                )}
+                                ) }
                             </div>
                         </div>
                     </div>
 
                     <div className="flex space-x-2">
                         <button
-                            onClick={() => handleEdit(category)}
+                            onClick={ () => handleEdit(category) }
                             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Edit
                         </button>
                         <button
-                            onClick={() => handleDelete(category._id)}
+                            onClick={ () => handleDelete(category._id) }
                             className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
                         >
                             Delete
@@ -340,12 +360,12 @@ export default function CategoriesAdminPage() {
                     </div>
                 </div>
 
-                {/* Render subcategories if any */}
-                {category.subcategories && category.subcategories.length > 0 && (
+                {/* Render subcategories if any */ }
+                { category.subcategories && category.subcategories.length > 0 && (
                     <div className="mt-2">
-                        {category.subcategories.map(subcat => renderCategory(subcat, level + 1))}
+                        { category.subcategories.map(subcat => renderCategory(subcat, level + 1)) }
                     </div>
-                )}
+                ) }
             </div>
         );
     };
@@ -355,38 +375,38 @@ export default function CategoriesAdminPage() {
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold dark:text-white">Categories Management</h1>
                 <button
-                    onClick={handleAddNew}
+                    onClick={ handleAddNew }
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                 >
                     Add New Category
                 </button>
             </div>
 
-            {/* Success message */}
-            {successMessage && (
+            {/* Success message */ }
+            { successMessage && (
                 <div className="mb-4 p-3 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded">
-                    {successMessage}
+                    { successMessage }
                 </div>
-            )}
+            ) }
 
-            {/* Error message */}
-            {error && (
+            {/* Error message */ }
+            { error && (
                 <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded">
-                    {error}
+                    { error }
                 </div>
-            )}
+            ) }
 
-            {/* Category form */}
-            {showForm &&
+            {/* Category form */ }
+            { showForm &&
                 (
                     <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded shadow">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold dark:text-white">
-                                {editingCategory ? 'Edit Category' : 'Add New Category'}
+                                { editingCategory ? 'Edit Category' : 'Add New Category' }
                             </h2>
                             <Tooltip content='Cancel'>
                                 <button
-                                    onClick={() => setShowForm(false)}
+                                    onClick={ () => setShowForm(false) }
                                     className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
                                 >
                                     ✕
@@ -394,44 +414,44 @@ export default function CategoriesAdminPage() {
                             </Tooltip>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={ handleSubmit } className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* Name */}
+                                {/* Name */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Name (English)</label>
                                     <input
                                         type="text"
                                         name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        onBlur={generateSlug}
+                                        value={ formData.name }
+                                        onChange={ handleInputChange }
+                                        onBlur={ generateSlug }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
                                 </div>
 
-                                {/* Arabic Name */}
+                                {/* Arabic Name */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Name (Arabic)</label>
                                     <input
                                         type="text"
                                         name="nameAr"
-                                        value={formData.nameAr}
-                                        onChange={handleInputChange}
+                                        value={ formData.nameAr }
+                                        onChange={ handleInputChange }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                         dir="rtl"
                                     />
                                 </div>
 
-                                {/* Slug */}
+                                {/* Slug */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Slug</label>
                                     <input
                                         type="text"
                                         name="slug"
-                                        value={formData.slug}
-                                        onChange={handleInputChange}
+                                        value={ formData.slug }
+                                        onChange={ handleInputChange }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
@@ -440,35 +460,35 @@ export default function CategoriesAdminPage() {
                                     </p>
                                 </div>
 
-                                {/* Image Upload */}
+                                {/* Image Upload */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Category Image</label>
                                     <div className="flex items-center space-x-4">
                                         <input
                                             type="file"
                                             accept="image/*"
-                                            onChange={handleImageChange}
+                                            onChange={ handleImageChange }
                                             className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                            ref={fileInputRef}
+                                            ref={ fileInputRef }
                                         />
                                     </div>
 
-                                    {/* Image Preview */}
-                                    {(imagePreview || formData.image) && (
+                                    {/* Image Preview */ }
+                                    { (imagePreview || formData.image) && (
                                         <div className="mt-2">
                                             <p className="text-sm font-medium mb-1 dark:text-white">Image Preview:</p>
                                             <div className="relative w-32 h-32 border rounded overflow-hidden dark:border-gray-600">
                                                 <Image
-                                                    src={imagePreview || formData.image}
+                                                    src={ imagePreview || formData.image }
                                                     alt="Category image preview"
                                                     fill
                                                     className="object-cover"
                                                 />
                                             </div>
                                         </div>
-                                    )}
+                                    ) }
 
-                                    {/* Manual Image URL input (optional) */}
+                                    {/* Manual Image URL input (optional) */ }
                                     <div className="mt-2">
                                         <label className="block mb-1 text-sm text-gray-600 dark:text-gray-400">
                                             Or enter image URL manually:
@@ -476,45 +496,45 @@ export default function CategoriesAdminPage() {
                                         <input
                                             type="text"
                                             name="image"
-                                            value={formData.image}
-                                            onChange={handleInputChange}
+                                            value={ formData.image }
+                                            onChange={ handleInputChange }
                                             className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                             placeholder="Enter image URL (optional if uploading)"
                                         />
                                     </div>
                                 </div>
 
-                                {/* Parent Category */}
+                                {/* Parent Category */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Parent Category</label>
                                     <select
                                         name="parentId"
-                                        value={formData.parentId}
-                                        onChange={handleInputChange}
+                                        value={ formData.parentId }
+                                        onChange={ handleInputChange }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                        disabled={!(categories && categories?.length)}
+                                        disabled={ !(categories && categories?.length) }
                                     >
                                         <option value="">None (Top Level Category)</option>
-                                        {categories?.filter(cat => cat.parentId === null).map(cat => (
+                                        { categories?.filter(cat => cat.parentId === null).map(cat => (
                                             <option
-                                                key={cat._id}
-                                                value={cat._id}
-                                                disabled={editingCategory ? editingCategory._id === cat._id : undefined}
+                                                key={ cat._id }
+                                                value={ cat._id }
+                                                disabled={ editingCategory ? editingCategory._id === cat._id : undefined }
                                             >
-                                                {cat.name}
+                                                { cat.name }
                                             </option>
-                                        ))}
+                                        )) }
                                     </select>
                                 </div>
 
-                                {/* Order */}
+                                {/* Order */ }
                                 <div>
                                     <label className="block mb-1 font-medium dark:text-white">Display Order</label>
                                     <input
                                         type="number"
                                         name="order"
-                                        value={formData.order}
-                                        onChange={handleInputChange}
+                                        value={ formData.order }
+                                        onChange={ handleInputChange }
                                         className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         min="0"
                                     />
@@ -523,14 +543,14 @@ export default function CategoriesAdminPage() {
                                     </p>
                                 </div>
 
-                                {/* Active Status */}
+                                {/* Active Status */ }
                                 <div className="flex items-center space-x-2 mt-6">
                                     <input
                                         type="checkbox"
                                         id="isActive"
                                         name="isActive"
-                                        checked={formData.isActive}
-                                        onChange={handleInputChange}
+                                        checked={ formData.isActive }
+                                        onChange={ handleInputChange }
                                         className="h-4 w-4 dark:bg-gray-700 dark:border-gray-600"
                                     />
                                     <label htmlFor="isActive" className="font-medium dark:text-white">
@@ -539,48 +559,48 @@ export default function CategoriesAdminPage() {
                                 </div>
                             </div>
 
-                            {/* Description */}
+                            {/* Description */ }
                             <div>
                                 <label className="block mb-1 font-medium dark:text-white">Description (English)</label>
                                 <textarea
                                     name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
+                                    value={ formData.description }
+                                    onChange={ handleInputChange }
                                     className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 ></textarea>
                             </div>
 
-                            {/* Arabic Description */}
+                            {/* Arabic Description */ }
                             <div>
                                 <label className="block mb-1 font-medium dark:text-white">Description (Arabic)</label>
                                 <textarea
                                     name="descriptionAr"
-                                    value={formData.descriptionAr}
-                                    onChange={handleInputChange}
+                                    value={ formData.descriptionAr }
+                                    onChange={ handleInputChange }
                                     className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     dir="rtl"
                                 ></textarea>
                             </div>
 
-                            {/* Form buttons */}
+                            {/* Form buttons */ }
                             <div className="flex justify-end space-x-3">
                                 <button
                                     type="button"
-                                    onClick={() => setShowForm(false)}
+                                    onClick={ () => setShowForm(false) }
                                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    disabled={loading}
+                                    disabled={ loading }
                                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 dark:disabled:bg-blue-800"
                                 >
-                                    {loading
+                                    { loading
                                         ? 'Saving...'
                                         : editingCategory
                                             ? 'Update Category'
-                                            : 'Create Category'}
+                                            : 'Create Category' }
                                 </button>
                             </div>
                         </form>
@@ -589,15 +609,15 @@ export default function CategoriesAdminPage() {
 
             }
 
-            {/* Category list */}
-            {loading && !showForm ? (
+            {/* Category list */ }
+            { loading && !showForm ? (
                 <div className="text-center py-8 dark:text-white">
                     <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary dark:border-primary-10 mb-2"></div>
                     <p>Loading categories...</p>
                 </div>
             ) : (
-                <div>{categories.map(cat => renderCategory(cat))}</div>
-            )}
+                <div>{ categories.map(cat => renderCategory(cat)) }</div>
+            ) }
         </div>
     );
 }

@@ -13,6 +13,7 @@ import { set } from 'cypress/types/lodash';
 const deviceOptions = [
     { name: 'نيون', wattage: 40 },
     { name: 'براد', wattage: 150 },
+    { name: 'براد قياس11 - 15قدم', wattage: 150 },
     { name: 'مروحة', wattage: 75 },
 ];
 
@@ -40,6 +41,17 @@ export default function SolarCalculator() {
         },
         resolver: zodResolver(schema),
     });
+    function conditionalRound(number: number): number {
+        if (isNaN(number)) {
+            throw new Error('Input must be a valid number');
+        }
+
+        const decimal = number - Math.floor(number);
+
+        return decimal >= 0.3
+            ? Math.max(1, Math.ceil(number))
+            : Math.max(1, Math.floor(number));
+    }
     const handleRemove = (index) => {
         const d = document.getElementsByClassName('row-' + index)[0];
         d.classList.toggle('opacityfull')
@@ -157,7 +169,7 @@ export default function SolarCalculator() {
                 Number of battary: ${NumberOfBattery}
                 Number of Panel: ${NumberOfPanel}
             `);
-            redirect('#output1')
+        redirect('#output1')
     };
 
 
@@ -270,7 +282,7 @@ export default function SolarCalculator() {
                     );
                 }) }
 
-                <div className="flex gap-2 md:gap-4 mt-8 justify-around" dir='ltr'  id='output1' >
+                <div className="flex gap-2 md:gap-4 mt-8 justify-around" dir='ltr' id='output1' >
                     <button
                         type="button"
                         disabled={ submited }
@@ -312,9 +324,14 @@ export default function SolarCalculator() {
                     { lang === 'en' ? "eidit on devices" : "تعديل على الأجهزة" }
                 </button>
             </form>
-            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8'/>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' hidden={!submited}>
+            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' hidden={ !submited }>
                 <div>
+                    {/* <ul dir={ lang === 'en' ? 'ltr' : 'rtl' }>
+                        <li>
+                            ينصح اختيار الألواح التي تكون أكبر من 600(واط)
+                        </li>
+                    </ul> */}
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         { lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
                     </label>
@@ -335,7 +352,7 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Number of panels' : 'عدد الألواح' }
                             </h3>
                             <span className="text-xl font-bold text-gray-800 dark:text-white">
-                                { Math.round(outputValue.nPanel) }
+                                { conditionalRound(outputValue.nPanel) }
                             </span>
                             <span className="text-xs text-gray-600 dark:text-gray-300">
                                 { outputValue.nPanel }
@@ -368,7 +385,7 @@ export default function SolarCalculator() {
                                 { lang === 'en' ? 'Number of battery' : 'عدد البطاريات' }
                             </h3>
                             <span className="text-xl font-bold text-gray-800 dark:text-white">
-                                { Math.round(outputValue.nBattery) }
+                                { conditionalRound(outputValue.nBattery) }
                             </span>
                             <span className="text-xs text-gray-600 dark:text-gray-300">
                                 { outputValue.nBattery }

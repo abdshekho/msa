@@ -189,10 +189,10 @@ export default function AdminProducts() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold dark:text-white">{isArabic ? 'إدارة المنتجات' : 'Product Management'}</h1>
+        <h1 className="text-lg md:text-2xl font-bold dark:text-white">{isArabic ? 'إدارة المنتجات' : 'Product Management'}</h1>
         <Link
           href={`/${lang}/dashboard/Product`}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded"
         >
           {isArabic ? 'إضافة منتج جديد' : 'Add New Product'}
         </Link>
@@ -260,7 +260,7 @@ export default function AdminProducts() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
-            <div key={product._id} className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+            <div key={product._id} className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden flex flex-col justify-between">
               <div className="relative h-48 w-full">
                 <Image
                   src={product.imageCover.startsWith('/') ? product.imageCover : `/${product.imageCover}`}
@@ -280,13 +280,13 @@ export default function AdminProducts() {
                 <div className="flex justify-between mt-2">
                   <Link 
                     href={`/${lang}/dashboard/Product?id=${product._id}`} 
-                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm"
+                    className="bg-secondary hover:bg-secondary-10 text-white font-bold py-2 px-3 rounded text-sm"
                   >
                     {isArabic ? 'تعديل' : 'Edit'}
                   </Link>
                   <button
                     onClick={() => handleDelete(product._id)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded text-sm"
                   >
                     {isArabic ? 'حذف' : 'Delete'}
                   </button>
