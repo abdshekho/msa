@@ -2,7 +2,15 @@ import Image from 'next/image';
 import { getDictionary } from '../../../get-dictionary';
 import AboutHero from '@/components/About/AboutHero';
 import { FaLightbulb, FaMedal, FaRecycle, FaRocket, FaSolarPanel } from 'react-icons/fa';
+import { Metadata } from 'next';
+import { Locale } from '@/i18n-config';
 
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+    const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'About' : 'حولنا',
+  };
+}
 export default async function AboutPage({ params }: { params: { lang: string } }) {
   const resolveParams = await params;
   const dict = await getDictionary(resolveParams.lang);

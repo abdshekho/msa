@@ -4,7 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
+import { Locale } from '@/i18n-config';
 
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'orders' : 'الطلبات',
+  };
+}
 export default async function OrdersPage({ params }: { params: { lang: string } }) {
   const resolvedParam = await params;
   const lang = resolvedParam.lang;

@@ -2,9 +2,17 @@ import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { getDictionary } from '../../../get-dictionary';
 import ContactForm from './ContactForm';
 import ContactHero from '@/components/contact/ContactHero';
+import { Metadata } from 'next';
+import { Locale } from '@/i18n-config';
 
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Contact us' : 'تواصل معنا',
+  };
+}
 
-export default async function ContactPage({ params }: { params: { lang: string } }) {
+export default async function ContactPage({ params }: { params: { lang: Locale } }) {
   const resolvedparams = await params;
   const lang = resolvedparams.lang
   const dict = await getDictionary(lang);

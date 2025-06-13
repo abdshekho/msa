@@ -11,7 +11,14 @@ import Providers from '@/components/ProgressProvider';
 import { CartProvider } from '../lib/cart/CartContext';
 import { CategoryProvider } from '@/context/CategoryContext';
 import { almarai } from '../ui/fonts'
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: {
+    template: '%s | MSA',
+    default: 'MSA',
+  },
+};
 
 // const inter = Inter({ subsets: ['latin'] });
 

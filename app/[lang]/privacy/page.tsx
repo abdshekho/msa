@@ -1,7 +1,14 @@
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { Metadata } from 'next';
 
-export default async function PrivacyPage({ params }) {
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Privacy' : 'سياسة الخصوصية',
+  };
+}
+export default async function PrivacyPage({ params }:any) {
   const resolvedParam = await params;
   const lang = resolvedParam.lang as Locale;
   const dictionary = await getDictionary(lang);

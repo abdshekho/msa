@@ -4,6 +4,14 @@ import { Locale } from '@/i18n-config';
 import Link from 'next/link';
 import Image from 'next/image';
 import BrandsHero from '@/components/brands/BrandsHero';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+      const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Brands' : 'العلامات التجارية',
+  };
+}
 function truncate(text, maxLength = 50) {
   return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
 }

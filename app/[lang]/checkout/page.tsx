@@ -5,7 +5,14 @@ import { useRouter } from 'next/navigation';
 import { getCart } from '@/app/lib/cart/actions';
 import { createOrder } from '@/app/lib/orders/actions';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Checkout' : 'إتمام الطلب',
+  };
+}
 interface CheckoutFormData {
   name: string;
   address: string;

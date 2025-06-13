@@ -1,7 +1,14 @@
 import { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { Metadata } from 'next';
 
-export default async function TermsPage({ params }) {
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+    const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Terms & Conditions' : 'الشروط والأحكام',
+  };
+}
+export default async function TermsPage({ params }: { params: { lang: Locale } }) {
   const resolvedParam = await params;
   const lang = resolvedParam.lang as Locale;
   const dictionary = await getDictionary(lang);

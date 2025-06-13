@@ -2,6 +2,14 @@ import ServicesList from '../../../components/services/ServicesList';
 import ServiceHero from '../../../components/services/ServiceHero';
 // import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Services' : 'خدماتنا',
+  };
+}
 
 export default async function ServicesPage({params}: {params: { lang: Locale };}) 
 {

@@ -4,6 +4,14 @@ import { Locale } from '@/i18n-config';
 import Link from 'next/link';
 import Image from 'next/image';
 import CategoriesHero from '@/components/categories/CategoriesHero';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const resolvedParam = await params;
+  return {
+    title: resolvedParam.lang === 'en' ? 'Categories' : 'الفئات',
+  };
+}
 
 async function getCategories() {
   try {
