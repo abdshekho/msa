@@ -82,7 +82,9 @@
         }
       }
     },
-    "categories": {},
+    "categories": {
+      "subcategories": "Subcategories"
+    },
     "brands": {
       "ourBrands": "Our Brnads",
       "descCard": "We offer a wide range of solar power services to meet your energy needs. Our team of experts is dedicated to providing high-quality solutions tailored to your specific requirements.",

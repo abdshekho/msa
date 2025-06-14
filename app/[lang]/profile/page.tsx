@@ -11,12 +11,14 @@ import { getClientDictionary } from "../../../get-dictionary-client";
 
 export default function Profile({ params }: { params: { lang: string } }) {
   const { data: session, update } = useSession();
-  const resolvedParams = use(params);
+  const resolvedParams : any= use(params as any);
   const dictionary = getClientDictionary(resolvedParams.lang as any);
 
   const [name, setName] = useState(session?.user?.name || "");
-  const [phone, setPhone] = useState(session?.user?.phone || "");
-  const [address, setAddress] = useState(session?.user?.address || "");
+  // const [phone, setPhone] = useState(session?.user?.phone || "");
+  const [phone, setPhone] = useState("");
+  // const [address, setAddress] = useState(session?.user?.address || "");
+  const [address, setAddress] = useState("");
   const [image, setImage] = useState(session?.user?.image || "/en/profile.webp");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });

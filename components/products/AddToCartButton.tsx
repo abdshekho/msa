@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { addToCart } from '@/app/lib/cart/actions';
 import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
 import { FaCartPlus } from 'react-icons/fa';
+import { Locale } from '@/i18n-config';
 
 interface AddToCartButtonProps {
   productId: string;
   className?: string;
+  lang?: Locale;
   children?: React.ReactNode;
 }
 

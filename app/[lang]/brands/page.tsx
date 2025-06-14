@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
     title: resolvedParam.lang === 'en' ? 'Brands' : 'العلامات التجارية',
   };
 }
-function truncate(text, maxLength = 50) {
+function truncate(text:string, maxLength = 50) {
   return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
 }
 

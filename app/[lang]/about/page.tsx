@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
     title: resolvedParam.lang === 'en' ? 'About' : 'حولنا',
   };
 }
-export default async function AboutPage({ params }: { params: { lang: string } }) {
+export default async function AboutPage({ params }: { params: { lang: Locale } }) {
   const resolveParams = await params;
   const dict = await getDictionary(resolveParams.lang);
   const isArabic = resolveParams.lang === 'ar';

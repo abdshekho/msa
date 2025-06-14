@@ -10,6 +10,7 @@ import { FaTrash, FaMinus, FaPlus } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import { Tooltip } from 'flowbite-react';
 import { Metadata } from 'next';
+import { Locale } from '@/i18n-config';
 
 export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
   const resolvedParam = await params;

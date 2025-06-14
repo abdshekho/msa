@@ -45,7 +45,7 @@ const ProductSkeleton = () => (
 );
 
 export default function ProductsPage({ params }: { params: { lang: string } }) {
-  const resolveParam = use(params);
+  const resolveParam: any = use(params as any);
   const lang = resolveParam.lang;
   const isArabic = lang === 'ar';
 
@@ -68,7 +68,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
   const pageParam = Number(searchParams.get('page') || '1');
   const minPriceParam = Number(searchParams.get('minPrice') || '0');
   const maxPriceParam = Number(searchParams.get('maxPrice') || '1000');
-  const { categories: contextCategories, loading: loadingCategories } = useCategories();
+  const { categories: contextCategories , loading: loadingCategories }:any = useCategories();
 
   useEffect(() => {
     setCurrentPage(pageParam);

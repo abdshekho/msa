@@ -19,14 +19,14 @@ export default async function IndexPage(props: { params: Promise<{ lang: Locale 
       {/* Featured Categories */ }
       <CategorySection lang={ lang } />
 
-      {/* Featured Products */ }
-      <FeaturedProducts lang={ lang } />
+      {/* About Section */ }
+      <AboutSection lang={ lang } />
 
       {/* Partner Companies */ }
       <PartnerLogos lang={ lang } />
 
-      {/* About Section */ }
-      <AboutSection lang={ lang } />
+      {/* Featured Products */ }
+      {/* <FeaturedProducts lang={ lang } /> */}
 
       {/* Call to Action */ }
       <CallToAction lang={ lang } />

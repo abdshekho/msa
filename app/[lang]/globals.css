@@ -374,6 +374,29 @@ input {
     fill: var(--color-bgm); 
 }
 
+/* homePage callToActoin */
+.custom-shape-divider-top-1749812276 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-top-1749812276 svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px;
+}
+
+.custom-shape-divider-top-1749812276 .shape-fill {
+    fill: #fdfdfd3d;
+}
+
+
+
 @keyframes marquee {
     0% {
     transform: translateX(0%);

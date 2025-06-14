@@ -6,6 +6,7 @@ import firstsolar from "public/en/companies/firstsolar.png"
 import voltronicpower from "public/en/companies/voltronicpower.png"
 import Jinko from "public/en/companies/jinko2.png"
 import Deye from "public/en/companies/Deye.png"
+import Link from 'next/link';
 
 export default function PartnerLogos({ lang }: { lang: string }) {
   const isArabic = lang === 'ar';
@@ -28,14 +29,14 @@ export default function PartnerLogos({ lang }: { lang: string }) {
   // const repeatedPartners = [...partners];
 
   return (
-    <div className="relative bg-gray-100 dark:bg-gray-800 py-20" style={ { direction: "ltr" } }>
+    <div className="relative bg-gray-100 dark:bg-gray-800 py-0.5" style={ { direction: "ltr" } }>
       {/* <div className="custom-shape-divider-top-1749048043">
         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path d="M598.97 114.72L0 0 0 120 1200 120 1200 0 598.97 114.72z" className="shape-fill"></path>
         </svg>
       </div> */}
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center mb-8 dark:text-white">
+        <h2 className="text-2xl font-bold text-center my-20 dark:text-white">
           { isArabic ? 'شركاؤنا' : 'Our Partners' }
         </h2>
 
@@ -70,6 +71,14 @@ export default function PartnerLogos({ lang }: { lang: string }) {
             )) } */}
           </div>
         </div>
+      </div>
+      <div className='flex justify-center'>
+        <Link
+          href={ `/${lang}/brands` }
+          className="inline-block my-20 mx-auto px-6 py-3 border border-primary text-primary font-medium rounded-md hover:border-primary-10 hover:text-primary-10  transition-colors"
+        >
+          { isArabic ? 'عرض جميع العلامات التجارية' : 'View All Brands' }
+        </Link>
       </div>
       {/* <div className="custom-shape-divider-bottom-1749046574">
         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

@@ -91,10 +91,10 @@ export default function ServicesList() {
       {services.map((service) => (
         <div 
           key={service.id} 
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg"
+          className="group backdrop-blur-lg bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-6 transition-all duration-300 hover:transform  hover:scale-105 hover:shadow-2xl border-b-3 border-primary"
         >
           <div className="flex flex-col items-center text-center">
-            <div className="mb-4">
+            <div className="mb-4 group-hover:rotate-12 transition-transform">
               {service.icon}
             </div>
             <h3 className="text-xl font-semibold text-secondary dark:text-secondary-10 mb-2">
