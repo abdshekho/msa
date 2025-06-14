@@ -374,7 +374,7 @@ input {
     fill: var(--color-bgm); 
 }
 
-/* homePage callToActoin */
+/* services callToActoin and why choose our Services */
 .custom-shape-divider-top-1749812276 {
     position: absolute;
     top: 0;
@@ -390,11 +390,16 @@ input {
     width: calc(100% + 1.3px);
     height: 60px;
 }
+@media screen and (max-width: 780px) {
+.custom-shape-divider-top-1749812276 svg  {
+    width: calc(200% + 1.3px); 
+    }
+
+}
 
 .custom-shape-divider-top-1749812276 .shape-fill {
     fill: #fdfdfd3d;
 }
-
 
 
 @keyframes marquee {

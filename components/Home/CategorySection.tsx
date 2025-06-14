@@ -80,9 +80,9 @@ export default function CategorySection({ lang }: { lang: string }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           { categories.map((category: any) => (
             <div key={ category._id } className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
-              <div className="p-6" style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
-                <div className='flex justify-between items-center'>
-                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold mb-4">
+              <div className="p-6 h-full flex flex-col justify-between" style={ { direction: lang === 'en' ? "ltr" : "rtl" } }>
+                <div className='flex justify-between items-center mb-4'>
+                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold">
                     { lang === 'en' ? category.name : (category.nameAr || category.name) }
                   </h2>
                   <span className="px-3 py-2 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800 rounded-full text-xs font-medium">
@@ -104,26 +104,26 @@ export default function CategorySection({ lang }: { lang: string }) {
                 ) }
 
                 <div className="mt-4">
-                  <h3 className="text-md md:text-xl font-medium mb-2 text-secondary dark:text-secondary-10">
-                    { lang === 'en' ? 'Subcategories': 'الفئات الفرعية' }
+                  <h3 className="text-md md:text-xl font-bold mb-2 text-secondary dark:text-secondary-10">
+                    { lang === 'en' ? 'Subcategories' : 'الفئات الفرعية' }
                   </h3>
                   <ul className="space-y-2">
                     { category.items && category.items.map((subcategory: any) => (
                       <li key={ subcategory._id }>
                         <Link
                           href={ `/${lang}/categories/${category.slug}/${subcategory.slug}` }
-                          className="text-blue-600 dark:text-blue-400 flex justify-between items-center"
+                          className="text-gray-800  dark:text-gray-100 flex justify-between items-center"
                         >
                           <div className='flex hover:underline'>
                             <div className="relative w-8 h-8 mr-2">
-                              { subcategory.image && (
+
                                 <Image
-                                  src={ subcategory.image }
+                                  src={ subcategory.image || category.image }
                                   alt={ lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name) }
                                   fill
                                   className="object-cover rounded-full"
                                 />
-                              ) }
+                            
                             </div>
                             { lang === 'en' ? subcategory.name : (subcategory.nameAr || subcategory.name) }
                           </div>
@@ -142,9 +142,9 @@ export default function CategorySection({ lang }: { lang: string }) {
 
                 <Link
                   href={ `/${lang}/categories/${category.slug}` }
-                  className="mt-6 inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-10 transition"
+                  className="mt-6 inline-block px-4 py-2 bg-primary text-white text-center rounded-md hover:bg-primary-10 transition"
                 >
-                  { lang === 'en' ?'View All' : 'عرض الكل' }
+                  { lang === 'en' ? 'View All' : 'عرض الكل' }
                 </Link>
               </div>
             </div>

@@ -260,6 +260,34 @@ export default function CategoriesAdminPage() {
 
     // Delete category
     const handleDelete = async (categoryId: string) => {
+        // Check if any subcategories depend on this category
+        const hasSubcategories = categories.some(cat => cat.parentId === categoryId);
+        
+        // Check if any products use this category
+        let hasProducts = false;
+        try {
+            const checkResponse = await fetch(`/api/products?categoryId=${categoryId}&limit=1`);
+            if (checkResponse.ok) {
+                const data = await checkResponse.json();
+                hasProducts = data.products && data.products.length > 0;
+            }
+        } catch (error) {
+            console.error("Error checking product dependencies:", error);
+        }
+        
+        // Show warning if dependencies exist
+        if (hasSubcategories || hasProducts) {
+            const warningMessage = [
+                "Warning: This category cannot be deleted because:",
+                hasSubcategories ? "- It has subcategories that depend on it" : "",
+                hasProducts ? "- There are products associated with this category" : "",
+                "Please remove these dependencies first."
+            ].filter(Boolean).join("\n");
+            
+            alert(warningMessage);
+            return;
+        }
+        
         if (!confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
             return;
         }

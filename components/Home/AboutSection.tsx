@@ -21,7 +21,7 @@ export default function AboutSection({ lang }: { lang: string }) {
           </div>
           
           <div className="md:w-1/2">
-            <h2 className="text-3xl font-bold mb-4 dark:text-white">
+            <h2 className="text-3xl font-bold mb-4 text-secondary dark:text-secondary-10">
               {isArabic ? 'من نحن' : 'About Us'}
             </h2>
             
@@ -33,14 +33,14 @@ export default function AboutSection({ lang }: { lang: string }) {
             
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-                <div className="text-blue-600 dark:text-blue-400 text-2xl font-bold mb-2">100+</div>
+                <div className="text-secondary dark:text-secondary-10 text-2xl font-bold mb-2">100+</div>
                 <div className="text-gray-600 dark:text-gray-300">
                   {isArabic ? 'منتجات متنوعة' : 'Various Products'}
                 </div>
               </div>
               
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-                <div className="text-blue-600 dark:text-blue-400 text-2xl font-bold mb-2">500+</div>
+                <div className="text-secondary dark:text-secondary-10 text-2xl font-bold mb-2">500+</div>
                 <div className="text-gray-600 dark:text-gray-300">
                   {isArabic ? 'عملاء راضون' : 'Happy Customers'}
                 </div>
@@ -49,7 +49,7 @@ export default function AboutSection({ lang }: { lang: string }) {
             
             <Link 
               href={`/${lang}/about`}
-              className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+              className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-10 transition-colors"
             >
               {isArabic ? 'اقرأ المزيد' : 'Read More'}
             </Link>

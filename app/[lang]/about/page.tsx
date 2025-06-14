@@ -4,6 +4,7 @@ import AboutHero from '@/components/About/AboutHero';
 import { FaLightbulb, FaMedal, FaRecycle, FaRocket, FaSolarPanel } from 'react-icons/fa';
 import { Metadata } from 'next';
 import { Locale } from '@/i18n-config';
+import OurValues from './OurValues';
 
 export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
     const resolvedParam = await params;
@@ -81,7 +82,8 @@ export default async function AboutPage({ params }: { params: { lang: Locale } }
         </div>
 
         {/* Our Values */ }
-        <div className="my-30 text-center">
+        <OurValues dict={dict.page.about.values}/>
+        {/* <div className="my-30 text-center">
           <h2 className="head-1 mb-8 text-center">
             { dict.page.about.values.title }
           </h2>
@@ -114,7 +116,7 @@ export default async function AboutPage({ params }: { params: { lang: Locale } }
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Our Team */ }
         <div className='my-20'>

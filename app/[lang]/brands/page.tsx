@@ -56,7 +56,7 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
             <Link
               key={ brand._id }
               href={ `/${lang}/brands/${brand.slug}` }
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+              className="group bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
             >
               <div className="p-2 md:p-4 flex flex-col items-center">
                 { brand.image && (
@@ -66,7 +66,7 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
                       alt={ brand.name }
                       fill
                       sizes='120px'
-                      className="object-contain"
+                      className="object-contain group-hover:opacity-40"
                     />
                   </div>
                 ) }

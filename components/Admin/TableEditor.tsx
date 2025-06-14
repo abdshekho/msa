@@ -521,7 +521,7 @@ export default function TableEditor({
     const shouldVirtualize = memoizedRows.length > 20;
 
     return (
-        <div className="p-4 space-y-4 pl-[100px]">
+        <div className="p-4 space-y-4 pl-[100px]" style={{direction:'ltr'}}>
             {/* Status Messages */ }
             { error && (
                 <div className="p-3 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 rounded">
