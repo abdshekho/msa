@@ -45,6 +45,39 @@ export default function CarouselMain({ lang }) {
                     <img
                         // src='/en/carousel/technical.webp'
                         // src='/en/carousel/technical.png'
+                        src='/en/carousel/technical.jpeg'
+                        alt="الطاقة الشمسية للمنازل"
+                        // className="object-fill opacity-60 h-full md:h-auto w-full"
+                        className=" h-full w-full"
+                    />
+                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40"></div>
+                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[70px]">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
+                            {/* {lang === 'en'? "" : "" } */ }
+                            { lang === 'en' ? "We provide" : "نقدم لكم" }
+                        </h2>
+                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
+                        <p className="text-md lg:text-xl mb-6 text-white ">
+                            { lang === 'en' ?
+                                'installation, maintenance, and shipping services for all our products across all regions , fast and professionally.'
+                                :
+                                'خدمات تركيب، صيانة، وشحن لجميع منتجاتنا إلى كافة المناطق بسرعة واحترافية.'
+                            }
+                        </p>
+                        <div className='flex justify-center gap-2'>
+                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Discover our products" : "تصفح منتجاتنا" }
+                            </button>
+                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
+                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
+                    <img
+                        // src='/en/carousel/technical.webp'
+                        // src='/en/carousel/technical.png'
                         src='/en/carousel/technicalm.webp'
                         alt="الطاقة الشمسية للمنازل"
                         // className="object-fill opacity-60 h-full md:h-auto w-full"
@@ -103,39 +136,6 @@ export default function CarouselMain({ lang }) {
                             </button>
                             <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
                                 { lang === 'en' ? "Our Partners" : "شركاؤنا" }
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
-                    <img
-                        // src='/en/carousel/technical.webp'
-                        // src='/en/carousel/technical.png'
-                        src='/en/carousel/technical.jpeg'
-                        alt="الطاقة الشمسية للمنازل"
-                        // className="object-fill opacity-60 h-full md:h-auto w-full"
-                        className=" h-full w-full"
-                    />
-                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40"></div>
-                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[70px]">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
-                            {/* {lang === 'en'? "" : "" } */ }
-                            { lang === 'en' ? "We provide" : "نقدم لكم" }
-                        </h2>
-                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
-                        <p className="text-md lg:text-xl mb-6 text-white ">
-                            { lang === 'en' ?
-                                'installation, maintenance, and shipping services for all our products across all regions — fast and professionally.'
-                                :
-                                'خدمات تركيب، صيانة، وشحن لجميع منتجاتنا إلى كافة المناطق بسرعة واحترافية.'
-                            }
-                        </p>
-                        <div className='flex justify-center gap-2'>
-                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
-                                { lang === 'en' ? "Discover our products" : "تصفح منتجاتنا" }
-                            </button>
-                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
-                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
                             </button>
                         </div>
                     </div>

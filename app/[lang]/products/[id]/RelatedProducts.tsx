@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCategories } from '@/context/CategoryContext';
+import ProdcutCard from '../ProdcutCard';
 
 interface Product {
   _id: string;
@@ -66,28 +67,7 @@ export default function RelatedProducts({ productId, categoryId, brandId, lang }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       { relatedProducts?.map((product) => (
-        <Link
-          href={ `/${lang}/products/${product._id}` }
-          key={ product._id }
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-        >
-          <div className="relative h-48 w-full">
-            <Image
-              src={ product.imageCover.startsWith('/') ? product.imageCover : `/${product.imageCover}` }
-              alt={ isArabic ? product.nameAr || product.name : product.name }
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="p-4">
-            <h3 className="text-lg font-medium text-primary dark:text-primary-10 truncate">
-              { isArabic ? product.nameAr || product.name : product.name }
-            </h3>
-            <p className="text-blue-600 dark:text-blue-400 font-bold mt-2">
-              ${ product.price?.toFixed(2) }
-            </p>
-          </div>
-        </Link>
+        <ProdcutCard key={product._id} product={product} lang={lang}/>
       )) }
     </div>
   );
