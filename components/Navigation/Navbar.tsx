@@ -98,13 +98,17 @@ export default function NavbarMain({ lang, dictionary }: any) {
             // className={ `bg-white dark:bg-[#1F2937] ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }>
             className={ `bg-white dark:bg-[#1F2937]` }>
             {/* <Navbar className={ `bg-white bg-gradient-to-r dark:from-[#d2881134] via-10% dark:to-card ${pathname === '/' + lang ? 'absolute w-full z-10 bg-transparent dark:bg-transparent' : ''}` }> */ }
-            <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse" style={ { direction: "ltr" } }>
+            <NavbarBrand href={ `/${lang}` } className="flex flex-col hover:animate-pulse" style={ { direction: "ltr" } }>
+                
                 {/* <NavbarBrand href={ `/${lang}` } className="hover:animate-pulse rounded-2xl bg-radial-[at_10%_75%] from-[#d2881121] via-[#d24e111e] to-[#1F2937] to-99%"> */ }
+                <div className="flex items-center">
                 <Image src="/favicon.ico" width={ 70 } height={ 100 } className="mr-1 h-9" alt="Flowbite React Logo" />
                 <div className="hidden lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">
                     <span className="text-[#d28711] font-bold">MSA</span>
                     <span className="mt-[-10px] text-[#05406d] dark:text-[lightgray] font-bold">SunPower</span>
                 </div>
+                </div>
+                <span className="text-[10px] font-stretch-95% font-bold text-secondary transform-ske dark:text-secondary-10">DESIGN & IMPLEMENTATION SERVICES</span>
             </NavbarBrand>
             <div className="flex md:order-2 gap-4">
                 { session?.user?.role === 'user' && <CartDropdown /> }
