@@ -33,7 +33,7 @@ export default async function AboutPage({ params }: { params: { lang: Locale } }
       </div> */}
 
       {/* Company Overview */ }
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12" id="aboutHeader">
         <div className="flex flex-col md:flex-row gap-8 mb-16 md:tracking-[1px] md:leading-[2.5] max-w-7xl mx-auto">
           <div className="md:w-1/2">
             <h2 className="head-1 mb-4">

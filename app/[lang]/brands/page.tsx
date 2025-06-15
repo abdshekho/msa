@@ -44,8 +44,8 @@ export default async function BrandsPage(props: { params: Promise<{ lang: Locale
   return (
     <div >
       <BrandsHero lang={ lang } />
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">{ dictionary.page.brands?.ourBrands }</h1>
+      <div className="container mx-auto px-4 py-16" id='brandsHeader'>
+        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">{ dictionary.page.brands?.ourBrands }</h1>
         <p className="text-sm md:text-lg text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
           { dictionary.page.brands?.descCard }
           {/* We offer a wide range of solar power services to meet your energy needs. Our team of experts is dedicated to providing high-quality solutions tailored to your specific requirements. */ }

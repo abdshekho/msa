@@ -1,6 +1,7 @@
-import { FaSolarPanel } from 'react-icons/fa';
+import { FaCalculator, FaRegArrowAltCircleDown, FaSolarPanel } from 'react-icons/fa';
 import UndrawTeamwork from '@/public/svg/undraw_product-iteration_r2wg.svg';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ServiceHero({lang}) {
     
@@ -18,12 +19,14 @@ export default function ServiceHero({lang}) {
                                 : 'Harness the power of the sun with our comprehensive solar energy solutions. We provide end-to-end services from consultation to installation and maintenance.'}
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <button className="bg-[#d28711] hover:bg-yellow-600 text-whitefont-bold py-3 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
-                                {lang === 'ar' ? 'احصل على عرض سعر مجاني' : 'Get a Free Quote'}
-                            </button>
-                            <button className="bg-transparent hover:bg-white hover:text-blue-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 border-2 border-white rounded-lg transition duration-300">
-                                {lang === 'ar' ? 'اعرف المزيد' : 'Learn More'}
-                            </button>
+                            <Link href={`/${lang}/solar-calculator`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaCalculator className='group-hover:rotate-12 transition-transform mx-2' />
+                                { lang === 'en' ? "System Calculator" : "احسب نظامك الشمسي" }
+                            </Link>
+                            <a href={'#servicesHeader'} className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown  className='animate-bounce transition-transform mx-2' />
+                                {lang === 'en' ? 'Learn More' : 'اعرف المزيد'}
+                            </a>
                         </div>
                     </div>
                     <div className="w-full md:w-2/3 flex justify-center overflow-hidden ">

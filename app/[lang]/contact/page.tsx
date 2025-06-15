@@ -33,10 +33,10 @@ export default async function ContactPage({ params }: { params: { lang: Locale }
       </div> */}
 
       {/* Contact Information */ }
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12" id='contactHeader'>
         <div>
           <h2 className="text-3xl font-bold text-center text-primary dark:text-primary-10 mb-4">
-            { lang === 'ar' ? 'خدماتنا' : 'Contact Us' }
+            { lang === 'ar' ? 'تواصل معنا' : 'Contact Us' }
           </h2>
           <p className="text-center text-secondary dark:text-white mb-12 max-w-2xl mx-auto">
             { lang === 'ar'

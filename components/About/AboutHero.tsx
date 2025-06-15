@@ -1,5 +1,6 @@
-import { FaSolarPanel } from 'react-icons/fa';
+import { FaPhoneAlt, FaRegArrowAltCircleDown, FaSolarPanel, FaTools } from 'react-icons/fa';
 import UndrawTeamwork from '@/public/svg/about3.svg';
+import Link from 'next/link';
 export default function AboutHero({ lang }) {
     return (
         <div className="relative bg-gradient-to-t md:bg-gradient-to-r from-secondary to-secondary-10 text-white py-20 px-4" style={ { direction: 'ltr' } }>
@@ -19,12 +20,14 @@ export default function AboutHero({ lang }) {
 
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <button className="bg-[#d28711] hover:bg-yellow-600 text-whitefont-bold py-3 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
-                                Get a Free Quote
-                            </button>
-                            <button className="bg-transparent hover:bg-white hover:text-blue-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 border-2 border-white rounded-lg transition duration-300">
-                                Learn More
-                            </button>
+                            <Link href={`/${lang}/contact`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
+                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
+                            </Link>
+                            <a href={ '#aboutHeader' } className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown className='animate-bounce transition-transform mx-2' />
+                                { lang === 'en' ? 'Learn More' : 'اعرف المزيد' }
+                            </a>
                         </div>
                     </div>
                     <div className="w-full md:w-2/3 flex justify-center overflow-hidden ">

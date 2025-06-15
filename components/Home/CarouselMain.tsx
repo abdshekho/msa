@@ -1,61 +1,61 @@
-
-import React from 'react'
 import { Carousel, createTheme, ThemeProvider } from "flowbite-react";
 import Image from "next/image";
-import { FaBoxOpen, FaIndustry, FaPhoneAlt, FaTools } from 'react-icons/fa';
+import { FaBoxOpen, FaHandshake, FaIndustry, FaPhoneAlt, FaTools, FaUsers } from 'react-icons/fa';
+import { redirect } from 'next/navigation';
+import Link from "next/link";
 
-    const mainTheme = {
-        "root": {
-            "base": "relative h-full w-full",
-            "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
-            "rightControl": "absolute right-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none"
+const mainTheme = {
+    "root": {
+        "base": "relative h-full w-full",
+        "leftControl": "absolute left-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none",
+        "rightControl": "absolute right-0 top-0 flex h-full items-center justify-center px-4 focus:outline-none"
+    },
+    "indicators": {
+        "active": {
+            "off": "bg-secondary hover:bg-secondary dark:bg-secondary-10 dark:hover:bg-secondary",
+            "on": "bg-primary dark:bg-primary"
         },
-        "indicators": {
-            "active": {
-                "off": "bg-secondary hover:bg-secondary dark:bg-secondary-10 dark:hover:bg-secondary",
-                "on": "bg-primary dark:bg-primary"
-            },
-            "base": "h-3 w-3 rounded-full",
-            "wrapper": "absolute bottom-5 left-1/2 flex -translate-x-1/2 space-x-3 z-2"
-        },
-        "item": {
-            "base": "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2",
-            "wrapper": {
-                "off": "w-full shrink-0 transform cursor-default snap-center",
-                "on": "w-full shrink-0 transform cursor-grab snap-center"
-            }
-        },
-        "control": {
-            "base": "inline-flex h-8 w-8 items-center justify-center bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white sm:h-10 sm:w-10 dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70",
-            "icon": "h-5 w-5 text-white sm:h-6 sm:w-6 dark:text-white"
-        },
-        "scrollContainer": {
-            "base": "flex h-full snap-mandatory overflow-y-hidden overflow-x-hidden  scroll-smooth",
-            "snap": "snap-x"
+        "base": "h-3 w-3 rounded-full",
+        "wrapper": "absolute bottom-5 left-1/2 flex -translate-x-1/2 space-x-3 z-2"
+    },
+    "item": {
+        "base": "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2",
+        "wrapper": {
+            "off": "w-full shrink-0 transform cursor-default snap-center",
+            "on": "w-full shrink-0 transform cursor-grab snap-center"
         }
-    };
+    },
+    "control": {
+        "base": "inline-flex h-8 w-8 items-center justify-center bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white sm:h-10 sm:w-10 dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70",
+        "icon": "h-5 w-5 text-white sm:h-6 sm:w-6 dark:text-white"
+    },
+    "scrollContainer": {
+        "base": "flex h-full snap-mandatory overflow-y-hidden overflow-x-hidden  scroll-smooth",
+        "snap": "snap-x"
+    }
+};
 export default function CarouselMain({ lang }) {
     // const isMobile = useIsMobile()
 
 
 
     return (
-        <div className="relative h-[40vh] lg:h-[calc(100vh-66px)]">
+        <div className="relative h-[40vh] lg:h-[calc(100vh-66px)]" style={ { userSelect: 'none' } }>
             <div className="custom-shape-divider-bottom-1749044904  hidden md:flex">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M1200 0L0 0 598.97 114.72 1200 0z" className="shape-fill"></path>
                 </svg>
             </div>
-            {/* slideInterval={5000} */}
-            {/* onSlideChange={(index) => console.log("onSlideChange()", index)} */}
-            <Carousel draggable slide={ true } className='relative overflow-x-hidden' theme={ mainTheme } style={ { direction: 'ltr' } }>
+            {/* slideInterval={5000} */ }
+            {/* onSlideChange={(index) => console.log("onSlideChange()", index)} */ }
+            <Carousel draggable slide={ false } className='relative overflow-x-hidden' theme={ mainTheme } style={ { direction: 'ltr' } }>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
                         src='/en/carousel/technical.jpeg'
                         alt="الطاقة الشمسية للمنازل"
                         className=" h-full w-full"
                     />
-                    {/* <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[rgba(0,0,0,0.09)] via-60% to-black opacity-40"></div> */}
+                    {/* <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[rgba(0,0,0,0.09)] via-60% to-black opacity-40"></div> */ }
                     <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black md:opacity-40"></div>
 
                     <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[45%] md:top-[70px]">
@@ -70,14 +70,14 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                            <Link href={`/${lang}/products`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
                                 <FaBoxOpen className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our products" : "تصفح منتجاتنا" }
-                            </button>
-                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
-                                { lang === 'en' ? "Contact us" : "تواصل معنا" }
-                            </button>
+                            </Link>
+                            <Link href={`/${lang}/about`} className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaUsers className='group-hover:rotate-12 transition-transform mx-2' />
+                                { lang === 'en' ? "About us" : "حول شركتنا" }
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -100,14 +100,14 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                            <Link href={`/${lang}/services`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
                                 <FaTools className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Services" : "خدماتنا" }
-                            </button>
-                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                            </Link>
+                            <Link href={`/${lang}/contact`} className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
                                 <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Contact us" : "تواصل معنا" }
-                            </button>
+                            </Link>
                         </div>
                     </div>
 
@@ -132,14 +132,14 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                            <Link href={`/${lang}/brands`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
                                 <FaIndustry className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Brands" : "العلامات التجارية" }
-                            </button>
-                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
+                            </Link>
+                            <a href="#ourPartners" className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaHandshake className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our Partners" : "شركاؤنا" }
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

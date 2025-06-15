@@ -106,7 +106,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
                 </div>
                 </div>
                 {/* <span className="text-[10px] text-under  font-stretch-95% font-bold text-secondary transform-ske dark:text-secondary-10">DESIGN & IMPLEMENTATION SERVICES</span> */}
-                <span className="hidden lg:flex md:justify-end text-[10px] text-under  font-stretch-95% font-bold text-black transform-ske dark:text-white scale-y-125">Design & Implenentation Servcies</span>
+                <span className="hidden lg:flex mt-[-3px] md:justify-end text-[10px] text-under  font-stretch-95% font-bold text-black transform-ske dark:text-white scale-y-125">Design & Implenentation Servcies</span>
             </Link>
             <div className="flex md:order-2 gap-4">
                 { session?.user?.role === 'user' && <CartDropdown /> }

@@ -42,8 +42,8 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
   return (
     <div className="mx-auto">
       <CategoriesHero lang={lang} />
-      <div className='container mx-auto px-4 py-16'>
-        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
+      <div className='container mx-auto px-4 py-16' id='categoriesHeader'>
+        <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
           {lang === 'en' ? 'Find What You\'re Looking For' : 'ابحث عما تبحث عنه'}
         </h1>
         <p className="text-sm md:text-lg text-center text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>

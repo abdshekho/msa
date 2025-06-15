@@ -1,5 +1,6 @@
-import { FaSolarPanel } from 'react-icons/fa';
+import { FaBoxOpen, FaRegArrowAltCircleDown, FaSolarPanel } from 'react-icons/fa';
 import UndrawTeamwork from '@/public/svg/undraw_real-time-analytics_50za.svg';
+import Link from 'next/link';
 export default function BrandsHero({ lang }) {
     return (
         <div className="relative bg-gradient-to-t md:bg-gradient-to-r from-green-800 to-green-500 text-white md:py-20 md:px-4" style={{direction:"ltr"}}>
@@ -13,12 +14,14 @@ export default function BrandsHero({ lang }) {
                                 : 'اكتشف مجموعة واسعة من العلامات التجارية الموثوقة وعالية الجودة في عالم الطاقة الشمسية. نحن نستقطب الشركات العالمية الرائدة لتقديم منتجات مبتكرة وموثوقة تلبي جميع احتياجاتك من الطاقة.' }
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <button className="bg-[#d28711] hover:bg-yellow-600 text-white font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg transition duration-300">
-                                Get a Free Quote
-                            </button>
-                            <button className="bg-transparent hover:bg-white hover:text-green-500 text-white font-bold py-2 md:py-3 px-4 md:px-6 border-2 border-white rounded-lg transition duration-300">
-                                Learn More
-                            </button>
+                            <Link href={'products'} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaBoxOpen className='group-hover:rotate-12 transition-transform mx-2' />
+                                { lang === 'en' ? "Our products" : "تصفح منتجاتنا" }
+                            </Link>
+                            <a href={'#brandsHeader'} className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown  className='animate-bounce transition-transform mx-2' />
+                                {lang === 'en' ? 'Learn More' : 'اعرف المزيد'}
+                            </a>
                         </div>
                     </div>
                     <div className="w-full  md:w-2/3 flex justify-center overflow-hidden">
