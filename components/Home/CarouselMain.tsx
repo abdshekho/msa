@@ -1,8 +1,9 @@
+
 import React from 'react'
 import { Carousel, createTheme, ThemeProvider } from "flowbite-react";
 import Image from "next/image";
+import { FaBoxOpen, FaIndustry, FaPhoneAlt, FaTools } from 'react-icons/fa';
 
-export default function CarouselMain({ lang }) {
     const mainTheme = {
         "root": {
             "base": "relative h-full w-full",
@@ -33,6 +34,11 @@ export default function CarouselMain({ lang }) {
             "snap": "snap-x"
         }
     };
+export default function CarouselMain({ lang }) {
+    // const isMobile = useIsMobile()
+
+
+
     return (
         <div className="relative h-[40vh] lg:h-[calc(100vh-66px)]">
             <div className="custom-shape-divider-bottom-1749044904  hidden md:flex">
@@ -40,35 +46,36 @@ export default function CarouselMain({ lang }) {
                     <path d="M1200 0L0 0 598.97 114.72 1200 0z" className="shape-fill"></path>
                 </svg>
             </div>
-            <Carousel slide={ false } className='relative overflow-x-hidden' theme={ mainTheme } style={ { direction: 'ltr' } }>
+            {/* slideInterval={5000} */}
+            {/* onSlideChange={(index) => console.log("onSlideChange()", index)} */}
+            <Carousel draggable slide={ true } className='relative overflow-x-hidden' theme={ mainTheme } style={ { direction: 'ltr' } }>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
-                        // src='/en/carousel/technical.webp'
-                        // src='/en/carousel/technical.png'
                         src='/en/carousel/technical.jpeg'
                         alt="الطاقة الشمسية للمنازل"
-                        // className="object-fill opacity-60 h-full md:h-auto w-full"
                         className=" h-full w-full"
                     />
-                    <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40"></div>
-                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[70px]">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
-                            {/* {lang === 'en'? "" : "" } */ }
-                            { lang === 'en' ? "We provide" : "نقدم لكم" }
+                    {/* <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[rgba(0,0,0,0.09)] via-60% to-black opacity-40"></div> */}
+                    <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black md:opacity-40"></div>
+
+                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[45%] md:top-[70px]">
+                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText">
+                            { lang === 'en' ? "We provide" : "تقدم شركتنا" }
                         </h2>
-                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
-                        <p className="text-md lg:text-xl mb-6 text-white ">
+                        <p className="text-md lg:text-xl mb-6 text-white shadowText">
                             { lang === 'en' ?
                                 'installation, maintenance, and shipping services for all our products across all regions , fast and professionally.'
                                 :
-                                'خدمات تركيب، صيانة، وشحن لجميع منتجاتنا إلى كافة المناطق بسرعة واحترافية.'
+                                'خدمات تركيب، صيانة، وشحن لجميع منتجاتنا إلى كافة المناطق بسرعة واحترافية'
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
-                                { lang === 'en' ? "Discover our products" : "تصفح منتجاتنا" }
+                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaBoxOpen className='group-hover:rotate-12 transition-transform mx-2' />
+                                { lang === 'en' ? "Our products" : "تصفح منتجاتنا" }
                             </button>
-                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
+                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Contact us" : "تواصل معنا" }
                             </button>
                         </div>
@@ -76,20 +83,16 @@ export default function CarouselMain({ lang }) {
                 </div>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
-                        // src='/en/carousel/technical.webp'
-                        // src='/en/carousel/technical.png'
                         src='/en/carousel/technicalm.webp'
                         alt="الطاقة الشمسية للمنازل"
-                        // className="object-fill opacity-60 h-full md:h-auto w-full"
                         className=" h-full w-full"
                     />
                     <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black opacity-70"></div>
                     <div className="absolute left-0 z-10 text-center text-white px-4 md:px-12 max-w-2xl top-[50%] md:top-[90px]">
-                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue]">
+                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText">
                             { lang === 'en' ? "Free Consultation" : "استشارة مجانية مع خبرائنا" }
                         </h2>
-                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
-                        <p className="text-sm lg:text-xl mb-2 md:mb-6 text-white ">
+                        <p className="text-sm lg:text-xl mb-2 md:mb-6 text-white shadowText">
                             { lang === 'en' ?
                                 'Get free consultations and expert solutions to choose the best system for your needs.'
                                 :
@@ -97,10 +100,12 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="bg-primary  hover:bg-primary-10 text-sm  md:text-base  text-white md:font-bold py-1 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaTools className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Services" : "خدماتنا" }
                             </button>
-                            <button className="border border-white  hover:bg-[#053862] md:font-bold text-sm md:text-base py-1 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Contact us" : "تواصل معنا" }
                             </button>
                         </div>
@@ -109,21 +114,17 @@ export default function CarouselMain({ lang }) {
                 </div>
                 <div className="relative flex h-full items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-900 dark:to-blue-800">
                     <img
-                        // src='/en/carousel/technical.webp'
-                        // src='/en/carousel/technical.png'
                         src='/en/carousel/handshake.jpg'
                         alt="الطاقة الشمسية للمنازل"
-                        // className="object-fill opacity-60 h-full md:h-auto w-full"
                         className=" h-full w-full"
                     />
                     <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40 blur-3xl"></div>
-                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[50px]">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue]">
-                            {/* {lang === 'en'? "" : "" } */ }
+                    <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[20px] md:top-[50px]">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue] shadowText">
+
                             { lang === 'en' ? "Our Partners" : "شركاؤنا" }
                         </h2>
-                        {/* <p className="text-md lg:text-xl mb-6 text-[lightgoldenrodyellow]"> */ }
-                        <p className="text-md lg:text-xl mb-6 text-white ">
+                        <p className="text-md lg:text-xl mb-6 text-white shadowText">
                             { lang === 'en' ?
                                 'We partner with leading global companies to bring you the latest and most reliable energy products — guaranteed quality and performance.'
                                 :
@@ -131,10 +132,12 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <button className="bg-primary  hover:bg-primary-10 text-white font-bold py-3 px-6 rounded-lg transition-all">
+                            <button className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaIndustry className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Brands" : "العلامات التجارية" }
                             </button>
-                            <button className="border border-white  hover:bg-[#053862] font-bold py-3 px-6 rounded-lg transition-all">
+                            <button className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-2 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our Partners" : "شركاؤنا" }
                             </button>
                         </div>
@@ -144,7 +147,6 @@ export default function CarouselMain({ lang }) {
                     <img
                         src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1920&auto=format&fit=crop"
                         alt="الطاقة الشمسية للمنازل"
-                        // className="object-fill opacity-60 h-full md:h-auto w-full"
                         className="opacity-40 h-full w-full"
                     />
                     <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-4xl">
@@ -155,11 +157,6 @@ export default function CarouselMain({ lang }) {
                         <button className="border border-white  hover:bg-[#111827] font-bold py-3 px-6 rounded-lg transition-all">
                             Home solutions
                         </button>
-                        {/* <button role="button" className="golden-button">
-                            <span className="golden-text">
-                            Home
-                            </span>
-                        </button> */}
                     </div>
                 </div>
 

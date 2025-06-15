@@ -83,7 +83,9 @@ input {
     /* width: 100%; */
     box-sizing: border-box;
 }
-
+.shadowText {
+    text-shadow: 2px 2px 4px black;
+}
 
 @keyframes BottomToTop {
     0% {transform: scaleY(1);}
@@ -453,8 +455,56 @@ input {
 
 
 
+/* for NavBar */
+@keyframes textEffect {
+    0%   {opacity: 0;transform: translateY(50px);}
+    100%   {opacity: 1;transform: translateY(0);}
+}
+@keyframes sunPower {
+    0%   {opacity: 0;transform: translate(-85px, 15px);}
+    100%   {opacity: 1;transform: translate(0, 0);}
+}
+@keyframes MSA {
+    0%   {opacity: 0;transform: translate(-90px, 8px);}
+    100%   {opacity: 1;transform: translate(0, 0);}
+}
+@keyframes LogoImage {
+    0%   {transform: scale(0.6);opacity: 0.2;}
+    50%   {transform: scale(1.5);opacity: 1;}
+    100%   {transform: scale(1);opacity: 1;}
+}
 
+.navBrand{
+    transition: all;
+}
 
+.navBrand:hover .text-under {
+    opacity: 0;
+    animation: 0.6s textEffect 1s forwards 1;
+} 
+.navBrand:hover .logo-image {
+    animation:1s LogoImage 0s forwards 1;
+} 
+.navBrand:hover .msa {
+    animation:1.5s MSA 0s forwards 1;
+} 
+.navBrand:hover .sunpower {
+    transform: scale(0);
+    animation:1.5s sunPower 0s forwards 1;
+
+} 
+
+.dark .sunpower,.dark .msa, .dark .text-under{
+text-shadow: 2px 2px 4px black;
+} 
+.dark .logo-image{
+    filter: drop-shadow(1px 2px 0px #000);
+    
+}
+
+.logo-image{
+    transform-origin: top;
+}
 
 
 
