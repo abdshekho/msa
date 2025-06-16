@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getCart } from '@/app/lib/cart/actions';
 import { createOrder } from '@/app/lib/orders/actions';
 import Link from 'next/link';
+import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
 // import { Metadata } from 'next';
 
 // export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
@@ -117,6 +118,7 @@ export default function CheckoutPage({ params }: { params: { lang: Locale } }) {
 
       if (result.success) {
         // Redirect to order confirmation
+        triggerCartUpdate();
         router.push(`/${lang}/orders/${result.orderId}`);
       } else {
         throw new Error(result.error || (isArabic ? 'حدث خطأ أثناء إنشاء الطلب' : 'Error creating order'));
@@ -195,14 +197,29 @@ export default function CheckoutPage({ params }: { params: { lang: Locale } }) {
                   <label className="block mb-1 dark:text-white">
                     { isArabic ? 'المدينة' : 'City' } *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="city"
                     value={ formData.city }
                     onChange={ handleChange }
                     className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
                     required
-                  />
+                  >
+                    <option value="">{ isArabic ? 'اختر المدينة' : 'Select city' }</option>
+                    <option value="دمشق">دمشق وريفها</option>
+                    <option value="حلب">حلب</option>
+                    <option value="حمص">حمص</option>
+                    <option value="حماة">حماة</option>
+                    <option value="اللاذقية">اللاذقية</option>
+                    <option value="طرطوس">طرطوس</option>
+                    <option value="دير الزور">دير الزور</option>
+                    <option value="الرقة">الرقة</option>
+                    <option value="الحسكة">الحسكة</option>
+                    <option value="إدلب">إدلب</option>
+                    <option value="درعا">درعا</option>
+                    <option value="السويداء">السويداء</option>
+                    <option value="القنيطرة">القنيطرة</option>
+                    {/* <option value="ريف دمشق">ريف دمشق</option> */}
+                  </select>
                 </div>
 
                 <div>
