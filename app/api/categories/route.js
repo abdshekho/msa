@@ -47,7 +47,7 @@ export async function GET( request ) {
                         // Fetch all products in one query
                         const subCategoryIds = subcategories.map( sub => sub._id );
                         const products = await Product.find( { category: { $in: subCategoryIds } } )
-                            .select( '_id name slug imageCover price category' )
+                            .select( '_id name brand imageCover price category' )
                             .sort( { createdAt: -1 } )
                             .lean();
                         // console.log('fffff',products);
@@ -69,7 +69,7 @@ export async function GET( request ) {
                             items: ( productMap.get( sub._id.toString() ) || [] ).map( prod => ( {
                                 _id: prod._id,
                                 name: prod.name,
-                                slug: prod.slug,
+                                brand: prod.brand,
                                 imageCover: prod.imageCover,
                                 price: prod.price,
                             } ) ),

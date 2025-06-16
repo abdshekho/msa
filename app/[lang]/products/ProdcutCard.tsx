@@ -2,6 +2,7 @@ import AddToCartButton from '@/components/products/AddToCartButton'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { FaEye } from 'react-icons/fa'
 
 function ProductCard({ product, lang }: any) {
     return (
@@ -127,16 +128,14 @@ function ProductCard({ product, lang }: any) {
                         <AddToCartButton 
                             productId={product._id.toString()} 
                             lang={lang} 
-                            className="w-full bg-secondary dark:bg-secondary text-white font-bold py-4 px-6 rounded-2xl hover:bg-slate-800 dark:hover:bg-white dark:hover:text-primary transition-all duration-300 flex items-center justify-center gap-3 group/btn"
+                            classNameIcon={'cartIcon'}
+                            className="cartBtn w-full bg-secondary dark:bg-secondary text-white font-bold py-4 px-6 rounded-2xl hover:bg-slate-800 dark:hover:bg-white dark:hover:text-primary transition-all duration-300 flex items-center justify-center gap-3 group/btn"
                         />
                         
-                        <button className="w-full border-2 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold py-3 px-6 rounded-2xl hover:border-primary hover:text-primary dark:hover:text-primary transition-all duration-300 flex items-center justify-center gap-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            معاينة سريعة
-                        </button>
+                        <Link href={`/${lang}/products/${product._id}`} className="group/btn w-full border-2 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold py-3 px-6 rounded-2xl hover:border-primary hover:text-primary dark:hover:text-primary transition-all duration-300 flex items-center justify-center gap-2">
+                            <FaEye className='group-hover/btn:rotate-180 group-hover/btn:scale-125 transition-transform'/>
+                            {lang === 'en'? 'View Details':'عرض التفاصيل'}
+                        </Link>
                     </div>
                 </div>
             </div>

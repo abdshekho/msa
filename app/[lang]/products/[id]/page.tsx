@@ -10,7 +10,7 @@ import ProductTable2 from '@/components/products/ProductTabel2';
 import AddToCartButton from '@/components/products/AddToCartButton';
 import Link from 'next/link';
 import ProductImages from '@/components/products/ProductImages';
-import { FaFileAlt, FaLayerGroup, FaMagic, FaTag } from 'react-icons/fa';
+import { FaFileAlt, FaLayerGroup, FaMagic, FaRegFileAlt, FaTag } from 'react-icons/fa';
 import RelatedProducts from './RelatedProducts';
 // import dynamic from 'next/dynamic';
 
@@ -200,7 +200,8 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
             {
                 product.table && (
                     <div className="mb-12">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                        <h2 className="head-21 flex gap-1 items-center mb-20 mt-40">
+                            <FaRegFileAlt />
                             { isArabic ? 'المواصفات الفنية' : 'Technical Specifications' }
                         </h2>
                         <div className="bg-white rounded-lg shadow-sm overflow-hidden">

@@ -10,6 +10,7 @@ import { FooterMSA } from '../../components/ui/Footer';
 import Providers from '@/components/ProgressProvider';
 import { CartProvider } from '../lib/cart/CartContext';
 import { CategoryProvider } from '@/context/CategoryContext';
+import { BrandProvider } from '@/context/BrandContext';
 import { almarai } from '../ui/fonts'
 import { Metadata } from 'next';
 
@@ -47,15 +48,17 @@ export default async function Root(props: {
         >
           <AuthProvider>
             <CategoryProvider>
-              <CartProvider>
-                <NavbarMain lang={ params.lang } dictionary={ dictionary } />
-                <div className="min-h-screen bg-white dark:bg-gray-900">
-                  <Providers>
-                    { children }
-                  </Providers>
-                </div>
-                <FooterMSA lang={params.lang}  dictionary={ dictionary } />
-              </CartProvider>
+              <BrandProvider>
+                <CartProvider>
+                  <NavbarMain lang={ params.lang } dictionary={ dictionary } />
+                  <div className="min-h-screen bg-white dark:bg-gray-900">
+                    <Providers>
+                      { children }
+                    </Providers>
+                  </div>
+                  <FooterMSA lang={params.lang}  dictionary={ dictionary } />
+                </CartProvider>
+              </BrandProvider>
             </CategoryProvider>
           </AuthProvider>
         </ThemeProvider>
