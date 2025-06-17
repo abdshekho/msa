@@ -79,16 +79,27 @@ input:disabled , button:disabled , select:disabled {
 
 
 input {
-    /* padding: 10px; */
-    /* border: 1px solid #ccc; */
     border-radius: 5px;
     font-size: 16px;
-    /* width: 100%; */
     box-sizing: border-box;
 }
 .shadowText {
+    text-shadow: 2px 4px 4px #8782824d;
+}
+.dark .shadowText {
     text-shadow: 2px 2px 4px black;
 }
+
+/* To be in dark and light mode */
+.shadowText-b {
+    text-shadow: 2px 2px 4px black;
+}
+
+.shadowIcon{
+    filter: drop-shadow(1px 2px 0px #000);
+    
+}
+
 
 @keyframes BottomToTop {
     0% {transform: scaleY(1);}
@@ -508,7 +519,7 @@ input {
 
 } 
 
-.dark .sunpower,.dark .msa, .dark .text-under{
+.dark .sunpower,.dark .msa, .dark .text-under,.dark .head-1,.dark .head-22,.dark .head-21{
 text-shadow: 2px 2px 4px black;
 } 
 .dark .logo-image{

@@ -7,19 +7,19 @@ export default function BrandsHero({ lang }) {
             <div className="">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between container mx-auto px-4">
                     <div className="w-full lg:w-1/3 mb-10 md:mb-0 px-4 mt-[-200px] md:mt-0" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
-                        <h1 className="text-2xl md:text-5xl font-bold mb-4 text-center">{lang === 'en' ?'Trusted Brands':'علامات تجارية موثوقة'}</h1>
+                        <h1 className="shadowText-b text-2xl md:text-5xl font-bold mb-4 text-center">{lang === 'en' ?'Trusted Brands':'علامات تجارية موثوقة'}</h1>
                         <p className="text-md md:text-xl mb-8">
                             { lang === 'en' ?
                                 'Discover a wide range of trusted and high-quality brands in the world of solar energy. We partner with leading global manufacturers to bring you innovative and reliable products that meet your energy needs.'
                                 : 'اكتشف مجموعة واسعة من العلامات التجارية الموثوقة وعالية الجودة في عالم الطاقة الشمسية. نحن نستقطب الشركات العالمية الرائدة لتقديم منتجات مبتكرة وموثوقة تلبي جميع احتياجاتك من الطاقة.' }
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <Link href={'products'} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaBoxOpen className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={'products'} className="shadowText-b group flex items-center bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaBoxOpen className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our products" : "تصفح منتجاتنا" }
                             </Link>
-                            <a href={'#brandsHeader'} className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaRegArrowAltCircleDown  className='animate-bounce transition-transform mx-2' />
+                            <a href={'#brandsHeader'} className="shadowText-b flex items-center border border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown  className='shadowIcon animate-bounce transition-transform mx-2' />
                                 {lang === 'en' ? 'Learn More' : 'اعرف المزيد'}
                             </a>
                         </div>

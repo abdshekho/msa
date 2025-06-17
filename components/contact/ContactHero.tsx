@@ -7,7 +7,7 @@ export default function ContactHero({lang}) {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
                     <div className="w-full lg:w-1/3 mb-10 md:mb-0 mt-[-150px] md:mt-0" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
-                        <h1 className="text-2xl md:text-5xl font-bold mb-4">
+                        <h1 className="text-2xl md:text-5xl font-bold mb-4 shadowText-b">
                             {lang == 'en' ? 
                             'Stay in Touch':
                             'ابقَ على تواصل'
@@ -21,12 +21,12 @@ export default function ContactHero({lang}) {
                             }
                         </p>
                         <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <Link href={`/${lang}/about`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaUsers className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/about`} className="group flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaUsers className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "About us" : "حول شركتنا" }
                             </Link>
-                            <a href={ '#contactHeader' } className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaRegArrowAltCircleDown className='animate-bounce transition-transform mx-2' />
+                            <a href={ '#contactHeader' } className="flex items-center border shadowText-b border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown className='shadowIcon animate-bounce transition-transform mx-2' />
                                 { lang === 'en' ? 'Learn More' : 'اعرف المزيد' }
                             </a>
                         </div>

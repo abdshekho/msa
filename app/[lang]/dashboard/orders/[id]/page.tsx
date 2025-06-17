@@ -83,7 +83,7 @@ export default async function AdminOrderDetailPage({
   
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between flex-wrap items-center mb-6">
         <div>
           <Link 
             href={`/${lang}/dashboard/orders`}
@@ -107,7 +107,7 @@ export default async function AdminOrderDetailPage({
               <select 
                 name="status" 
                 defaultValue={serializedOrder.status}
-                className="border border-gray-300 rounded px-3 py-1 mr-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="border border-gray-300 rounded px-3 py-1 mx-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
                 <option value="pending">{isArabic ? 'قيد الانتظار' : 'Pending'}</option>
                 <option value="processing">{isArabic ? 'قيد المعالجة' : 'Processing'}</option>

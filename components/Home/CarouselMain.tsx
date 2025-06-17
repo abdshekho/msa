@@ -59,10 +59,10 @@ export default function CarouselMain({ lang }) {
                     <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black md:opacity-40"></div>
 
                     <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[45%] md:top-[70px]">
-                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText">
+                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText-b">
                             { lang === 'en' ? "We provide" : "تقدم شركتنا" }
                         </h2>
-                        <p className="text-md lg:text-xl mb-6 text-white shadowText">
+                        <p className="text-md lg:text-xl mb-6 text-white shadowText-b">
                             { lang === 'en' ?
                                 'installation, maintenance, and shipping services for all our products across all regions , fast and professionally.'
                                 :
@@ -70,12 +70,12 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <Link href={`/${lang}/products`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaBoxOpen className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/products`} className="group flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaBoxOpen className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our products" : "تصفح منتجاتنا" }
                             </Link>
-                            <Link href={`/${lang}/about`} className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaUsers className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/about`} className="group flex items-center border shadowText-b border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaUsers className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "About us" : "حول شركتنا" }
                             </Link>
                         </div>
@@ -89,10 +89,10 @@ export default function CarouselMain({ lang }) {
                     />
                     <div className="absolute inset-0 r bg-gradient-to-b from-[#00000034] md:from-black from-30%  via-black md:via-[#00000017] via-100% md:via-60% to-[#0000004b] md:to-black opacity-70"></div>
                     <div className="absolute left-0 z-10 text-center text-white px-4 md:px-12 max-w-2xl top-[50%] md:top-[90px]">
-                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText">
+                        <h2 className="text-2xl lg:text-5xl font-bold mb-0 md:mb-4 text-[lightblue] shadowText-b">
                             { lang === 'en' ? "Free Consultation" : "استشارة مجانية مع خبرائنا" }
                         </h2>
-                        <p className="text-sm lg:text-xl mb-2 md:mb-6 text-white shadowText">
+                        <p className="text-sm lg:text-xl mb-2 md:mb-6 text-white shadowText-b">
                             { lang === 'en' ?
                                 'Get free consultations and expert solutions to choose the best system for your needs.'
                                 :
@@ -100,12 +100,12 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <Link href={`/${lang}/services`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaTools className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/services`} className="group flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaTools className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Services" : "خدماتنا" }
                             </Link>
-                            <Link href={`/${lang}/contact`} className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaPhoneAlt className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/contact`} className="group flex items-center border shadowText-b border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaPhoneAlt className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Contact us" : "تواصل معنا" }
                             </Link>
                         </div>
@@ -120,11 +120,11 @@ export default function CarouselMain({ lang }) {
                     />
                     <div className="absolute inset-0 r bg-gradient-to-b from-black from-30%  via-[#00000017] via-60% to-black opacity-40 blur-3xl"></div>
                     <div className="absolute z-10 text-center text-white px-4 md:px-12 max-w-3xl top-[20px] md:top-[50px]">
-                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue] shadowText">
+                        <h2 className="text-xl lg:text-5xl font-bold mb-4 text-[lightblue] shadowText-b">
 
                             { lang === 'en' ? "Our Partners" : "شركاؤنا" }
                         </h2>
-                        <p className="text-md lg:text-xl mb-6 text-white shadowText">
+                        <p className="text-md lg:text-xl mb-6 text-white shadowText-b">
                             { lang === 'en' ?
                                 'We partner with leading global companies to bring you the latest and most reliable energy products — guaranteed quality and performance.'
                                 :
@@ -132,12 +132,12 @@ export default function CarouselMain({ lang }) {
                             }
                         </p>
                         <div className='flex justify-center gap-2'>
-                            <Link href={`/${lang}/brands`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaIndustry className='group-hover:rotate-12 transition-transform mx-2' />
+                            <Link href={`/${lang}/brands`} className="group flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaIndustry className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Brands" : "العلامات التجارية" }
                             </Link>
-                            <a href="#ourPartners" className="group flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaHandshake className='group-hover:rotate-12 transition-transform mx-2' />
+                            <a href="#ourPartners" className="group flex items-center border shadowText-b border-white  hover:bg-[#053862] text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaHandshake className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "Our Partners" : "شركاؤنا" }
                             </a>
                         </div>

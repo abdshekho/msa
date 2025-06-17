@@ -10,21 +10,21 @@ export default function ServiceHero({lang}) {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
                     <div className="w-full lg:w-1/3 mb-10 md:mb-0 mt-[-200px] md:mt-0" style={{direction:lang === 'en' ?"ltr":"rtl"}}>
-                        <h1 className="text-2xl md:text-5xl font-bold mb-4 text-center">
+                        <h1 className="shadowText-b text-2xl md:text-5xl font-bold mb-4 text-center">
                             {lang === 'ar' ? 'خدماتنا' : 'Our Services'}
                         </h1>
-                        <p className="text-md md:text-xl mb-8">
+                        <p className="text-md md:text-xl mb-8 text-center">
                             {lang === 'ar' 
                                 ? 'استفد من قوة الشمس مع حلول الطاقة الشمسية الشاملة لدينا. نقدم خدمات متكاملة من الاستشارة إلى التركيب والصيانة.'
                                 : 'Harness the power of the sun with our comprehensive solar energy solutions. We provide end-to-end services from consultation to installation and maintenance.'}
                         </p>
-                        <div className="flex flex-wrap gap-2 sm:gap-4">
-                            <Link href={`/${lang}/solar-calculator`} className="group flex items-center shadowText bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
-                                <FaCalculator className='group-hover:rotate-12 transition-transform mx-2' />
+                        <div className="flex flex-wrap gap-2 sm:gap-4 justify-around">
+                            <Link href={`/${lang}/solar-calculator`} className="group flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all">
+                                <FaCalculator className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
                                 { lang === 'en' ? "System Calculator" : "احسب نظامك الشمسي" }
                             </Link>
-                            <a href={'#servicesHeader'} className="flex items-center border shadowText border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
-                                <FaRegArrowAltCircleDown  className='animate-bounce transition-transform mx-2' />
+                            <a href={'#servicesHeader'} className="flex items-center border shadowText-b border-white  hover:bg-[#053862] text-sm  md:text-base font-bold p-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                                <FaRegArrowAltCircleDown  className='shadowIcon animate-bounce transition-transform mx-2' />
                                 {lang === 'en' ? 'Learn More' : 'اعرف المزيد'}
                             </a>
                         </div>

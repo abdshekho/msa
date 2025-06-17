@@ -23,7 +23,7 @@ export default async function ServicesPage({ params }: { params: { lang: Locale 
       <ServiceHero lang={ lang } />
 
       <div className="container mx-auto px-4 py-16" id='servicesHeader'>
-        <h2 className="text-3xl font-bold text-center text-primary dark:text-primary-10 mb-4">
+        <h2 className="text-3xl font-bold text-center text-primary dark:text-primary-10 mb-4 shadowText">
           { lang === 'ar' ? 'خدماتنا' : 'Our Services' }
         </h2>
         <p className="text-center text-secondary dark:text-white mb-12 max-w-2xl mx-auto">
@@ -42,7 +42,7 @@ export default async function ServicesPage({ params }: { params: { lang: Locale 
               <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" className="shape-fill"></path>
             </svg>
           </div>
-          <h3 className="text-3xl md:text-5xl font-bold mb-20 text-center text-white">
+          <h3 className="text-3xl md:text-5xl font-bold mb-20 text-center text-white shadowText-b">
             { lang === 'ar' ? 'لماذا تختار خدماتنا؟' : 'Why Choose Our Services?' }
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">

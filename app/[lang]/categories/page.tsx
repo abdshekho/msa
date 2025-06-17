@@ -58,7 +58,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
             <div key={category._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
               <div className="p-6 h-full flex flex-col justify-between" style={{direction: lang === 'en' ? "ltr" : "rtl"}}>
                 <div className='flex justify-between items-center mb-4'>
-                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold">
+                  <h2 className="text-lg md:text-2xl text-primary dark:text-primary font-bold shadowText">
                     {lang === 'en' ? category.name : (category.nameAr || category.name)}
                   </h2>
                   <span className="px-3 py-2 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
@@ -80,7 +80,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                 )}
 
                 <div className="mt-4">
-                  <h3 className="text-md md:text-xl font-bold mb-2 text-secondary dark:text-secondary-10">
+                  <h3 className="text-md md:text-xl font-bold mb-2 text-secondary dark:text-secondary-10 shadowText">
                     {lang === 'en' ? (dictionary.page.categories?.subcategories || 'Subcategories') : 'الفئات الفرعية'}
                   </h3>
                   <ul className="space-y-2">

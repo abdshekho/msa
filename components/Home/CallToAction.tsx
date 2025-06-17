@@ -50,7 +50,7 @@ export default function CallToAction({ lang }: { lang: string }) {
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight shadowText-b">
               { isArabic
                 ? ' ☀️ اكتشف قوة الشمس معنا '
                 : ' ☀️ Harness the Power of the Sun' }
@@ -76,7 +76,7 @@ export default function CallToAction({ lang }: { lang: string }) {
                     <path d="M3 9h18" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-lg">
+                <h3 className="text-white font-bold text-lg shadowText-b">
                   { isArabic ? 'حاسبة الطاقة الذكية' : 'Smart Energy Calculator' }
                 </h3>
               </div>
@@ -98,7 +98,7 @@ export default function CallToAction({ lang }: { lang: string }) {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
-                <h3 className="text-white font-bold text-lg">
+                <h3 className="text-white font-bold text-lg shadowText-b">
                   { isArabic ? 'استشارة مجانية' : 'Free Consultation' }
                 </h3>
               </div>

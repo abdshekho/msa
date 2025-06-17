@@ -36,7 +36,7 @@ export default function PartnerLogos({ lang }: { lang: string }) {
         </svg>
       </div> */}
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center my-20 dark:text-white">
+        <h2 className="text-3xl md:text-4xl text-center my-20 text-primary dark:text-primary font-bold shadowText">
           { isArabic ? 'شركاؤنا' : 'Our Partners' }
         </h2>
 

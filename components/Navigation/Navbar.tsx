@@ -99,7 +99,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
             <Link href={ `/${lang}` } className="flex flex-col navBrand" style={ { direction: "ltr" } }>
                 
                 <div className="flex items-center logoWithText">
-                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="logo-image mr-1 h-9" alt="Flowbite React Logo" />
+                <Image src="/favicon.ico" width={ 70 } height={ 100 } className="logo-image mr-1 h-10" alt="Flowbite React Logo" />
                 <div className="hidden  lg:flex flex-col  justify-center items-center self-center whitespace-nowrap text-lg font-semibold dark:text-white">
                     <span className="text-[#d28711] font-bold msa">MSA</span>
                     <span className="mt-[-10px] text-[#05406d]  font-bold sunpower">SunPower</span>

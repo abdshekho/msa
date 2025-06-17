@@ -23,7 +23,7 @@ export function FooterMSA({ lang, dictionary }) {
                     </div>
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-4 my-8 md:my-0 text-center">
                         <div>
-                            <h2 className="mb-6  text-sm font-bold text-primary  uppercase ">{dictionary.footer.Services}</h2>
+                            <h2 className="mb-6  text-sm font-bold text-primary shadowText  uppercase ">{dictionary.footer.Services}</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm ">
                                 <li className="mb-4">
                                     <Link href={`/${lang}/solar-calculator`} className="hover:underline text-secondary dark:text-secondary-10">{dictionary.footer.System_Calculator}</Link>
@@ -35,7 +35,7 @@ export function FooterMSA({ lang, dictionary }) {
                             </ul>
                         </div>
                         <div>
-                            <h2 className="mb-6  text-sm font-bold text-primary  uppercase ">{dictionary.footer.Resources}</h2>
+                            <h2 className="mb-6  text-sm font-bold text-primary shadowText  uppercase ">{dictionary.footer.Resources}</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm ">
                                 <li className="mb-4">
                                     <Link href={ `/${lang}/about` } className="hover:underline text-secondary dark:text-secondary-10">{dictionary.footer.about}</Link>
@@ -47,7 +47,7 @@ export function FooterMSA({ lang, dictionary }) {
                             </ul>
                         </div>
                         <div>
-                            <h2 className="mb-6 text-sm font-bold uppercase text-primary">{dictionary.footer.Follow_us}</h2>
+                            <h2 className="mb-6 text-sm font-bold uppercase text-primary shadowText">{dictionary.footer.Follow_us}</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm">
                                 <li className="mb-4">
                                     <a target="_blank" href="#" className="hover:underline text-secondary dark:text-secondary-10">LinkedIn</a>
@@ -58,7 +58,7 @@ export function FooterMSA({ lang, dictionary }) {
                             </ul>
                         </div>
                         <div>
-                            <h2 className="mb-6 text-sm font-bold uppercase text-primary">{dictionary.footer.Legal}</h2>
+                            <h2 className="mb-6 text-sm font-bold uppercase text-primary shadowText">{dictionary.footer.Legal}</h2>
                             <ul className="text-gray-500 dark:text-gray-400 font-medium text-xs md:text-sm">
                                 <li className="mb-4">
                                     <Link href={ `/${lang}/privacy` } className="hover:underline text-secondary dark:text-secondary-10">{dictionary.footer.privacy}</Link>
@@ -73,7 +73,7 @@ export function FooterMSA({ lang, dictionary }) {
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div className="flex gap-3 flex-col-reverse md:flex-row md:items-center justify-center md:justify-between">
-                    <div className="text-sm text-gray-500 text-center dark:text-gray-400">© 2025<Link href="#" className="hover:underline hover:text-primary"> MSA sunPower™ </Link> . All Rights Reserved.
+                    <div className="text-sm text-gray-500 text-center dark:text-gray-400">© 2025<Link href="#" className="hover:underline hover:text-primary shadowText"> MSA sunPower™ </Link> . All Rights Reserved.
                     </div>
                     <div className="flex mt-4 justify-center sm:mt-0 gap-1 text-xl">
                         <a href="#" className="text-[#3b5998] hover:text-gray-900 dark:hover:text-white">
