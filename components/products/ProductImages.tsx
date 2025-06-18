@@ -44,7 +44,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
       <div className="relative">
         <div 
           ref={imageRef}
-          className="relative h-96 w-full mb-4 bg-card-10 dark:bg-card rounded-lg overflow-hidden cursor-crosshair"
+          className="relative h-96 w-full mb-4 bg-white rounded-lg overflow-hidden cursor-zoom-in"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
@@ -53,7 +53,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
             src={mainImage}
             alt={productName}
             fill
-            className="object-contain bg-card-10 dark:bg-card transition-transform duration-200"
+            className="object-contain bg-white transition-transform duration-200"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
             style={{
@@ -82,7 +82,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
       {product.images && product.images.length > 0 && (
         <div className="grid grid-cols-5 gap-2">
           <div 
-            className="relative h-20 bg-card-10 dark:bg-card rounded-md overflow-hidden cursor-pointer transition-transform hover:scale-105"
+            className="relative h-20 bg-white rounded-md overflow-hidden cursor-pointer transition-transform hover:scale-105"
             onClick={() => handleImageClick(product.imageCover)}
           >
             <Image
@@ -97,7 +97,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
             image && (
               <div 
                 key={index} 
-                className="relative h-20 bg-card-10 dark:bg-card rounded-md overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                className="relative h-20 bg-white rounded-md overflow-hidden cursor-pointer transition-transform hover:scale-105"
                 onClick={() => handleImageClick(image)}
               >
                 <Image

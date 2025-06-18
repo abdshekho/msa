@@ -6,11 +6,12 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import { Locale } from '@/i18n-config';
+import { FaBoxOpen } from 'react-icons/fa';
 
 export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
   const resolvedParam = await params;
   return {
-    title: resolvedParam.lang === 'en' ? 'orders' : 'الطلبات',
+    title: resolvedParam.lang === 'en' ? 'My orders' : 'طلباتي',
   };
 }
 export default async function OrdersPage({ params }: { params: { lang: string } }) {
@@ -160,11 +161,9 @@ export default async function OrdersPage({ params }: { params: { lang: string } 
               ? 'لم تقم بإنشاء أي طلبات بعد.'
               : 'You haven\'t placed any orders yet.' }
           </p>
-          <Link
-            href={ `/${lang}/products` }
-            className="inline-block py-3 px-8 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
-          >
-            { isArabic ? 'تصفح المنتجات' : 'Browse Products' }
+          <Link href={ `/${lang}/products` } className="group inline-flex items-center shadowText-b bg-primary  hover:bg-primary-10 text-white text-sm shadow-2xl md:text-base font-bold py-3 px-6 rounded-lg transition-all">
+            <FaBoxOpen className='shadowIcon group-hover:rotate-12 transition-transform mx-2' />
+                { isArabic ? 'تصفح المنتجات' : 'Browse Products' }
           </Link>
         </div>
       ) }

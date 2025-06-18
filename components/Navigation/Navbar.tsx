@@ -95,7 +95,7 @@ export default function NavbarMain({ lang, dictionary }: any) {
 
     return (
         <Navbar style={ { direction: 'ltr' } } theme={ them }
-            className={ `bg-white dark:bg-[#1F2937]` }>
+            className={ `bg-white dark:bg-[#1F2937] relative z-10` }>
             <Link href={ `/${lang}` } className="flex flex-col navBrand" style={ { direction: "ltr" } }>
                 
                 <div className="flex items-center logoWithText">

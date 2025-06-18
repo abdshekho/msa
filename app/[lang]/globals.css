@@ -484,7 +484,7 @@ input {
     100%   {transform: translateY(0px);}
 }
 @keyframes MSA {
-    0%   {opacity: 0;transform: translate(-90px, 8px);}
+    0%   {opacity: 0;transform: translate(-95px, 8px);}
     100%   {opacity: 1;transform: translate(0, 0);}
 }
 @keyframes LogoImage {
@@ -511,13 +511,17 @@ input {
     animation:1s LogoImage 0s forwards 1;
 } 
 .navBrand:hover .msa {
-    animation:1.5s MSA 0s forwards 1;
+    animation:1.5s MSA 0s  forwards 1;
 } 
 .navBrand:hover .sunpower {
-    transform: scale(0);
-    animation:1.5s sunPower 0s forwards 1;
+    /* transform: scale(0); */
+    animation:1.5s sunPower 0s  ease-in-out 1;
 
 } 
+
+.text-shadow-black {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* مثال */
+}
 
 .dark .sunpower,.dark .msa, .dark .text-under,.dark .head-1,.dark .head-22,.dark .head-21{
 text-shadow: 2px 2px 4px black;
@@ -556,8 +560,4 @@ animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
 }
 .cartBtn:hover .cartIcon{
     animation:1.4s CartIcon 0s ease-in-out infinite;
-}
-
-.cartIcon {
-
 }

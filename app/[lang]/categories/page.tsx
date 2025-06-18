@@ -79,7 +79,7 @@ export default async function CategoriesPage(props: { params: Promise<{ lang: Lo
                   </div>
                 )}
 
-                <div className="mt-4">
+                <div className="mb-auto">
                   <h3 className="text-md md:text-xl font-bold mb-2 text-secondary dark:text-secondary-10 shadowText">
                     {lang === 'en' ? (dictionary.page.categories?.subcategories || 'Subcategories') : 'الفئات الفرعية'}
                   </h3>

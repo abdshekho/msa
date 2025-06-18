@@ -103,7 +103,7 @@ export default function CategorySection({ lang }: { lang: string }) {
                   </div>
                 ) }
 
-                <div className="mt-4">
+                <div className="mb-auto">
                   <h3 className="text-md md:text-xl font-bold mb-2 text-secondary dark:text-secondary-10 shadowText">
                     { lang === 'en' ? 'Subcategories' : 'الفئات الفرعية' }
                   </h3>
