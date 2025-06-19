@@ -9,6 +9,7 @@ import { redirect, usePathname } from 'next/navigation';
 import { BsDeviceSsd } from 'react-icons/bs';
 import { GiSolarPower } from 'react-icons/gi';
 import { set } from 'cypress/types/lodash';
+import { getClientDictionary } from '@/get-dictionary-client';
 
 const deviceOptions = [
     { name: 'نيون', wattage: 40 },
@@ -17,22 +18,51 @@ const deviceOptions = [
     { name: 'مروحة', wattage: 75 },
 ];
 
-const schema = z.object({
-    devices: z.array(z.object({
-        name: z.string().min(1, 'اسم الجهاز مطلوب'),
-        wattage: z.coerce.number().min(1, 'الواط يجب أن يكون 1 أو أكثر').max(10000, 'تأكد من الاستطاعة'),
-        count: z.coerce.number().min(1, 'العدد يجب أن يكون 1 أو أكثر').max(99, 'تأكد من عدد الأجهزة'),
-        morning: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر').max(15, 'تأكد من ساعات التشغيل في الصباح'),
-        evening: z.coerce.number().min(0, 'ساعات التشغيل يجب ان تكون 0 أو اكثر').max(15, 'تأكد من ساعات التشغيل في المساء'),
-        isCustom: z.boolean().optional()
-    })),
-});
+// Create schema using dictionary for validation messages
+const createSchema = (lang: string, dictionary: any) => {
+    // Get error messages from dictionary
+    const errorMessages = dictionary.error['solar-calculator'];
+    
+    return z.object({
+        devices: z.array(z.object({
+            name: z.string().min(1, errorMessages['name-required']),
+            wattage: z.coerce.number()
+                .min(1, errorMessages['wattage-min'])
+                .max(10000, errorMessages['wattage-max']),
+            count: z.coerce.number()
+                .min(1, errorMessages['count-min'])
+                .max(99, errorMessages['count-max']),
+            morning: z.coerce.number()
+                .min(0, errorMessages['morning-min'])
+                .max(15, errorMessages['morning-max']),
+            evening: z.coerce.number()
+                .min(0, errorMessages['evening-min'])
+                .max(15, errorMessages['evening-max']),
+            isCustom: z.boolean().optional()
+        })),
+    });
+};
 
-type FormData = z.infer<typeof schema>;
+// Define the FormData type structure
+type FormData = {
+    devices: {
+        name: string;
+        wattage: number;
+        count: number;
+        morning: number;
+        evening: number;
+        isCustom?: boolean;
+    }[];
+};
 
 export default function SolarCalculator() {
     const pahtname = usePathname()
     const lang = pahtname.slice(1, 3) || 'en';
+    const dict = getClientDictionary(lang);
+    
+    // Create schema with the current language and dictionary
+    const schema = createSchema(lang, dict);
+    
     const { control, register, handleSubmit, watch, trigger, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [

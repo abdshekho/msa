@@ -196,5 +196,36 @@
       "editImage": "Edit profile image",
       "imageUploadFailed": "Image upload failed"
     }
+  },
+  "error": {
+    "solar-calculator": {
+      "name-required": "Device name is required",
+      "wattage-min": "Wattage must be 1 or more",
+      "wattage-max": "Check the power value",
+      "count-min": "Count must be 1 or more",
+      "count-max": "Check the number of devices",
+      "morning-min": "Operating hours must be 0 or more",
+      "morning-max": "Check morning operating hours",
+      "evening-min": "Operating hours must be 0 or more",
+      "evening-max": "Check evening operating hours"
+    },
+    "auth": {
+      "email-invalid": "Invalid email address",
+      "password-min": "Password must be at least 6 characters",
+      "name-min": "Name must be at least 2 characters",
+      "invalid-credentials": "Invalid credentials",
+      "login-error": "An error occurred during login",
+      "google-error": "Error signing in with Google",
+      "signup-error": "An error occurred during registration"
+    },
+    "profile": {
+      "name-min": "Name must be at least 2 characters",
+      "phone-min": "Phone number must be at least 10 digits",
+      "address-min": "Address must be at least 5 characters",
+      "current-password-min": "Current password must be at least 6 characters",
+      "new-password-min": "New password must be at least 6 characters",
+      "confirm-password-min": "Confirm password must be at least 6 characters",
+      "passwords-match": "Passwords don't match"
+    }
   }
 }

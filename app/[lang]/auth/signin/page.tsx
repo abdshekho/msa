@@ -29,18 +29,28 @@ const customTheme = {
   }
 };
 
-// Define the validation schema
-const loginSchema = z.object({
-  email: z.string().email("البريد الإلكتروني غير صالح"),
-  password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
-});
+// Create schema using dictionary for validation messages
+const createLoginSchema = (dictionary: any) => {
+  const errorMessages = dictionary.error.auth;
+  
+  return z.object({
+    email: z.string().email(errorMessages['email-invalid']),
+    password: z.string().min(6, errorMessages['password-min'])
+  });
+};
 
 // Type for the form data
-type LoginFormData = z.infer<typeof loginSchema>;
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 export default function SignIn({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
   const dictionary = getClientDictionary(resolvedParams.lang);
+
+  // Create schema with translated messages
+  const loginSchema = createLoginSchema(dictionary);
 
   const router = useRouter();
   const [error, setError] = useState("");
@@ -68,7 +78,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
       });
 
       if (result?.error) {
-        setError("بيانات الاعتماد غير صحيحة");
+        setError(dictionary.error.auth['invalid-credentials']);
         setIsLoading(false);
         return;
       }
@@ -76,7 +86,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
       router.push(`/${resolvedParams.lang}`);
       router.refresh();
     } catch (error) {
-      setError("حدث خطأ أثناء تسجيل الدخول");
+      setError(dictionary.error.auth['login-error']);
       setIsLoading(false);
     }
   };
@@ -88,7 +98,7 @@ export default function SignIn({ params }: { params: { lang: string } }) {
         callbackUrl: `/${resolvedParams.lang}`,
       });
     } catch (error) {
-      setError("حدث خطأ أثناء تسجيل الدخول بواسطة جوجل");
+      setError(dictionary.error.auth['google-error']);
       setIsGoogleLoading(false);
     }
   };

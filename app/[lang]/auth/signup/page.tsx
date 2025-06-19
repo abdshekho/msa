@@ -35,17 +35,27 @@ const customTheme = {
   }
 };
 
-// Define the validation schema
-const signupSchema = z.object({
-  name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
-  email: z.string().email("البريد الإلكتروني غير صالح"),
-  password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
-  phone: z.string().optional(),
-  address: z.string().optional()
-});
+// Create schema using dictionary for validation messages
+const createSignupSchema = (dictionary: any) => {
+  const errorMessages = dictionary.error.auth;
+  
+  return z.object({
+    name: z.string().min(2, errorMessages['name-min']),
+    email: z.string().email(errorMessages['email-invalid']),
+    password: z.string().min(6, errorMessages['password-min']),
+    phone: z.string().optional(),
+    address: z.string().optional()
+  });
+};
 
 // Type for the form data
-type SignupFormData = z.infer<typeof signupSchema>;
+type SignupFormData = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  address?: string;
+};
 
 export default function SignUp({ params }: { params: { lang: string } }) {
   const resolvedParams = use(params);
@@ -55,6 +65,9 @@ export default function SignUp({ params }: { params: { lang: string } }) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  // Create schema with translated messages
+  const signupSchema = createSignupSchema(dictionary);
 
   // Setup react-hook-form with zod validation
   const {
@@ -110,7 +123,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
         callbackUrl: `/${resolvedParams.lang}`,
       });
     } catch (error) {
-      setError("حدث خطأ أثناء تسجيل الدخول بواسطة جوجل");
+      setError(dictionary.error.auth['google-error']);
       setIsGoogleLoading(false);
     }
   };
@@ -138,14 +151,14 @@ export default function SignUp({ params }: { params: { lang: string } }) {
       const responseData = await response.json();
 
       if (!response.ok) {
-        setError(responseData.message || "حدث خطأ أثناء التسجيل");
+        setError(responseData.message || dictionary.error.auth['signup-error']);
         setIsLoading(false);
         return;
       }
 
       router.push(`/${resolvedParams.lang}/auth/signin`);
     } catch (error) {
-      setError("حدث خطأ أثناء التسجيل");
+      setError(dictionary.error.auth['signup-error']);
       setIsLoading(false);
     }
   };

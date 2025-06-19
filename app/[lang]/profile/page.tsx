@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
-import { profileSchema, passwordSchema, type ProfileFormData, type PasswordFormData } from "./schema";
+import { createProfileSchema, createPasswordSchema, type ProfileFormData, type PasswordFormData } from "./schema";
 import { z } from "zod";
 import { getClientDictionary } from "../../../get-dictionary-client";
 
@@ -93,7 +93,8 @@ export default function Profile({ params }: { params: { lang: string } }) {
     setErrors({});
 
     try {
-      // Validate form data with Zod
+      // Create schema with translated messages and validate form data
+      const profileSchema = createProfileSchema(dictionary);
       const formData: ProfileFormData = { name, phone, address, image };
       profileSchema.parse(formData);
 
@@ -150,7 +151,8 @@ export default function Profile({ params }: { params: { lang: string } }) {
     setPasswordErrors({});
 
     try {
-      // Validate password data with Zod
+      // Create schema with translated messages and validate password data
+      const passwordSchema = createPasswordSchema(dictionary);
       const passwordData: PasswordFormData = { currentPassword, newPassword, confirmPassword };
       passwordSchema.parse(passwordData);
 
