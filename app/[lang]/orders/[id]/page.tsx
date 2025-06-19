@@ -126,7 +126,7 @@ export default function OrderDetailsPage({ params }: { params: { lang: string, i
               <p className="font-medium dark:text-white tracking-[1px]">{ order?.createdAt.split('T')[1].slice(0, 5) }</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                 { isArabic ? 'حالة الطلب' : 'Order Status' }
               </p>
               <span className={ `inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(order.status)}` }>
@@ -146,12 +146,12 @@ export default function OrderDetailsPage({ params }: { params: { lang: string, i
               <div key={ index } className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                 <div className="flex items-center">
                   { item.product.imageCover && (
-                    <div className="w-16 h-16 relative mr-4">
+                    <div className="w-16 h-16 relative mx-2">
                       <Image
                         src={ item.product.imageCover }
                         alt={ isArabic ? item.product.nameAr : item.product.name }
                         fill
-                        className="object-cover rounded"
+                        className="object-contain rounded"
                         sizes="64px"
                       />
                     </div>

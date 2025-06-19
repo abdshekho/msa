@@ -84,7 +84,10 @@ export default async function OrdersPage({ params }: { params: { lang: string } 
                     { isArabic ? 'رقم الطلب:' : 'Order #' } { order._id }
                   </div>
                   <div className="text-sm dark:text-white">
-                    { isArabic ? 'تاريخ الطلب:' : 'Placed on' } { formatDate(order.createdAt) }
+                    { isArabic ? 'تاريخ الطلب: ' : 'Placed on' } { order?.createdAt.slice(0,10) }
+                  </div>
+                  <div className="text-sm dark:text-white">
+                    { isArabic ? 'وقت الطلب: ' : 'Placed on' } { order?.createdAt.split('T')[1].slice(0, 5) }
                   </div>
                 </div>
 
@@ -107,12 +110,12 @@ export default async function OrdersPage({ params }: { params: { lang: string } 
                 <div className="space-y-4">
                   { order.items.slice(0, 2).map((item: any) => (
                     <div key={ item._id } className="flex items-center">
-                      <div className="flex-shrink-0 w-16 h-16 relative rounded overflow-hidden">
+                      <div className="flex-shrink-0 w-16 h-16 relative rounded overflow-hidden mx-2">
                         <Image
                           src={ item.product.imageCover.startsWith('/') ? item.product.imageCover : `/${item.product.imageCover}` }
                           alt={ isArabic ? item.product.nameAr : item.product.name }
                           fill
-                          className="object-cover"
+                          className="object-contain"
                         />
                       </div>
 
@@ -122,7 +125,7 @@ export default async function OrdersPage({ params }: { params: { lang: string } 
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400 flex justify-between">
                           <span>
-                            { isArabic ? 'الكمية:' : 'Qty:' } { item.quantity } x ${ item.price.toFixed(2) }
+                            { isArabic ? 'الكمية:' : 'Qty:' } { item.quantity } * ${ item.price.toFixed(2) }
                           </span>
                           <span className='text-black dark:text-white'>
                             ${ (item.quantity * item.price).toFixed(2) }

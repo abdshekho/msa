@@ -23,15 +23,15 @@ export default function MainMenuItem({ item,lang }: any) {
         <div
             onMouseEnter={ handleMouseEnter }
             onMouseLeave={ handleMouseLeave }
-            className="md:flex justify-start md:justify-between p-2.5 cursor-pointer whitespace-nowrap relative bg-white dark:bg-gray-700 dark:text-white
-                hover:bg-gray-100 hover:text-primary dark:hover:text-primary-10 dark:hover:bg-gray-600">
-            <span>{ item.name } </span>
+            className="md:flex justify-start md:justify-between p-2.5 cursor-pointer whitespace-nowrap relative bg-gray-100 dark:bg-gray-700
+                hover:bg-gray-200 dark:hover:bg-gray-600">
+            <span className='text-black dark:text-white  hover:text-primary dark:hover:text-primary-10 '>{ item.name } </span>
             {item.items?.length > 0 ? '▸':''} 
             { openSub && (
                 <div className="relative md:absolute top-0  left-0 md:top-0  md:left-full  md:min-w-[200px] 
                 shadow-none md:shadow-md origin-left animate-[rightToleft_0.3s_alternate]
-                bg-white dark:bg-gray-700 dark:text-white 
-                hover:bg-gray-100 dark:hover:bg-gray-600">
+                bg-gray-100 dark:bg-gray-700 dark:text-white 
+                hover:bg-gray-200 dark:hover:bg-gray-600">
                     { item.items.map((subItem: any) => {
                         return <MenuItem title={ subItem.name } items={ subItem.items } key={ subItem._id } lang={lang} />
                     }) }

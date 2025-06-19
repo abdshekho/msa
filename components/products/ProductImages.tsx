@@ -44,7 +44,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
       <div className="relative">
         <div 
           ref={imageRef}
-          className="relative h-96 w-full mb-4 bg-white rounded-lg overflow-hidden cursor-zoom-in"
+          className="relative h-96 w-full mb-4 bg-white border-2 border-gray-100 rounded-lg overflow-hidden cursor-zoom-in"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
@@ -89,7 +89,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
               src={product.imageCover}
               alt={`${productName} - main image`}
               fill
-              className={`object-cover hover:opacity-80 transition-opacity ${mainImage === product.imageCover ? 'border-2 border-primary' : ''}`}
+              className={`object-contain hover:opacity-80 transition-opacity ${mainImage === product.imageCover ? 'border-2 border-primary' : 'border-2 border-gray-100'}`}
               sizes="(max-width: 768px) 20vw, 10vw"
             />
           </div>
@@ -104,7 +104,7 @@ export default function ProductImages({ product, productName }: ProductImagesPro
                   src={image}
                   alt={`${productName} - image ${index + 1}`}
                   fill
-                  className={`object-cover hover:opacity-80 transition-opacity ${mainImage === image ? 'border-2 border-primary' : ''}`}
+                  className={`object-contain hover:opacity-80 transition-opacity ${mainImage === image ? 'border-2 border-primary' : 'border-2 border-gray-100'}`}
                   sizes="(max-width: 768px) 20vw, 10vw"
                 />
               </div>
