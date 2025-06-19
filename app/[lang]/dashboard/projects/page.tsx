@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Tooltip } from 'flowbite-react';
-import { useTheme } from 'next-themes';
+// import { useTheme } from 'next-themes';
 
 interface projects {
     _id: string;
@@ -17,7 +17,7 @@ interface projects {
 }
 
 export default function ProjectsAdminPage() {
-    const { theme, setTheme } = useTheme();
+    // const { theme, setTheme } = useTheme();
     const [projects, setProjects] = useState<projects[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -291,50 +291,62 @@ export default function ProjectsAdminPage() {
     // Render projects and its subcategories recursively
     const renderprojects = (projects: projects, level = 0) => {
         return (
-            <div key={ projects._id } className="mb-2">
-                <div
-                    className={ `flex items-center justify-between p-3 rounded ${level === 0 ? 'bg-blue-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 ml-6'
-                        }` }
-                >
-                    <div className="flex items-center">
-                        { projects.image && (
-                            <div className="w-10 h-10 mr-3 relative">
+            <div key={projects._id} className="mb-4">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg">
+                    <div className="flex flex-col sm:flex-row">
+                        {projects.image && (
+                            <div className="w-full sm:w-48 h-48 sm:h-auto relative">
                                 <Image
-                                    src={ projects.image }
-                                    alt={ projects.title }
+                                    src={projects.image}
+                                    alt={projects.title}
                                     fill
-                                    sizes="40px"
-                                    className="object-cover rounded"
+                                    sizes="(max-width: 640px) 100vw, 192px"
+                                    className="object-cover"
                                 />
+                                <div className="absolute top-2 right-2">
+                                    {projects.isActive ? (
+                                        <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Active</span>
+                                    ) : (
+                                        <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Inactive</span>
+                                    )}
+                                </div>
                             </div>
-                        ) }
-                        <div>
-                            <div className="font-medium dark:text-white">{ projects.title } / { projects.titleAr }</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-300">
-                                { projects.isActive ? (
-                                    <span className="text-green-500">Active</span>
-                                ) : (
-                                    <span className="text-red-500">Inactive</span>
-                                ) } |
-                                Slug:<span> { projects.slug } </span> |
-                                description:<span> { projects.description }</span>
+                        )}
+                        <div className="p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div className="flex justify-between items-start mb-2">
+                                    <h3 className="text-lg font-semibold dark:text-white">{projects.title}</h3>
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 rtl:font-arabic">{projects.titleAr}</div>
+                                </div>
+                                
+                                <div className="mb-2">
+                                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                                        {projects.slug}
+                                    </span>
+                                </div>
+                                
+                                {projects.description && (
+                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-2">
+                                        {projects.description}
+                                    </p>
+                                )}
+                            </div>
+                            
+                            <div className="flex justify-end space-x-2 mt-3">
+                                <button
+                                    onClick={() => handleEdit(projects)}
+                                    className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 font-medium rounded-md hover:bg-blue-100 transition-colors dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(projects._id)}
+                                    className="px-3 py-1.5 text-sm bg-red-50 text-red-600 font-medium rounded-md hover:bg-red-100 transition-colors dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="flex space-x-2">
-                        <button
-                            onClick={ () => handleEdit(projects) }
-                            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-                        >
-                            Edit
-                        </button>
-                        <button
-                            onClick={ () => handleDelete(projects._id) }
-                            className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                            Delete
-                        </button>
                     </div>
                 </div>
             </div>
@@ -343,24 +355,21 @@ export default function ProjectsAdminPage() {
 
     return (
         <div className="p-6 max-w-6xl mx-auto dark:text-white">
-            {/* <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold dark:text-white">Projects Management</h1>
                 <div className="flex items-center gap-4">
                     <button
-                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                        aria-label="Toggle dark mode"
+                        onClick={handleAddNew}
+                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                        hidden={showForm}
                     >
-                        {theme === 'dark' ? '🌞' : '🌙'}
-                    </button>
-                    <button
-                        onClick={ handleAddNew }
-                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                        Add New Projects
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add New Project
                     </button>
                 </div>
-            </div> */}
+            </div>
 
             {/* Success message */ }
             { successMessage && (
@@ -550,9 +559,27 @@ export default function ProjectsAdminPage() {
 
             {/* projects list */ }
             { loading && !showForm ? (
-                <div>Loading projects…</div>
+                <div className="flex justify-center p-8">
+                    <div className="animate-pulse flex space-x-2">
+                        <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                        <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                        <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                    </div>
+                </div>
+            ) : projects.length === 0 ? (
+                <div className="text-center py-10 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <p className="text-gray-500 dark:text-gray-400">No projects found</p>
+                    <button
+                        onClick={handleAddNew}
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                    >
+                        Add Your First Project
+                    </button>
+                </div>
             ) : (
-                <div>{ projects.map(cat => renderprojects(cat)) }</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {projects.map(cat => renderprojects(cat))}
+                </div>
             ) }
         </div>
     );
