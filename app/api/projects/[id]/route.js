@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '../../../lib/DB/mongoDB';
-import Service from '../../../lib/models/Service';
+import Project from '../../../lib/models/Project';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import fs from 'fs';
@@ -28,26 +28,26 @@ async function deleteImageFile( imageUrl ) {
     }
 }
 
-// Get a single service by ID
+// Get a single project by ID
 export async function GET( req, { params } ) {
     try {
         const { id } = await params;
 
         await connectToDatabase();
-        const service = await Service.findById( id );
+        const project = await Project.findById( id );
 
-        if ( !service ) {
-            return NextResponse.json( { error: 'Service not found' }, { status: 404 } );
+        if ( !project ) {
+            return NextResponse.json( { error: 'Project not found' }, { status: 404 } );
         }
 
-        return NextResponse.json( service );
+        return NextResponse.json( project );
     } catch ( err ) {
-        console.error( 'Error fetching service:', err );
-        return NextResponse.json( { error: 'Failed to fetch service' }, { status: 500 } );
+        console.error( 'Error fetching project:', err );
+        return NextResponse.json( { error: 'Failed to fetch project' }, { status: 500 } );
     }
 }
 
-// Update a service
+// Update a project
 export async function PUT( req, { params } ) {
     try {
         // Check authentication and admin status
@@ -61,36 +61,36 @@ export async function PUT( req, { params } ) {
 
         await connectToDatabase();
 
-        const service = await Service.findById( id );
+        const project = await Project.findById( id );
 
 
 
-        if ( !service ) {
-            return NextResponse.json( { error: 'Service not found' }, { status: 404 } );
+        if ( !project ) {
+            return NextResponse.json( { error: 'Project not found' }, { status: 404 } );
         }
-        const oldImage = service.image;
+        const oldImage = project.image;
 
-        // Update service fields
-        if ( title ) service.title = title;
-        if ( titleAr ) service.titleAr = title;
-        if ( description ) service.description = description;
-        if ( descriptionAr ) service.descriptionAr = descriptionAr;
-        if ( image !== undefined ) service.image = image;
-        if ( isActive !== undefined ) service.isActive = isActive;
-        if ( order !== undefined ) service.order = order;
+        // Update project fields
+        if ( title ) project.title = title;
+        if ( titleAr ) project.titleAr = title;
+        if ( description ) project.description = description;
+        if ( descriptionAr ) project.descriptionAr = descriptionAr;
+        if ( image !== undefined ) project.image = image;
+        if ( isActive !== undefined ) project.isActive = isActive;
+        if ( order !== undefined ) project.order = order;
 
-        await service.save();
+        await project.save();
         if ( oldImage && image && oldImage !== image ) {
             await deleteImageFile( oldImage );
         }
-        return NextResponse.json( { message: 'Service updated successfully', service } );
+        return NextResponse.json( { message: 'Project updated successfully', project } );
     } catch ( err ) {
-        console.error( 'Error updating service:', err );
-        return NextResponse.json( { error: 'Failed to update service' }, { status: 500 } );
+        console.error( 'Error updating project:', err );
+        return NextResponse.json( { error: 'Failed to update project' }, { status: 500 } );
     }
 }
 
-// Delete a service
+// Delete a project
 export async function DELETE( req, { params } ) {
     try {
         // Check authentication and admin status
@@ -103,17 +103,17 @@ export async function DELETE( req, { params } ) {
 
         await connectToDatabase();
 
-        const service = await Service.findByIdAndDelete( id );
-        if ( !service ) {
-            return NextResponse.json( { error: 'Service not found' }, { status: 404 } );
+        const project = await Project.findByIdAndDelete( id );
+        if ( !project ) {
+            return NextResponse.json( { error: 'Project not found' }, { status: 404 } );
         }
 
-        if ( service.image ) {
-            await deleteImageFile( service.image );
+        if ( project.image ) {
+            await deleteImageFile( project.image );
         }
-        return NextResponse.json( { message: 'Service deleted successfully' } );
+        return NextResponse.json( { message: 'Project deleted successfully' } );
     } catch ( err ) {
-        console.error( 'Error deleting service:', err );
-        return NextResponse.json( { error: 'Failed to delete service' }, { status: 500 } );
+        console.error( 'Error deleting project:', err );
+        return NextResponse.json( { error: 'Failed to delete project' }, { status: 500 } );
     }
 }

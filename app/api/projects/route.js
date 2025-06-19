@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '../../lib/DB/mongoDB';
-import Service from '../../lib/models/Service';
+import Project from '../../lib/models/Project';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-// Get all services
+// Get all Projects
 export async function GET() {
     try {
         await connectToDatabase();
-        const services = await Service.find( {} ).sort( { order: 1 } );
+        const Projects = await Project.find( {} ).sort( { order: 1 } );
 
-        return NextResponse.json( services );
+        return NextResponse.json( Projects );
     } catch ( err ) {
-        console.error( 'Error fetching services:', err );
-        return NextResponse.json( { error: 'Failed to fetch services' }, { status: 500 } );
+        console.error( 'Error fetching Projects:', err );
+        return NextResponse.json( { error: 'Failed to fetch Projects' }, { status: 500 } );
     }
 }
 
-// Create a new service
+// Create a new Project
 export async function POST( req ) {
     try {
         // Check authentication and admin status
@@ -42,7 +42,7 @@ export async function POST( req ) {
 
         await connectToDatabase();
 
-        const service = await Service.create( {
+        const project = await Project.create( {
             title,
             titleAr,
             description,
@@ -53,9 +53,9 @@ export async function POST( req ) {
             order: order || 0
         } );
 
-        return NextResponse.json( { message: 'Service created successfully', service } );
+        return NextResponse.json( { message: 'Project created successfully', project } );
     } catch ( err ) {
-        console.error( 'Error creating service:', err );
-        return NextResponse.json( { error: 'Failed to create service' }, { status: 500 } );
+        console.error( 'Error creating Project:', err );
+        return NextResponse.json( { error: 'Failed to create Project' }, { status: 500 } );
     }
 }

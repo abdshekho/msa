@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Tooltip } from 'flowbite-react';
 
-interface service {
+interface projects {
     _id: string;
     title: string;
     titleAr: string;
@@ -16,11 +16,11 @@ interface service {
 }
 
 export default function CategoriesAdminPage() {
-    const [services, setServices] = useState<service[]>([]);
+    const [projects, setProjects] = useState<projects[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
-    const [editingService, setEditingService] = useState<service | null>(null);
+    const [editingService, setEditingService] = useState<projects | null>(null);
     const [formData, setFormData] = useState({
         title: '',
         titleAr: '',
@@ -36,22 +36,22 @@ export default function CategoriesAdminPage() {
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Fetch services on component mount
+    // Fetch projects on component mount
     useEffect(() => {
-        fetchSersetServices();
+        fetchSersetProjects();
     }, []);
 
-    // Fetch all services
-    const fetchSersetServices = async () => {
+    // Fetch all projects
+    const fetchSersetProjects = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/services');
-            if (!response.ok) throw new Error('Failed to fetch services');
+            const response = await fetch('/api/projects');
+            if (!response.ok) throw new Error('Failed to fetch projects');
 
             const data = await response.json();
-            setServices(data);
+            setProjects(data);
         } catch (err: any) {
-            setError(err.message || 'An error occurred while fetching services');
+            setError(err.message || 'An error occurred while fetching projects');
         } finally {
             setLoading(false);
         }
@@ -94,7 +94,7 @@ export default function CategoriesAdminPage() {
 
             const formData = new FormData();
             formData.append('image', imageFile);
-            formData.append('type', 'services'); // Specify that this is a service image
+            formData.append('type', 'projects'); // Specify that this is a projects image
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
@@ -155,25 +155,25 @@ export default function CategoriesAdminPage() {
         }
     };
 
-    // Open form for creating a new service
+    // Open form for creating a new projects
     const handleAddNew = () => {
         resetForm();
         setShowForm(true);
     };
 
-    // Open form for editing an existing service
-    const handleEdit = (service: service) => {
+    // Open form for editing an existing projects
+    const handleEdit = (projects: projects) => {
         setFormData({
-            title: service.title,
-            titleAr: service.titleAr,
-            slug: service.slug,
-            image: service.image || '',
-            description: service.description || '',
-            descriptionAr: service.descriptionAr || '',
-            isActive: service.isActive || true
+            title: projects.title,
+            titleAr: projects.titleAr,
+            slug: projects.slug,
+            image: projects.image || '',
+            description: projects.description || '',
+            descriptionAr: projects.descriptionAr || '',
+            isActive: projects.isActive || true
         });
-        setEditingService(service);
-        setImagePreview(service.image || null);
+        setEditingService(projects);
+        setImagePreview(projects.image || null);
         setShowForm(true);
     };
 
@@ -198,8 +198,8 @@ export default function CategoriesAdminPage() {
             }
 
             const url = editingService
-                ? `/api/services/${editingService._id}`
-                : '/api/services';
+                ? `/api/projects/${editingService._id}`
+                : '/api/projects';
 
 
 
@@ -215,18 +215,18 @@ export default function CategoriesAdminPage() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to save service');
+                throw new Error(errorData.error || 'Failed to save projects');
             }
 
             // Success
             setSuccessMessage(editingService
-                ? 'Services updated successfully!'
-                : 'Services created successfully!');
+                ? 'projects updated successfully!'
+                : 'projects created successfully!');
 
             // Reset and refresh
             resetForm();
             setShowForm(false);
-            fetchSersetServices();
+            fetchSersetProjects();
 
             // Clear success message after 3 seconds
             setTimeout(() => {
@@ -234,7 +234,7 @@ export default function CategoriesAdminPage() {
             }, 3000);
 
         } catch (err: any) {
-            setError(err.message || 'An error occurred while saving the service');
+            setError(err.message || 'An error occurred while saving the projects');
 
             // Clear error message after 3 seconds
             setTimeout(() => {
@@ -245,29 +245,29 @@ export default function CategoriesAdminPage() {
         }
     };
 
-    // Delete service
-    const handleDelete = async (serviceId: string) => {
-        if (!confirm('Are you sure you want to delete this service? This action cannot be undone.')) {
+    // Delete projects
+    const handleDelete = async (projectsId: string) => {
+        if (!confirm('Are you sure you want to delete this projects? This action cannot be undone.')) {
             return;
         }
 
         try {
             setLoading(true);
 
-            const response = await fetch(`/api/services/${serviceId}`, {
+            const response = await fetch(`/api/projects/${projectsId}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to delete service');
+                throw new Error(errorData.error || 'Failed to delete projects');
             }
 
             // Success
-            setSuccessMessage('Services deleted successfully!');
+            setSuccessMessage('Projects deleted successfully!');
 
-            // Refresh services
-            fetchSersetServices();
+            // Refresh projects
+            fetchSersetProjects();
 
             // Clear success message after 3 seconds
             setTimeout(() => {
@@ -275,7 +275,7 @@ export default function CategoriesAdminPage() {
             }, 3000);
 
         } catch (err: any) {
-            setError(err.message || 'An error occurred while deleting the service');
+            setError(err.message || 'An error occurred while deleting the projects');
 
             // Clear error message after 3 seconds
             setTimeout(() => {
@@ -286,20 +286,20 @@ export default function CategoriesAdminPage() {
         }
     };
 
-    // Render service and its subcategories recursively
-    const renderservice = (service: service, level = 0) => {
+    // Render projects and its subcategories recursively
+    const renderprojects = (projects: projects, level = 0) => {
         return (
-            <div key={ service._id } className="mb-2">
+            <div key={ projects._id } className="mb-2">
                 <div
                     className={ `flex items-center justify-between p-3 rounded ${level === 0 ? 'bg-blue-50' : 'bg-white border border-gray-200 ml-6'
                         }` }
                 >
                     <div className="flex items-center">
-                        { service.image && (
+                        { projects.image && (
                             <div className="w-10 h-10 mr-3 relative">
                                 <Image
-                                    src={ service.image }
-                                    alt={ service.title }
+                                    src={ projects.image }
+                                    alt={ projects.title }
                                     fill
                                     sizes="40px"
                                     className="object-cover rounded"
@@ -307,28 +307,28 @@ export default function CategoriesAdminPage() {
                             </div>
                         ) }
                         <div>
-                            <div className="font-medium">{ service.title } / { service.titleAr }</div>
+                            <div className="font-medium">{ projects.title } / { projects.titleAr }</div>
                             <div className="text-sm text-gray-500">
-                                { service.isActive ? (
+                                { projects.isActive ? (
                                     <span className="text-green-500">Active</span>
                                 ) : (
                                     <span className="text-red-500">Inactive</span>
                                 ) } |
-                                Slug:<span> { service.slug } </span> |
-                                description:<span> { service.description }</span>
+                                Slug:<span> { projects.slug } </span> |
+                                description:<span> { projects.description }</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="flex space-x-2">
                         <button
-                            onClick={ () => handleEdit(service) }
+                            onClick={ () => handleEdit(projects) }
                             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Edit
                         </button>
                         <button
-                            onClick={ () => handleDelete(service._id) }
+                            onClick={ () => handleDelete(projects._id) }
                             className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
                         >
                             Delete
@@ -342,12 +342,12 @@ export default function CategoriesAdminPage() {
     return (
         <div className="p-6 max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Services Management</h1>
+                <h1 className="text-2xl font-bold">Projects Management</h1>
                 <button
                     onClick={ handleAddNew }
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                 >
-                    Add New Services
+                    Add New Projects
                 </button>
             </div>
 
@@ -365,13 +365,13 @@ export default function CategoriesAdminPage() {
                 </div>
             ) }
 
-            {/* service form */ }
+            {/* projects form */ }
             { showForm &&
                 (
                     <div className="mb-6 p-4 bg-gray-50 rounded shadow">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold">
-                                { editingService ? 'Edit Services' : 'Add New Services' }
+                                { editingService ? 'Edit Projects' : 'Add New Projects' }
                             </h2>
                             <Tooltip content='Cancel'>
                                 <button
@@ -431,7 +431,7 @@ export default function CategoriesAdminPage() {
 
                                 {/* Image Upload */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Services Image</label>
+                                    <label className="block mb-1 font-medium">Projects Image</label>
                                     <div className="flex items-center space-x-4">
                                         <input
                                             type="file"
@@ -449,7 +449,7 @@ export default function CategoriesAdminPage() {
                                             <div className="relative w-32 h-32 border rounded overflow-hidden">
                                                 <Image
                                                     src={ imagePreview || formData.image }
-                                                    alt="Services image preview"
+                                                    alt="Projects image preview"
                                                     fill
                                                     className="object-cover"
                                                 />
@@ -528,8 +528,8 @@ export default function CategoriesAdminPage() {
                                     { loading || uploadingImage
                                         ? 'Saving...'
                                         : editingService
-                                            ? 'Update Services'
-                                            : 'Create Services' }
+                                            ? 'Update Projects'
+                                            : 'Create Projects' }
                                 </button>
                             </div>
                         </form>
@@ -537,11 +537,11 @@ export default function CategoriesAdminPage() {
                 )
             }
 
-            {/* service list */ }
+            {/* projects list */ }
             { loading && !showForm ? (
-                <div>Loading services…</div>
+                <div>Loading projects…</div>
             ) : (
-                <div>{ services.map(cat => renderservice(cat)) }</div>
+                <div>{ projects.map(cat => renderprojects(cat)) }</div>
             ) }
         </div>
     );

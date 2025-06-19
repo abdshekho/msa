@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { syriaTimezoneSchemaOptions } from './schemaOptions';
 
-export interface IService extends Document {
+export interface IProjects extends Document {
     title: string;
     titleAr: string;
     description: string;
@@ -14,7 +14,7 @@ export interface IService extends Document {
     updatedAt: Date;
 }
 
-const ServiceSchema: Schema = new Schema(
+const projectSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
         titleAr: { type: String, required: true },
@@ -28,4 +28,4 @@ const ServiceSchema: Schema = new Schema(
     syriaTimezoneSchemaOptions
 );
 
-export default mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);
+export default mongoose.models.Project || mongoose.model<IProjects>('Project', projectSchema);

@@ -25,7 +25,7 @@ const links = [
   { name: 'products', href: '/dashboard/products', icon: FaBoxOpen, nameAr: 'المنتجات' },
   { name: 'categories', href: '/dashboard/categories', icon: FaTags, nameAr: 'التصنيفات' },
   { name: 'brands', href: '/dashboard/brands', icon: FaIndustry, nameAr: 'العلامات التجارية' },
-  { name: 'services', href: '/dashboard/services', icon: FaTools, nameAr: 'الخدمات' },
+  { name: 'projects', href: '/dashboard/projects', icon: FaTools, nameAr: 'المشاريع' },
   { name: 'orders', href: '/dashboard/orders', icon: FaClipboardList, nameAr: 'الطلبات' },
   { name: 'carts', href: '/dashboard/carts', icon: FaShoppingCart, nameAr: 'السلات' },
   { name: 'users', href: '/dashboard/users', icon: FaUsers, nameAr: 'المستخدمين' },
