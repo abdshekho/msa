@@ -5,32 +5,42 @@ import { FaLightbulb, FaMedal, FaRecycle, FaRocket, FaSolarPanel } from 'react-i
 import { Metadata } from 'next';
 import { Locale } from '@/i18n-config';
 import OurValues from './OurValues';
+import Projects from '@/components/About/Projects';
 
 export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
-    const resolvedParam = await params;
+  const resolvedParam = await params;
   return {
     title: resolvedParam.lang === 'en' ? 'About' : 'حولنا',
   };
 }
+async function getProjects() {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/projects`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch projects');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
+}
+
 export default async function AboutPage({ params }: { params: { lang: Locale } }) {
   const resolveParams = await params;
   const dict = await getDictionary(resolveParams.lang);
   const isArabic = resolveParams.lang === 'ar';
 
+  // Fetch projects
+  const projects = await getProjects();
+
   return (
     <div className="bg-white dark:bg-gray-900">
-      <AboutHero lang={resolveParams.lang}/>
-      {/* Header */ }
-      {/* <div className="bg-primary text-white py-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center">
-            {dict.page.about.title}
-          </h1>
-          <p className="text-center mt-4 max-w-2xl mx-auto">
-            {dict.page.about.description}
-          </p>
-        </div>
-      </div> */}
+      <AboutHero lang={ resolveParams.lang } />
 
       {/* Company Overview */ }
       <div className="container mx-auto px-4 py-12" id="aboutHeader">
@@ -82,7 +92,7 @@ export default async function AboutPage({ params }: { params: { lang: Locale } }
         </div>
 
         {/* Our Values */ }
-        <OurValues dict={dict.page.about.values}/>
+        <OurValues dict={ dict.page.about.values } />
         {/* <div className="my-30 text-center">
           <h2 className="head-1 mb-8 text-center">
             { dict.page.about.values.title }
@@ -145,6 +155,15 @@ export default async function AboutPage({ params }: { params: { lang: Locale } }
             )) }
           </div>
         </div>
+
+        {/* Our Projects */ }
+        { projects && projects?.length > 0 && (
+          <Projects
+            lang={ resolveParams.lang }
+            projects={ projects }
+            title={ isArabic ? "مشاريعنا" : "Our Projects" }
+          />
+        ) }
       </div>
     </div>
   );

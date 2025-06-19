@@ -316,7 +316,7 @@ export default function ProjectsAdminPage() {
                             <div>
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-lg font-semibold dark:text-white">{projects.title}</h3>
-                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 rtl:font-arabic">{projects.titleAr}</div>
+                                    <div className="text-sm font-semibold dark:text-white rtl:font-arabic">{projects.titleAr}</div>
                                 </div>
                                 
                                 <div className="mb-2">
@@ -577,7 +577,7 @@ export default function ProjectsAdminPage() {
                     </button>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                     {projects.map(cat => renderprojects(cat))}
                 </div>
             ) }

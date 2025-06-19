@@ -44,7 +44,7 @@ export default function AddToCartButton({ productId, lang, className ,classNameI
       className={ className || `cartBtn flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  
         rounded-lg ${loading ? ' animate-pulse' : ''} ${added ? ' animate-ping' : ''}` }
     >
-      <FaCartPlus className={classNameIcon || 'cartIcon shadowIcon'}/>
+      <FaCartPlus className={classNameIcon || 'cartIcon'}/>
       { lang === 'ar' ? (loading ? 'يتم الإضافة...'
         : added ? 'تمت الإضافة'
           : 'أضف إلى السلة')

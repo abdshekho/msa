@@ -72,7 +72,7 @@ export async function PUT( req, { params } ) {
 
         // Update project fields
         if ( title ) project.title = title;
-        if ( titleAr ) project.titleAr = title;
+        if ( titleAr ) project.titleAr = titleAr;
         if ( description ) project.description = description;
         if ( descriptionAr ) project.descriptionAr = descriptionAr;
         if ( image !== undefined ) project.image = image;
