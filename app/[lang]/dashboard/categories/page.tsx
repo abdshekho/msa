@@ -343,7 +343,7 @@ export default function CategoriesAdminPage() {
                 <div
                     className={ `flex items-center justify-between p-3 rounded ${level === 0
                             ? 'bg-green-50 dark:bg-gray-700'
-                            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mx-6'
+                            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
                         }` }
                 >
                     <div className="flex items-center">
@@ -399,12 +399,13 @@ export default function CategoriesAdminPage() {
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto">
+        <div className="p-0 md:p-6 max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold dark:text-white">Categories Management</h1>
                 <button
                     onClick={ handleAddNew }
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    hidden={showForm}
                 >
                     Add New Category
                 </button>

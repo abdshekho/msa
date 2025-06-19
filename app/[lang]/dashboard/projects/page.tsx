@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Tooltip } from 'flowbite-react';
+import { useTheme } from 'next-themes';
 
 interface projects {
     _id: string;
@@ -15,7 +16,8 @@ interface projects {
     isActive: boolean;
 }
 
-export default function CategoriesAdminPage() {
+export default function ProjectsAdminPage() {
+    const { theme, setTheme } = useTheme();
     const [projects, setProjects] = useState<projects[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -291,7 +293,7 @@ export default function CategoriesAdminPage() {
         return (
             <div key={ projects._id } className="mb-2">
                 <div
-                    className={ `flex items-center justify-between p-3 rounded ${level === 0 ? 'bg-blue-50' : 'bg-white border border-gray-200 ml-6'
+                    className={ `flex items-center justify-between p-3 rounded ${level === 0 ? 'bg-blue-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 ml-6'
                         }` }
                 >
                     <div className="flex items-center">
@@ -307,8 +309,8 @@ export default function CategoriesAdminPage() {
                             </div>
                         ) }
                         <div>
-                            <div className="font-medium">{ projects.title } / { projects.titleAr }</div>
-                            <div className="text-sm text-gray-500">
+                            <div className="font-medium dark:text-white">{ projects.title } / { projects.titleAr }</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-300">
                                 { projects.isActive ? (
                                     <span className="text-green-500">Active</span>
                                 ) : (
@@ -340,27 +342,36 @@ export default function CategoriesAdminPage() {
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Projects Management</h1>
-                <button
-                    onClick={ handleAddNew }
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                    Add New Projects
-                </button>
-            </div>
+        <div className="p-6 max-w-6xl mx-auto dark:text-white">
+            {/* <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold dark:text-white">Projects Management</h1>
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                        className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        aria-label="Toggle dark mode"
+                    >
+                        {theme === 'dark' ? '🌞' : '🌙'}
+                    </button>
+                    <button
+                        onClick={ handleAddNew }
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                        Add New Projects
+                    </button>
+                </div>
+            </div> */}
 
             {/* Success message */ }
             { successMessage && (
-                <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                <div className="mb-4 p-3 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">
                     { successMessage }
                 </div>
             ) }
 
             {/* Error message */ }
             { error && (
-                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded">
                     { error }
                 </div>
             ) }
@@ -368,15 +379,15 @@ export default function CategoriesAdminPage() {
             {/* projects form */ }
             { showForm &&
                 (
-                    <div className="mb-6 p-4 bg-gray-50 rounded shadow">
+                    <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded shadow">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">
+                            <h2 className="text-xl font-semibold dark:text-white">
                                 { editingService ? 'Edit Projects' : 'Add New Projects' }
                             </h2>
                             <Tooltip content='Cancel'>
                                 <button
                                     onClick={ () => setShowForm(false) }
-                                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer"
                                 >
                                     ✕
                                 </button>
@@ -387,27 +398,27 @@ export default function CategoriesAdminPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {/* Name */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Name (English)</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Name (English)</label>
                                     <input
                                         type="text"
                                         name="title"
                                         value={ formData.title }
                                         onChange={ handleInputChange }
                                         onBlur={ generateSlug }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
                                 </div>
 
                                 {/* Arabic Name */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Name (Arabic)</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Name (Arabic)</label>
                                     <input
                                         type="text"
                                         name="titleAr"
                                         value={ formData.titleAr }
                                         onChange={ handleInputChange }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                         dir="rtl"
                                     />
@@ -415,29 +426,29 @@ export default function CategoriesAdminPage() {
 
                                 {/* Slug */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Slug</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Slug</label>
                                     <input
                                         type="text"
                                         name="slug"
                                         value={ formData.slug }
                                         onChange={ handleInputChange }
-                                        className="w-full p-2 border rounded"
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     />
-                                    <p className="text-sm text-gray-500 mt-1">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                         Used in URLs. Auto-generated from name, but you can customize it.
                                     </p>
                                 </div>
 
                                 {/* Image Upload */ }
                                 <div>
-                                    <label className="block mb-1 font-medium">Projects Image</label>
+                                    <label className="block mb-1 font-medium dark:text-white">Projects Image</label>
                                     <div className="flex items-center space-x-4">
                                         <input
                                             type="file"
                                             accept="image/*"
                                             onChange={ handleImageChange }
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                             ref={ fileInputRef }
                                         />
                                     </div>
@@ -445,8 +456,8 @@ export default function CategoriesAdminPage() {
                                     {/* Image Preview */ }
                                     { (imagePreview || formData.image) && (
                                         <div className="mt-2">
-                                            <p className="text-sm font-medium mb-1">Image Preview:</p>
-                                            <div className="relative w-32 h-32 border rounded overflow-hidden">
+                                            <p className="text-sm font-medium mb-1 dark:text-white">Image Preview:</p>
+                                            <div className="relative w-32 h-32 border rounded overflow-hidden dark:border-gray-600">
                                                 <Image
                                                     src={ imagePreview || formData.image }
                                                     alt="Projects image preview"
@@ -459,7 +470,7 @@ export default function CategoriesAdminPage() {
 
                                     {/* Manual Image URL input (optional) */ }
                                     <div className="mt-2">
-                                        <label className="block mb-1 text-sm text-gray-600">
+                                        <label className="block mb-1 text-sm text-gray-600 dark:text-gray-400">
                                             Or enter image URL manually:
                                         </label>
                                         <input
@@ -467,7 +478,7 @@ export default function CategoriesAdminPage() {
                                             name="image"
                                             value={ formData.image }
                                             onChange={ handleInputChange }
-                                            className="w-full p-2 border rounded"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                             placeholder="Enter image URL (optional if uploading)"
                                         />
                                     </div>
@@ -482,7 +493,7 @@ export default function CategoriesAdminPage() {
                                         onChange={ handleInputChange }
                                         className="h-4 w-4"
                                     />
-                                    <label htmlFor="isActive" className="font-medium">
+                                    <label htmlFor="isActive" className="font-medium dark:text-white">
                                         Active (visible to users)
                                     </label>
                                 </div>
@@ -490,23 +501,23 @@ export default function CategoriesAdminPage() {
 
                             {/* Description */ }
                             <div>
-                                <label className="block mb-1 font-medium">Description (English)</label>
+                                <label className="block mb-1 font-medium dark:text-white">Description (English)</label>
                                 <textarea
                                     name="description"
                                     value={ formData.description }
                                     onChange={ handleInputChange }
-                                    className="w-full p-2 border rounded h-20"
+                                    className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 ></textarea>
                             </div>
 
                             {/* Arabic Description */ }
                             <div>
-                                <label className="block mb-1 font-medium">Description (Arabic)</label>
+                                <label className="block mb-1 font-medium dark:text-white">Description (Arabic)</label>
                                 <textarea
                                     name="descriptionAr"
                                     value={ formData.descriptionAr }
                                     onChange={ handleInputChange }
-                                    className="w-full p-2 border rounded h-20"
+                                    className="w-full p-2 border rounded h-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     dir="rtl"
                                 ></textarea>
                             </div>
@@ -516,7 +527,7 @@ export default function CategoriesAdminPage() {
                                 <button
                                     type="button"
                                     onClick={ () => setShowForm(false) }
-                                    className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+                                    className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
                                 >
                                     Cancel
                                 </button>
