@@ -90,7 +90,7 @@ export default async function ContactPage({ params }: { params: { lang: Locale }
         </div>
 
         {/* Contact Form */ }
-        <ContactForm dict={ dict.page.contact } lang={ lang } />
+        <ContactForm dict={ dict.page.contact } />
       </div>
 
       {/* Map */ }

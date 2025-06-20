@@ -1,33 +1,77 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import { useSession } from 'next-auth/react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface ContactFormProps {
   dict: any;
-  lang: string;
+  sessionEmail?: string;
 }
 
-export default function ContactForm({ dict, lang }: ContactFormProps) {
+// Create a type for the form data
+type ContactFormData = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
+
+export default function ContactForm({ dict }: ContactFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: session, status } = useSession();
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  // Create Zod schema with bilingual validation messages
+  const createContactSchema = (dict: any) => {
+    return z.object({
+      name: z.string()
+        .min(2, dict.validation?.nameMin || 'Name must be at least 2 characters')
+        .max(50, dict.validation?.nameMax || 'Name cannot exceed 50 characters'),
+      email: z.string()
+        .email(dict.validation?.emailInvalid || 'Please enter a valid email address'),
+      subject: z.string()
+        .min(3, dict.validation?.subjectMin || 'Subject must be at least 3 characters')
+        .max(100, dict.validation?.subjectMax || 'Subject cannot exceed 100 characters'),
+      message: z.string()
+        .min(10, dict.validation?.messageMin || 'Message must be at least 10 characters')
+        .max(1000, dict.validation?.messageMax || 'Message cannot exceed 1000 characters'),
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-		if (!formRef.current) return;
-    setIsSubmitting(true);
+  const contactSchema = createContactSchema(dict);
+
+  // Set up form with react-hook-form and zod resolver
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: session?.user?.name || '',
+      email: session?.user?.email || '',
+      subject: '',
+      message: ''
+    }
+  });
+
+  // Set user data from session when available
+  useEffect(() => {
+    if (session?.user?.name) {
+      setValue('name', session.user.name);
+    }
+    if (session?.user?.email) {
+      setValue('email', session.user.email);
+    }
+  }, [session, setValue]);
+
+  const onSubmit = async (data: ContactFormData) => {
     setSubmitStatus(null);
     
     try {
@@ -41,12 +85,10 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
         );
       }
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      reset();
     } catch (error) {
       setSubmitStatus('error');
       console.error('Error submitting form:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -68,35 +110,35 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
         </div>
       )}
 
-      <form ref={formRef} onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 ">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {dict.form.name}
             </label>
             <input
-              type="text"
               id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
+              {...register('name')}
               className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
+            {errors.name && (
+              <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+            )}
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {dict.form.email}
             </label>
             <input
-              type="email"
               id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
+              type="email"
+              {...register('email')}
+              disabled={!!session?.user?.email}
               className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+            )}
           </div>
         </div>
 
@@ -105,14 +147,13 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
             {dict.form.subject}
           </label>
           <input
-            type="text"
             id="subject"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            required
+            {...register('subject')}
             className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           />
+          {errors.subject && (
+            <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -121,13 +162,13 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
           </label>
           <textarea
             id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
+            {...register('message')}
             rows={5}
             className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           ></textarea>
+          {errors.message && (
+            <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+          )}
         </div>
 
         <button

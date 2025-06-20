@@ -143,6 +143,15 @@
         "address": "Damascus, Syria",
         "street": "Main Street, Building 123",
         "sendMessage": "Send Us a Message"
+      },
+      "validation":{
+        "nameMin":"Name must be at least 2 characters",
+        "nameMax":"Name cannot exceed 50 characters",
+        "emailInvalid":"Please enter a valid email address",
+        "subjectMin":"Subject must be at least 3 characters",
+        "subjectMax":"Subject cannot exceed 100 characters",
+        "messageMin":"Message must be at least 10 characters",
+        "messageMax":"Message cannot exceed 1000 characters"
       }
     },
     "signin": {
