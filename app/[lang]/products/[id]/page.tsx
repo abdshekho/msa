@@ -50,46 +50,36 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
     // Connect to the database
     await connectToDatabase();
 
-    // Fetch the product
-    const product = await Product.findById(id).lean();
+    const product = await Product.findById(id)
+        .populate({
+            path: 'category',
+            select: 'slug name nameAr',
+            populate: {
+                path: 'parentId',
+                select: 'slug name nameAr',
+            }
+        })
+        .populate({
+            path: 'brand',
+            select: 'slug name nameAr',
+        })
+        .lean();
 
-    // If product not found, show 404
     if (!product) {
         notFound();
     }
 
-    // Fetch category and brand data if they exist
-    let category = null;
-    let ParentCategory = null;
-    let brand = null;
+    const category = product.category || null;
+    const ParentCategory = category?.parentId || null;
+    const brand = product.brand || null;
 
-    if (product.category && isValidObjectId(product.category)) {
-        category = await Category.findById(product.category).lean();
-        ParentCategory = await Category.findById(category?.parentId).lean();
-    }
 
-    if (product.brand && isValidObjectId(product.brand)) {
-        brand = await Brand.findById(product.brand).lean();
-    }
 
     // Determine which language to display
     const isArabic = lang === 'ar';
     const productName = isArabic ? product.nameAr : product.name;
     const productDesc = isArabic ? product.descAr : product.desc;
     const productFeatures = isArabic ? product.featuresAr : product.features;
-
-    // Get category and brand names based on language
-    const categoryName = category
-        ? (isArabic && category.nameAr ? category.nameAr : category.name)
-        : product.category;
-
-    const ParentCategoryName = ParentCategory
-        ? (isArabic && ParentCategory.nameAr ? ParentCategory.nameAr : ParentCategory.name)
-        : '';
-
-    const brandName = brand
-        ? (isArabic && brand.nameAr ? brand.nameAr : brand.name)
-        : product.brand;
 
     return (
         <div>
@@ -103,7 +93,7 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                         <>
                             <span className="mx-2">/</span>
                             <Link href={ `/${lang}/categories/${ParentCategory.slug}` } className="hover:text-blue-600 dark:hover:text-secondary">
-                                { ParentCategoryName }
+                                { lang === 'en'? ParentCategory.name: ParentCategory.nameAr }
                             </Link>
                         </>
                     ) }
@@ -111,7 +101,7 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                         <>
                             <span className="mx-2">/</span>
                             <Link href={ `/${lang}/categories/${ParentCategory.slug}/${category.slug}` } className="hover:text-blue-600 dark:hover:text-secondary">
-                                { categoryName }
+                                { lang === 'en'? category.name: category.nameAr }
                             </Link>
                         </>
                     ) }
@@ -160,26 +150,26 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
 
                         {/* Additional Info */ }
                         <div className="grid grid-col-1 md:grid-cols-2 gap-4 text-sm mb-8">
-                            { categoryName && (
+                            { category && category?.slug && (
                                 <div className='flex gap-1 items-center'>
                                     <span className="head-22 mx-1 flex gap-1 items-center">
                                         <FaLayerGroup />
                                         { isArabic ? 'الفئة:' : 'Category:' }
                                     </span>
                                     <Link href={ `/${lang}/categories/${ParentCategory.slug}/${category.slug}` } className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
-                                        { categoryName }
+                                        { lang === 'en'? category.name: category.nameAr }
                                     </Link>
                                 </div>
                             ) }
 
-                            { brandName && (
+                            { brand && brand?.slug && (
                                 <div className='flex gap-1 items-center'>
                                     <span className="head-22 mx-1 flex gap-1 items-center">
                                         <FaTag />
                                         { isArabic ? 'العلامة التجارية:' : 'Brand:' }
                                     </span>
-                                    <Link href={ `/${lang}/brands/${brandName}` } className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
-                                        { brandName }
+                                    <Link href={ `/${lang}/brands/${brand?.slug}` } className="hover:text-blue-600 dark:hover:text-secondary hover:underline">
+                                        { lang === 'en'? brand.name: brand.nameAr }
                                     </Link>
                                 </div>
                             ) }
@@ -220,7 +210,7 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                         <FaBoxOpen className='mx-2' />
                         { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
                     </h2>
-                    <Link href={ `/${lang}/products?category=${ParentCategory._id}&subcategory=${product.category.toString()}&brand=${product.brand?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                    <Link href={ `/${lang}/products?category=${ParentCategory._id}&subcategory=${category?._id.toString()}&brand=${brand?._id?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
                         <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
                         { lang === 'en' ? "Show more related" : "تصفح المنتجات المرتبطة" }
                     </Link>
