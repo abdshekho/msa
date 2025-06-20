@@ -10,7 +10,7 @@ import ProductTable2 from '@/components/products/ProductTabel2';
 import AddToCartButton from '@/components/products/AddToCartButton';
 import Link from 'next/link';
 import ProductImages from '@/components/products/ProductImages';
-import { FaBoxOpen, FaFileAlt, FaLayerGroup, FaMagic, FaRegFileAlt, FaTag } from 'react-icons/fa';
+import { FaBoxOpen, FaFileAlt, FaLayerGroup, FaLink, FaMagic, FaRegFileAlt, FaTag } from 'react-icons/fa';
 import RelatedProducts from './RelatedProducts';
 // import dynamic from 'next/dynamic';
 
@@ -197,11 +197,14 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                     </div>
                 </div>
 
+
+            </div>
+            <div className='container mx-auto px-4 py-8'>
                 {/* Technical Specifications Table */ }
                 {
                     product.table && (
                         <div className="mb-12">
-                            <h2 className="head-21 flex gap-1 items-center mb-20 mt-40">
+                            <h2 className="head-21 flex gap-1 items-center mb-10 mt-40">
                                 <FaRegFileAlt />
                                 { isArabic ? 'المواصفات الفنية' : 'Technical Specifications' }
                             </h2>
@@ -211,14 +214,17 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                         </div>
                     )
                 }
-
-            </div>
-            {/* Related Products Section */ }
-            <div className='container mx-auto px-4 py-8'>
-                <h2 className="head-1 my-8 flex">
-                    <FaBoxOpen className='mx-2'/>
-                    { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
-                </h2>
+                {/* Related Products Section */ }
+                <div className='flex justify-between items-center mb-10 mt-40 mx-2'>
+                    <h2 className="head-21 flex gap-1 items-center ">
+                        <FaBoxOpen className='mx-2' />
+                        { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
+                    </h2>
+                    <Link href={ `/${lang}/products?category=${ParentCategory._id}&subcategory=${product.category.toString()}&brand=${product.brand?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                        <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
+                        { lang === 'en' ? "Show more related" : "تصفح المنتجات المرتبطة" }
+                    </Link>
+                </div>
                 <div className="client-only">
                     {/* @ts-ignore */ }
                     <RelatedProducts

@@ -347,7 +347,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                 onChange={ (e) => setPriceRange([priceRange[0], +e.target.value]) }
                 className="w-1/3 p-2 shadow-md rounded  bg-card-10 dark:bg-gray-700 dark:text-white border-2 border-card-10 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
-              <FaDollarSign />
+              
               <button
                 onClick={ () =>
                   updateQuery({
@@ -355,8 +355,9 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
                     maxPrice: String(priceRange[1])
                   })
                 }
-                className="text-white px-3 py-2 rounded bg-primary hover:opacity-80"
+                className="group flex justify-between items-center text-white px-3 py-2 rounded bg-primary hover:opacity-80"
               >
+                <FaDollarSign className='group-hover:translate-x-1 transition-transform mx-1'/>
                 { isArabic ? 'تطبيق' : 'Apply' }
               </button>
             </div>
@@ -365,10 +366,10 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
           <div className="flex items-end justify-end">
             <button
               onClick={ clearFilters }
-              className="flex items-center justify-between bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-secondary dark:text-secondary-10 py-2 px-4 rounded"
+              className="group flex items-center justify-between bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-secondary dark:text-secondary-10 py-2 px-4 rounded"
             >
               {/* FaHistory  */}
-              <FaHistory className='mx-2'/>
+              <FaHistory className='group-hover:rotate-[-180deg]  transition-transform mx-1'/>
               { isArabic ? 'مسح الفلاتر' : 'Clear Filters' }
             </button>
           </div>

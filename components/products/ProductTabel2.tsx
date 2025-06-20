@@ -29,7 +29,7 @@ const ProductTable2 = ({ tableDataProps }) => {
         return sequences;
     }
     return (
-        <div className="overflow-x-auto max-w-7xl m-auto text-xs lg:text-base" style={{direction:'ltr'}}>
+        <div className="overflow-x-auto m-auto text-xs lg:text-base" style={{direction:'ltr'}}>
             <table className="w-full border-collapse">
                 <thead>
                     <tr>
