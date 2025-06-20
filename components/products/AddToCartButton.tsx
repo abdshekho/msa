@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { addToCart } from '@/app/lib/cart/actions';
 import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
-import { FaCartPlus } from 'react-icons/fa';
+import { FaCartPlus, FaCheck } from 'react-icons/fa';
 import { Locale } from '@/i18n-config';
 
 interface AddToCartButtonProps {
@@ -44,7 +44,8 @@ export default function AddToCartButton({ productId, lang, className ,classNameI
       className={ className || `cartBtn flex items-center gap-2 text-white  bg-green-600 dark:bg-green-700 px-4 py-3  
         rounded-lg ${loading ? ' animate-pulse' : ''} ${added ? ' animate-ping' : ''}` }
     >
-      <FaCartPlus className={classNameIcon || 'cartIcon'}/>
+      {added ?<FaCheck /> : <FaCartPlus className={classNameIcon || 'cartIcon'}/>}
+      
       { lang === 'ar' ? (loading ? 'يتم الإضافة...'
         : added ? 'تمت الإضافة'
           : 'أضف إلى السلة')

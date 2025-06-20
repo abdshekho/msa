@@ -59,7 +59,7 @@ export default function ProductsPage({ params }: { params: { lang: string } }) {
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(1);
+  const [productsPerPage] = useState(4);
 
   const searchParams = useSearchParams();
   const router = useRouter();
