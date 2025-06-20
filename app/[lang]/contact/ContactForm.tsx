@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 interface ContactFormProps {
   dict: any;
@@ -8,6 +9,7 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ dict, lang }: ContactFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,13 +26,20 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+		if (!formRef.current) return;
     setIsSubmitting(true);
     setSubmitStatus(null);
     
     try {
-      // Here you would add your API call to send the form data
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Send email using EmailJS
+      if (formRef.current) {
+        await emailjs.sendForm(
+          'service_3jh66n8', // Replace with your EmailJS service ID
+          'template_21bddur', // Replace with your EmailJS template ID
+          formRef.current,
+          'RejFNzBQnNwATgRrs' // Replace with your EmailJS public key
+        );
+      }
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
@@ -59,7 +68,7 @@ export default function ContactForm({ dict, lang }: ContactFormProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 ">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

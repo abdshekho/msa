@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
+    "@emailjs/browser": "^4.4.1",
     "@formatjs/intl-localematcher": "0.5.7",
     "@hookform/resolvers": "^5.1.1",
     "@tailwindcss/postcss": "^4.1.5",
