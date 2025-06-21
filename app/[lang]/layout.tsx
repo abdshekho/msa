@@ -38,6 +38,17 @@ export default async function Root(props: {
     <html lang={ params.lang } suppressHydrationWarning dir={ params.lang === 'ar' ? 'rtl' : 'ltr' }>
       <head>
         <ThemeModeScript />
+        <meta name="application-name" content="I18n App" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="I18n App" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="apple-touch-icon" href="/FINAL.png" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={ `min-h-screen  bg-white dark:bg-gray-900 ${almarai.className}` }>
         <ThemeProvider

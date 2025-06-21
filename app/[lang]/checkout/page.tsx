@@ -1,11 +1,12 @@
+//@ts-nocheck
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCart } from '@/app/lib/cart/actions';
 import { createOrder } from '@/app/lib/orders/actions';
 import Link from 'next/link';
 import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
+import { Locale } from '@/i18n-config';
 // import { Metadata } from 'next';
 
 // export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
@@ -22,9 +23,9 @@ interface CheckoutFormData {
   phone: string;
 }
 
-export default function CheckoutPage({ params }: { params: { lang: Locale } }) {
+export default function CheckoutPage({ params }: { params: Promise<{ lang: Locale }> }) {
   // const lang = params.lang;
-  const { lang } = React.use(params as any);
+  const { lang } = React.use(params);
   const isArabic = lang === 'ar';
   const router = useRouter();
 

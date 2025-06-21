@@ -1,3 +1,4 @@
+import '../models'; // Import all models to ensure registration
 import Cart from '../models/Cart';
 import connectToDatabase from '../DB/mongoDB';
 

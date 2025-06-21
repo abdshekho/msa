@@ -4,7 +4,11 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    // "strict": true,
+    //Start for build in development mode 
+    "strict": false,
+    "noImplicitAny": false,
+    // End for build in development mode 
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,

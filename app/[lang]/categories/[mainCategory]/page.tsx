@@ -23,7 +23,7 @@ async function getChildCategoryBySlug(slug: string) {
 }
 
 
-export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale, slug: string }> }) {
+export default async function CategoryDetailPage(props: { params: Promise<{ lang: Locale, slug: string,mainCategory: any }> }) {
     const { lang, mainCategory } = await props.params;
     const dictionary = await getDictionary(lang);
     const categoryAfter = await getChildCategoryBySlug(mainCategory);
@@ -37,7 +37,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     if (!category) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-8">{ dictionary.common?.notFound || 'Category not found' }</h1>
+                <h1 className="text-3xl font-bold mb-8">{'Category not found' }</h1>
             </div>
         );
     }
@@ -74,7 +74,7 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
 
             {/* <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2> */ }
             <div className="mt-4">
-                <h3 className="head-21 my-2 sm:my-4">{ dictionary.categories?.subcategories || 'Subcategories' }</h3>
+                <h3 className="head-21 my-2 sm:my-4">{ dictionary.page.categories?.subcategories || 'Subcategories' }</h3>
                 <ul className="space-y-2">
                     { category?.subcategories && category?.subcategories[0]?.name ? category.subcategories.map((subcategory: any) => (
                         <li key={ subcategory._id } className='bg-card-10 dark:bg-card p-4'>

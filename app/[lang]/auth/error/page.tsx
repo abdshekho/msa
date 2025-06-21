@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default async function ErrorPage({ params }: { params: { lang: string } }) {
+export default async function ErrorPage({ params }: { params: Promise<{ lang: string }> }) {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const { lang } = await params;

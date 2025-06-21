@@ -10,6 +10,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { getClientDictionary } from "@/get-dictionary-client";
+import { Locale } from "@/i18n-config";
 const customTheme = {
   input: {
     "default": {
@@ -45,7 +46,7 @@ type LoginFormData = {
   password: string;
 };
 
-export default function SignIn({ params }: { params: { lang: string } }) {
+export default function SignIn({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolvedParams = use(params);
   const dictionary = getClientDictionary(resolvedParams.lang);
 

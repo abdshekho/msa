@@ -7,7 +7,7 @@ import { Locale } from '@/i18n-config';
 import OurValues from './OurValues';
 import Projects from '@/components/About/Projects';
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const resolvedParam = await params;
   return {
     title: resolvedParam.lang === 'en' ? 'About' : 'حولنا',
@@ -30,7 +30,7 @@ async function getProjects() {
   }
 }
 
-export default async function AboutPage({ params }: { params: { lang: Locale } }) {
+export default async function AboutPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolveParams = await params;
   const dict = await getDictionary(resolveParams.lang);
   const isArabic = resolveParams.lang === 'ar';

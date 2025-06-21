@@ -3,8 +3,9 @@ import { getCartsForAdmin } from '@/app/lib/cart/getCartsForAdmin';
 import { getDictionary } from '@/get-dictionary';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Locale } from '@/i18n-config';
 
-export default async function CartsPage({ params }: { params: { lang: string } }) {
+export default async function CartsPage({ params }: { params: { lang: Locale } }) {
   const { lang } = await params;
   const dict = await getDictionary(lang || 'en');
   const stats = await getCartsStats();
