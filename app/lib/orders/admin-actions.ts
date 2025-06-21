@@ -30,8 +30,8 @@ export async function updateOrderStatus(orderId: string, status: string) {
     order.status = status;
     await order.save();
 
-    revalidatePath('/[lang]/dashboard/orders');
-    revalidatePath(`/[lang]/dashboard/orders/${orderId}`);
+    // revalidatePath('/[lang]/dashboard/orders');
+    // revalidatePath(`/[lang]/dashboard/orders/${orderId}`);
 
     return { success: true };
   } catch (error) {

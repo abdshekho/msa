@@ -84,7 +84,6 @@ export default function CheckoutPage({ params }: { params: Promise<{ lang: Local
       }
     }
 
-    loadCart();
     fetchUserData();
 
 

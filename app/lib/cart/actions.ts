@@ -85,7 +85,7 @@ export async function addToCart(productId: string, quantity: number = 1) {
     // Save cart
     await cart.save();
     
-    revalidatePath('/[lang]/cart');
+    // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
     console.error('Error adding to cart:', error);
@@ -129,7 +129,7 @@ export async function updateCartItem(itemId: string, quantity: number) {
     
     await cart.save();
     
-    revalidatePath('/[lang]/cart');
+    // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
     console.error('Error updating cart item:', error);
@@ -161,7 +161,7 @@ export async function removeFromCart(itemId: string) {
     
     await cart.save();
     
-    revalidatePath('/[lang]/cart');
+    // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
     console.error('Error removing from cart:', error);
@@ -188,7 +188,7 @@ export async function clearCart() {
       await cart.save();
     }
     
-    revalidatePath('/[lang]/cart');
+    // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
     console.error('Error clearing cart:', error);

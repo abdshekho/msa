@@ -114,8 +114,8 @@ export async function createOrder(shippingAddress: {
     cart.items = [];
     await cart.save();
     
-    revalidatePath('/[lang]/orders');
-    revalidatePath('/[lang]/cart');
+    // revalidatePath('/[lang]/orders');
+    // revalidatePath('/[lang]/cart');
     
     // return { success: true, orderId: order._id };
     return { success: true, orderId: JSON.parse(JSON.stringify(order._id)) };
@@ -154,7 +154,7 @@ export async function cancelOrder(orderId: string) {
     order.status = 'cancelled';
     await order.save();
     
-    revalidatePath('/[lang]/orders');
+    // revalidatePath('/[lang]/orders');
     return { success: true };
   } catch (error) {
     console.error('Error cancelling order:', error);

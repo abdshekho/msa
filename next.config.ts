@@ -2,9 +2,11 @@ const path = require('path')
 const withFlowbiteReact = require('flowbite-react/plugin/nextjs')
 const withPWA = require('next-pwa')({
     dest: 'public',
-    // disable: process.env.NODE_ENV === 'development',
-    register: true,
+    disable: process.env.NODE_ENV === 'development',
+    register: false, // We'll register manually
     skipWaiting: true,
+    sw: 'sw.js',
+    publicExcludes: ['!robots.txt', '!sitemap.xml']
 })
 
 module.exports = withPWA(withFlowbiteReact({

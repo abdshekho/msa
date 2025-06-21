@@ -59,7 +59,7 @@ export default function CategoriesAdminPage() {
 
             const data = await response.json();
 
-            console.log('🚀 ~ page.tsx ~ fetchCategories ~ data:', data);
+            // console.log('🚀 ~ page.tsx ~ fetchCategories ~ data:', data);
 
 
             // Organize categories hierarchically
