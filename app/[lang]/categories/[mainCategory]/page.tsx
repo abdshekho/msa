@@ -84,9 +84,9 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
                             >
                                 <div className='flex hover:underline '>
                                     <div className="relative w-8 h-8 mr-2">
-                                        { subcategory.image && (
+                                        { subcategory.image || category.image && (
                                             <Image
-                                                src={ subcategory.image }
+                                                src={ subcategory.image || category.image }
                                                 alt={ subcategory.name }
                                                 fill
                                                 className="object-cover rounded-full"

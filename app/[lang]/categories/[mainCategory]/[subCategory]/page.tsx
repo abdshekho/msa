@@ -3,6 +3,8 @@ import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import Image from 'next/image';
 import Link from 'next/link';
+import ProductCard from '@/app/[lang]/products/ProdcutCard';
+import { FaLink } from 'react-icons/fa';
 
 async function getCategoryBySlug(subCategory: string) {
     try {
@@ -24,7 +26,7 @@ async function getCategoryBySlug(subCategory: string) {
 
 async function getProductsByCategory(categoryId: string) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products?category=${categoryId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products?category=${categoryId}&limit=4`, {
             cache: 'no-store'
         });
 
@@ -44,9 +46,6 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
     const resolve = await props.params;
     const dictionary = await getDictionary(lang);
     const category = await getCategoryBySlug(subCategory);
-
-
-
 
     if (!category) {
         return (
@@ -89,41 +88,49 @@ export default async function CategoryDetailPage(props: { params: Promise<{ lang
             </div>
 
             {/* <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">{ dictionary.products?.inThisCategory || 'Products in this category' }</h2> */ }
-            <h2 className="text-2xl font-bold mb-6 text-secondary dark:text-secondary-10">
-                { lang === 'en' ?
-                    'Products in ' :
-                    'المنتجات في ' }
-                <span className='text-primary dark:text-primary-10'>
+            <div className='flex flex-wrap justify-between items-center mb-10 mt-40 mx-2'>
+                <h2 className="text-lg md:text-2xl font-bold text-secondary dark:text-secondary-10">
                     { lang === 'en' ?
-                        category.name 
-                        : category.nameAr }
-                </span>
+                        'Products in ' :
+                        'المنتجات في ' }
+                    <span className='text-primary dark:text-primary-10'>
+                        { lang === 'en' ?
+                            category.name
+                            : category.nameAr }
+                    </span>
 
-            </h2>
+                </h2>
+                <Link href={ `/${lang}/products?category=${category.parentId}&subcategory=${category._id}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                    <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
+                    { lang === 'en' ? `All ${category.name} products ` : `جميع منتجات ${category.nameAr}` }
+                </Link>
+            </div>
 
             { products?.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     { products.map((product: any) => (
-                        <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden py-2 sm:py-4">
-                            <div className="relative h-48">
-                                <Image
-                                    src={ product.imageCover }
-                                    alt={ product.name }
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
-                            <div className="p-4">
-                                <h3 className="text-lg text-primary font-semibold mb-2 text-center">{ product.name }</h3>
-                                <p className="text-secondary dark:text-secondary-10 font-bold mb-2">${ product.price.toFixed(2) }</p>
-                                <Link
-                                    href={ `/${lang}/products/${product._id}`}
-                                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"
-                                >
-                                    { dictionary.common?.viewDetails || 'View Details' }
-                                </Link>
-                            </div>
-                        </div>
+                        // <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden py-2 sm:py-4">
+                        //     <div className="relative h-48">
+                        //         <Image
+                        //             src={ product.imageCover }
+                        //             alt={ product.name }
+                        //             fill
+                        //             className="object-contain"
+                        //         />
+                        //     </div>
+                        //     <div className="p-4">
+                        //         <h3 className="text-lg text-primary font-semibold mb-2 text-center">{ product.name }</h3>
+                        //         <p className="text-secondary dark:text-secondary-10 font-bold mb-2">${ product.price.toFixed(2) }</p>
+                        //         <Link
+                        //             href={ `/${lang}/products/${product._id}`}
+                        //             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"
+                        //         >
+                        //             { dictionary.common?.viewDetails || 'View Details' }
+                        //         </Link>
+                        //     </div>
+                        // </div>
+                        <ProductCard key={ product._id } lang={ lang } product={ product } />
+
                     )) }
                 </div>
             ) : (

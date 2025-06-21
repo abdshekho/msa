@@ -1,3 +1,4 @@
+'use client'
 import AddToCartButton from '@/components/products/AddToCartButton'
 import Image from 'next/image'
 import Link from 'next/link'

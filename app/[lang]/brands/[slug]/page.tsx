@@ -1,8 +1,9 @@
-import React from 'react';
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import Image from 'next/image';
 import Link from 'next/link';
+import ProductCard from '../../products/ProdcutCard';
+import { FaLink } from 'react-icons/fa';
 
 async function getBrandBySlug(slug: string) {
   try {
@@ -24,7 +25,7 @@ async function getBrandBySlug(slug: string) {
 
 async function getProductsByBrand(brandId: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products?brand=${brandId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products?brand=${brandId}&limit=4`, {
       cache: 'no-store'
     });
 
@@ -82,33 +83,39 @@ export default async function BrandDetailPage(props: { params: Promise<{ lang: L
             <p className="text-gray-700 dark:text-gray-300 mb-4 leading-10">{ lang === 'en' ? brand.description : brand.descriptionAr }</p>
           ) }
         </div>
+
       </div>
-
-      <h2 className="text-2xl font-bold mb-6">{ dictionary.page.brands?.productsBy } <span className='text-primary dark:text-primary-10'>{ brand.name }</span></h2>
-
+      <div className='flex flex-wrap justify-between items-center mb-10 mt-40 mx-2'>
+        <h2 className="font-bold text-lg md:text-2xl">{ dictionary.page.brands?.productsBy } <span className='text-primary dark:text-primary-10'>{ brand.name }</span></h2>
+        <Link href={ `/${lang}/products?brand=${brand?._id?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+          <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
+          { lang === 'en' ? `All products of ${brand.name}` : `جميع منتجات ${brand.name}` }
+        </Link>
+      </div>
       { products.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           { products.map((product: any) => (
-            <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={ product.imageCover }
-                  alt={ product.name }
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">{ product.name }</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-2">${ product.price.toFixed(2) }</p>
-                <Link
-                  href={ `/${lang}/products/${product._id}` }
-                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"
-                >
-                  { dictionary.common?.viewDetails || 'View Details' }
-                </Link>
-              </div>
-            </div>
+            // <div key={ product._id } className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+            //   <div className="relative h-48">
+            //     <Image
+            //       src={ product.imageCover }
+            //       alt={ product.name }
+            //       fill
+            //       className="object-contain"
+            //     />
+            //   </div>
+            //   <div className="p-4">
+            //     <h3 className="text-lg font-semibold mb-2">{ product.name }</h3>
+            //     <p className="text-gray-600 dark:text-gray-400 mb-2">${ product.price.toFixed(2) }</p>
+            //     <Link
+            //       href={ `/${lang}/products/${product._id}` }
+            //       className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-full text-center"
+            //     >
+            //       { dictionary.common?.viewDetails || 'View Details' }
+            //     </Link>
+            //   </div>
+            // </div>
+            <ProductCard key={ product._id } lang={ lang } product={ product } />
           )) }
         </div>
       ) : (
