@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, use } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
 import { createProfileSchema, createPasswordSchema, type ProfileFormData, type PasswordFormData } from "./schema";
 import { z } from "zod";
@@ -29,6 +29,9 @@ export default function Profile({ params }: { params: { lang: string } }) {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>({});
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -339,14 +342,24 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <label htmlFor="currentPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.currentPassword }
             </label>
-            <input
-              type="password"
-              id="currentPassword"
-              disabled={ isChangingPassword || isLoading }
-              value={ currentPassword }
-              onChange={ (e) => setCurrentPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.currentPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
-            />
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                id="currentPassword"
+                disabled={ isChangingPassword || isLoading }
+                value={ currentPassword }
+                onChange={ (e) => setCurrentPassword(e.target.value) }
+                className={ `w-full px-3 py-2 pr-10 border ${passwordErrors.currentPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                disabled={isChangingPassword || isLoading}
+              >
+                {showCurrentPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
             { passwordErrors.currentPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.currentPassword }</p> }
           </div>
 
@@ -354,14 +367,24 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <label htmlFor="newPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.newPassword }
             </label>
-            <input
-              type="password"
-              id="newPassword"
-              disabled={ isChangingPassword || isLoading }
-              value={ newPassword }
-              onChange={ (e) => setNewPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.newPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
-            />
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                id="newPassword"
+                disabled={ isChangingPassword || isLoading }
+                value={ newPassword }
+                onChange={ (e) => setNewPassword(e.target.value) }
+                className={ `w-full px-3 py-2 pr-10 border ${passwordErrors.newPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                disabled={isChangingPassword || isLoading}
+              >
+                {showNewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
             { passwordErrors.newPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.newPassword }</p> }
           </div>
 
@@ -369,14 +392,24 @@ export default function Profile({ params }: { params: { lang: string } }) {
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-secondary dark:text-secondary-10 mb-1">
               { dictionary.page.profile.confirmPassword }
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={ confirmPassword }
-              disabled={ isChangingPassword || isLoading }
-              onChange={ (e) => setConfirmPassword(e.target.value) }
-              className={ `w-full px-3 py-2 border ${passwordErrors.confirmPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                value={ confirmPassword }
+                disabled={ isChangingPassword || isLoading }
+                onChange={ (e) => setConfirmPassword(e.target.value) }
+                className={ `w-full px-3 py-2 pr-10 border ${passwordErrors.confirmPassword ? 'border-red-500' : 'border-secondary-10 dark:border-gray-600'} rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white` }
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                disabled={isChangingPassword || isLoading}
+              >
+                {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
             { passwordErrors.confirmPassword && <p className="mt-1 text-sm text-red-600">{ passwordErrors.confirmPassword }</p> }
           </div>
 

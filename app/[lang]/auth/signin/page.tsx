@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { getClientDictionary } from "@/get-dictionary-client";
 import { Locale } from "@/i18n-config";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const customTheme = {
   input: {
     "default": {
@@ -57,6 +58,7 @@ export default function SignIn({ params }: { params: Promise<{ lang: Locale }> }
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Setup react-hook-form with zod validation
   const { register, handleSubmit: handleFormSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -156,16 +158,23 @@ export default function SignIn({ params }: { params: Promise<{ lang: Locale }> }
               ) }
             </div>
 
-            <div>
+            <div className="relative">
               <FloatingLabel
                 variant="outlined"
                 label={ dictionary.page.signin.password }
-                type="password"
+                type={showPassword ? "text" : "password"}
                 dir="ltr"
                 theme={ customTheme }
                 autoComplete="current-password"
                 { ...register("password") }
               />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash  size={20} /> : <FaEye  size={20} />}
+              </button>
               { errors.password && (
                 <p className="mt-1 text-sm text-red-600">{ errors.password.message }</p>
               ) }

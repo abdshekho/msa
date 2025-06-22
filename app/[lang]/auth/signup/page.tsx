@@ -12,7 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import profileImage from "@/public/en/profile.webp"
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Tooltip } from "flowbite-react";
 import { getClientDictionary } from "@/get-dictionary-client";
 
@@ -65,6 +65,7 @@ export default function SignUp({ params }: { params: { lang: string } }) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Create schema with translated messages
   const signupSchema = createSignupSchema(dictionary);
@@ -248,16 +249,24 @@ export default function SignUp({ params }: { params: { lang: string } }) {
               ) }
             </div>
 
-            <div>
+            <div className="relative">
               <FloatingLabel
                 variant="outlined"
                 label={ dictionary.page.signup.password }
-                type="password"
+                type={showPassword ? "text" : "password"}
                 theme={ customTheme }
                 disabled={ isLoading }
                 autoComplete="new-password"
                 { ...register("password") }
               />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
               { errors.password && (
                 <p className="mt-1 text-sm text-red-600">{ errors.password.message }</p>
               ) }
