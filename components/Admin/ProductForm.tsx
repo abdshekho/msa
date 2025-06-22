@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useCategories } from '@/context/CategoryContext';
+import { useBrands } from '@/context/BrandContext';
 
 // Dynamically import TableEditor for better code splitting
 const TableEditor = dynamic(() => import('./TableEditor'), {
@@ -87,9 +89,14 @@ export default function ProductForm({ productId }: ProductFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [message, setMessage] = useState('');
-    const [childCtegories, setChildtCategories] = useState<any[]>([]);
-    const [brands, setBrands] = useState<any[]>([]);
     const [isPending, startTransition] = useTransition();
+    const { categories: contextCategories, loading: loadingCategories } = useCategories();
+    const { brands: contextBrands, loading: loadingBrands }: any = useBrands();
+    
+    // Extract child categories from nested structure
+    const childCategories = contextCategories?.flatMap((category: any) => 
+        category.items || []
+    ) || [];
     const [tableData, setTableData] = useState<TableData>({
         headers: ['Model', "Product id1", "Product id2", "Product id3"],
         rows: [
@@ -204,36 +211,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
         }
     }, [productId, reset]);
 
-    // Fetch categories and brands
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
 
-            try {
-                const [categoriesResponse, brandsResponse] = await Promise.all([
-                    fetch('/api/categories?notNull=true'),
-                    fetch('/api/brands')
-                ]);
-
-                if (!categoriesResponse.ok) throw new Error('Failed to fetch categories');
-                if (!brandsResponse.ok) throw new Error('Failed to fetch brands');
-
-                const categoriesData = await categoriesResponse.json();
-                const brandsData = await brandsResponse.json();
-
-                startTransition(() => {
-                    setChildtCategories(categoriesData);
-                    setBrands(brandsData);
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
 
     // Update table data
     const updateTableData = useCallback((data: TableData) => {
@@ -290,7 +268,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                 setValue(`images.${index}`, data.imageUrl);
             } catch (error: any) {
                 console.error('Error uploading image:', error);
-                setMessage(`Error: ${error.message}`);
+                setMessage(`Error: ${error?.details || error.message}`);
             } finally {
                 setIsLoading(false);
             }
@@ -352,7 +330,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                 </div>
             ) }
 
-            { (isLoading || isPending) && (
+            { (isLoading || isPending || loadingCategories || loadingBrands) && (
                 <div className="p-4 mb-6 rounded bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200 max-w-4xl mx-auto">
                     Processing...
                 </div>
@@ -445,9 +423,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                         disabled={ isLoading || isPending || isSubmitting }
                                     >
                                         <option value="">Select category</option>
-                                        { childCtegories?.map(parent => (
-                                            <option key={ parent._id } value={ parent._id }>
-                                                { parent.name }
+                                        { childCategories?.map(category => (
+                                            <option key={ category._id } value={ category._id }>
+                                                { category.name }
                                             </option>
                                         )) }
                                     </select>
@@ -466,7 +444,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                         disabled={ isLoading || isPending || isSubmitting }
                                     >
                                         <option value="">Select brand</option>
-                                        { brands?.map(brand => (
+                                        { contextBrands?.map(brand => (
                                             <option key={ brand._id } value={ brand._id }>
                                                 { brand.name }
                                             </option>

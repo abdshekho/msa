@@ -20,7 +20,7 @@ export default function MenuItem({ title, items, lang }: any) {
         <div className="md:flex justify-between p-2.5 cursor-pointer whitespace-nowrap relative bg-gray-100 hover:bg-gray-200
             dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 hover:text-primary dark:hover:text-primary-10"
             onMouseEnter={ () => setOpenSub2(true) }
-            onMouseLeave={ () => setOpenSub2(true) }
+            onMouseLeave={ () => setOpenSub2(false) }
         >
             <span>{ title }</span>
             { items?.length > 0 ? '▸' : '' }
