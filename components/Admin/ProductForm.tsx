@@ -87,7 +87,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [message, setMessage] = useState('');
-    const [parentCategories, setParentCategories] = useState<any[]>([]);
+    const [childCtegories, setChildtCategories] = useState<any[]>([]);
     const [brands, setBrands] = useState<any[]>([]);
     const [isPending, startTransition] = useTransition();
     const [tableData, setTableData] = useState<TableData>({
@@ -222,7 +222,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                 const brandsData = await brandsResponse.json();
 
                 startTransition(() => {
-                    setParentCategories(categoriesData);
+                    setChildtCategories(categoriesData);
                     setBrands(brandsData);
                 });
             } catch (error) {
@@ -445,7 +445,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
                                         disabled={ isLoading || isPending || isSubmitting }
                                     >
                                         <option value="">Select category</option>
-                                        { parentCategories?.map(parent => (
+                                        { childCtegories?.map(parent => (
                                             <option key={ parent._id } value={ parent._id }>
                                                 { parent.name }
                                             </option>

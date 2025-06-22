@@ -4,7 +4,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { use, useEffect, useState } from 'react';
-import { FaAlignLeft, FaCalculator, FaCarBattery, FaListUl, FaLockOpen, FaPlus, FaSolarPanel } from 'react-icons/fa';
+import { FaAlignLeft, FaBox, FaCalculator, FaCarBattery, FaListUl, FaLockOpen, FaPlus, FaSolarPanel } from 'react-icons/fa';
 import { redirect, usePathname } from 'next/navigation';
 import { BsDeviceSsd } from 'react-icons/bs';
 import { GiSolarPower } from 'react-icons/gi';
@@ -22,7 +22,7 @@ const deviceOptions = [
 const createSchema = (lang: string, dictionary: any) => {
     // Get error messages from dictionary
     const errorMessages = dictionary.error['solar-calculator'];
-    
+
     return z.object({
         devices: z.array(z.object({
             name: z.string().min(1, errorMessages['name-required']),
@@ -59,10 +59,10 @@ export default function SolarCalculator() {
     const pahtname = usePathname()
     const lang = pahtname.slice(1, 3) || 'en';
     const dict = getClientDictionary(lang);
-    
+
     // Create schema with the current language and dictionary
     const schema = createSchema(lang, dict);
-    
+
     const { control, register, handleSubmit, watch, trigger, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
             devices: [
@@ -355,6 +355,7 @@ export default function SolarCalculator() {
                 </button>
             </form>
             <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
+            <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' hidden={ !submited }>
                 <div>
                     {/* <ul dir={ lang === 'en' ? 'ltr' : 'rtl' }>
@@ -447,13 +448,14 @@ export default function SolarCalculator() {
                             <span className="text-xs text-gray-600 dark:text-gray-300">
                                 { outputValue.cInverter } W
                             </span>
-                            {/* <p className="text-gray-600 dark:text-white font-bold">
-                                { outputValue.cInverter }W
-                            </p> */}
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <button className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto shadow-xl">
+                <FaBox className='mx-2' />
+                { lang === 'en' ? "perfect system for you" : "المنظومة المناسبة لك" }
+            </button>
             </div>
         </div>
     );

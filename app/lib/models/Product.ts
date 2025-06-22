@@ -23,6 +23,11 @@ export interface IProduct extends Document {
             isSectionHeader?: boolean;
         }[];
     };
+    wattP?: number;
+    voltageB?: number;
+    capacityB?: number;
+    capacityI?: number;
+    inputI?: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -56,7 +61,12 @@ const ProductSchema: Schema = new Schema(
                 values: [{ type: String }],
                 isSectionHeader: { type: Boolean, default: false }
             }]
-        }
+        },
+        wattP: { type: Number },
+        voltageB: { type: Number },
+        capacityB: { type: Number },
+        capacityI: { type: Number },
+        inputI: { type: Number }
     },
     syriaTimezoneSchemaOptions
 );
