@@ -87,7 +87,7 @@ export default async function BrandDetailPage(props: { params: Promise<{ lang: L
       </div>
       <div className='flex flex-wrap justify-between items-center mb-10 mt-40 mx-2'>
         <h2 className="font-bold text-lg md:text-2xl">{ dictionary.page.brands?.productsBy } <span className='text-primary dark:text-primary-10'>{ brand.name }</span></h2>
-        <Link href={ `/${lang}/products?brand=${brand?._id?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+        <Link href={ `/${lang}/products?brand=${brand?._id?.toString()}` } className="group flex items-center hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
           <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
           { lang === 'en' ? `All products of ${brand.name}` : `جميع منتجات ${brand.name}` }
         </Link>

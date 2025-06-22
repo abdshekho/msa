@@ -210,7 +210,7 @@ async function ProductPage({ params }: { params: { id: string; lang: string } })
                         <FaBoxOpen className='mx-2' />
                         { isArabic ? 'منتجات ذات صلة' : 'Related Products' }
                     </h2>
-                    <Link href={ `/${lang}/products?category=${ParentCategory._id}&subcategory=${category?._id.toString()}&brand=${brand?._id?.toString()}` } className="group flex items-center shadowText hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
+                    <Link href={ `/${lang}/products?category=${ParentCategory._id}&subcategory=${category?._id.toString()}&brand=${brand?._id?.toString()}` } className="group flex items-center hover:bg-secondary-10 dark:hover:bg-secondary text-sm  md:text-base font-bold py-2 px-3 md:py-3 md:px-6 rounded-lg transition-all duration-300">
                         <FaLink className='group-hover:rotate-12 transition-transform mx-2' />
                         { lang === 'en' ? "Show more related" : "تصفح المنتجات المرتبطة" }
                     </Link>

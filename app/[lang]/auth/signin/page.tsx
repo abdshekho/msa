@@ -22,9 +22,9 @@ const customTheme = {
   },
   label: {
     "default": {
-      outlined: {
-        "sm": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary",
-        "md": "bg-white dark:bg-card peer-focus:text-primary dark:text-gray-400 peer-focus:dark:text-primary"
+      "outlined": {
+        "sm": "absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 bg-white px-2 text-xs text-gray-500 transition-transform duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-primary bg-white dark:bg-card dark:text-gray-400 peer-focus:dark:text-primary",
+        "md": "absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 bg-white px-2 text-sm text-gray-500 transition-transform duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-primary bg-white dark:bg-card dark:text-gray-400 peer-focus:dark:text-primary"
       },
     },
   }
@@ -105,7 +105,7 @@ export default function SignIn({ params }: { params: Promise<{ lang: Locale }> }
   };
 
   return (
-    <div className={`flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${isLoading ? 'animate-pulse':''}`}>
+    <div className={ `flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${isLoading ? 'animate-pulse' : ''}` }>
       <div className="w-full max-w-md space-y-8 py-8 px-8 bg-white dark:bg-card rounded-3xl shadow-2xl">
         <div>
           <h2 className="mt-6 text-center head-1">
@@ -159,7 +159,7 @@ export default function SignIn({ params }: { params: Promise<{ lang: Locale }> }
             <div>
               <FloatingLabel
                 variant="outlined"
-                label={dictionary.page.signin.password}
+                label={ dictionary.page.signin.password }
                 type="password"
                 dir="ltr"
                 theme={ customTheme }

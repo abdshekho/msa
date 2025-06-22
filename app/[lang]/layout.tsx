@@ -49,7 +49,7 @@ export default async function Root(props: {
         <meta name="theme-color" content="#000000" />
         <link rel="apple-touch-icon" href="/FINAL.png" />
         <link rel="manifest" href="/manifest.json" />
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
@@ -65,7 +65,7 @@ export default async function Root(props: {
               }
             `,
           }}
-        />
+        /> */}
       </head>
       <body className={ `min-h-screen  bg-white dark:bg-gray-900 ${almarai.className}` }>
         <ThemeProvider
