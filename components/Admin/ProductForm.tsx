@@ -29,14 +29,11 @@ const productSchema = z.object({
     descAr: z.string().min(10, 'Arabic description must be at least 10 characters'),
     features: z.array(z.string().min(1, 'Feature cannot be empty')).min(1, 'At least one feature is required'),
     featuresAr: z.array(z.string().min(1, 'Arabic feature cannot be empty')).min(1, 'At least one Arabic feature is required'),
-    // table: z.object({
-    //     headers: z.array(z.string()),
-    //     rows: z.array(z.object({
-    //         parameter: z.string(),
-    //         values: z.array(z.string()),
-    //         isSectionHeader: z.boolean()
-    //     }))
-    // })
+    wattP: z.number().optional(),
+    voltageB: z.number().optional(),
+    capacityB: z.number().optional(),
+    capacityI: z.number().optional(),
+    inputI: z.number().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -92,9 +89,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
     const [isPending, startTransition] = useTransition();
     const { categories: contextCategories, loading: loadingCategories } = useCategories();
     const { brands: contextBrands, loading: loadingBrands }: any = useBrands();
-    
+
     // Extract child categories from nested structure
-    const childCategories = contextCategories?.flatMap((category: any) => 
+    const childCategories = contextCategories?.flatMap((category: any) =>
         category.items || []
     ) || [];
     const [tableData, setTableData] = useState<TableData>({
@@ -146,7 +143,12 @@ export default function ProductForm({ productId }: ProductFormProps) {
             descAr: '',
             features: [''],
             featuresAr: [''],
-            table: tableData
+            table: tableData,
+            wattP: 0,
+            voltageB: 0,
+            capacityB: 0,
+            capacityI: 0,
+            inputI: 0
         }
     });
 
@@ -168,6 +170,7 @@ export default function ProductForm({ productId }: ProductFormProps) {
 
     // Watch name field for slug generation
     const nameValue = watch('name');
+    const categoryValue = watch('category');
 
     // Generate slug from name
     const generateSlug = useCallback(() => {
@@ -625,6 +628,104 @@ export default function ProductForm({ productId }: ProductFormProps) {
                             </div>
                         </FieldWrapper>
                     </div>
+
+                    {/* Conditional Fields Based on Category Parent */ }
+                    { (categoryValue === '6838f3c31d09afead0d3d915') &&
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <Controller
+                                name="capacityI"
+                                control={ control }
+                                render={ ({ field }) => (
+                                    <FieldWrapper label="Capacity Inverter">
+                                        <input
+                                            { ...field }
+                                            type="number"
+                                            min="0"
+                                            step="0.01"
+                                            onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        />
+                                    </FieldWrapper>
+                                ) }
+                            />
+                            <Controller
+                                name="inputI"
+                                control={ control }
+                                render={ ({ field }) => (
+                                    <FieldWrapper label="Input Inverter (Voltage Battery)">
+                                        <input
+                                            { ...field }
+                                            type="number"
+                                            min="0"
+                                            step="0.01"
+                                            onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        />
+                                    </FieldWrapper>
+                                ) }
+                            />
+                        </div>
+                    }
+
+
+                    { ['684cc78f29dc5b2fade48493', '684cc7b529dc5b2fade48497'].includes(categoryValue) &&
+                        <div className="mt-6">
+                            <Controller
+                                name="wattP"
+                                control={ control }
+                                render={ ({ field }) => (
+                                    <FieldWrapper label="Watt of Panel">
+                                        <input
+                                            { ...field }
+                                            type="number"
+                                            min="0"
+                                            step="0.01"
+                                            onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        />
+                                    </FieldWrapper>
+                                ) }
+                            />
+                        </div>
+                    }
+
+                { ['6857e290e28bd62899fef3b0'].includes(categoryValue)  &&
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <Controller
+                            name="capacityB"
+                            control={ control }
+                            render={ ({ field }) => (
+                                <FieldWrapper label="Capacity Battery">
+                                    <input
+                                        { ...field }
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    />
+                                </FieldWrapper>
+                            ) }
+                        />
+                        <Controller
+                            name="voltageB"
+                            control={ control }
+                            render={ ({ field }) => (
+                                <FieldWrapper label="Voltage Battery">
+                                    <input
+                                        { ...field }
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        onChange={ (e) => field.onChange(parseFloat(e.target.value) || 0) }
+                                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    />
+                                </FieldWrapper>
+                            ) }
+                        />
+                    </div>
+                    }
+
                 </div>
 
                 {/* Technical Specifications Table */ }
