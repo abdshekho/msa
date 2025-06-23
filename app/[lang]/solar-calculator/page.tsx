@@ -110,7 +110,7 @@ export default function SolarCalculator() {
     const [combinationsProdcuts, setCombinationsProducts] = useState(null);
     const hadnelEditDevices = () => {
         setSubmited1(false)
-        // setSubmited2(false)
+        setSubmited2(false)
         setVoltageBattery(12.5);
         setVoltagePanel(705);
         setCapacityInverter(0);
@@ -199,10 +199,15 @@ export default function SolarCalculator() {
             for (const inverter of grouped.inverters) {
                 for (const battery of grouped.batteries) {
                     for (const panel of grouped.panels) {
+                        const totalPrice =
+                            (inverter.price || 0) +
+                            (battery.price * conditionalRound(outputValue.nBattery) || 0) +
+                            (panel.price * conditionalRound(outputValue.nPanel) || 0);
                         combinations.push({
                             inverter,
                             battery,
-                            panel
+                            panel,
+                            totalPrice
                         });
                     }
                 }
@@ -210,6 +215,8 @@ export default function SolarCalculator() {
             setCombinationsProducts(combinations)
             console.log('combinations', combinations);
             setSubmited2(true)
+            redirect('#getProductsButton')
+
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -418,8 +425,8 @@ export default function SolarCalculator() {
                     { lang === 'en' ? "edit on devices" : "تعديل على الأجهزة" }
                 </button>
             </form>
-            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
             <div hidden={ !submited1 }>
+            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' >
                     <div>
                         {/* <ul dir={ lang === 'en' ? 'ltr' : 'rtl' }>
@@ -518,7 +525,7 @@ export default function SolarCalculator() {
                         </div>
                     </div>
                 </div>
-                <button disabled={ submited2 } onClick={ handlePerfectSystem } className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto shadow-xl">
+                <button disabled={ submited2 } id='getProductsButton' onClick={ handlePerfectSystem } className="bg-primary text-white px-4 py-3 rounded flex justify-between items-center my-10 mx-auto shadow-xl">
                     <FaBox className='mx-2' />
                     { lang === 'en' ? "perfect system for you" : "المنظومة المناسبة لك" }
                 </button>
@@ -534,50 +541,80 @@ export default function SolarCalculator() {
                 </button>
 
             </div>
+            <div hidden={ !submited2 }>
             <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
-            <div hidden={ !submited2 } className='overflow-x-auto'>
-                <table className='w-full min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
-                    <thead>
-                        <tr>
-                            {/* <th>Option</th> */}
-                            <th>Inverter</th>
-                            <th>Battery</th>
-                            <th>Panel</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className=''>
-                        { combinationsProdcuts && combinationsProdcuts?.map((combo, index) => (
-                            <tr key={ index }>
-                                <td className='text-center'>
-                                    <div className='flex justify-center'>
-                                        <Image src={ combo.inverter.imageCover } alt={ combo.inverter.imageCover } width={ 100 } height={ 100 } />
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    { combinationsProdcuts?.map((combo, index) => (
+                        <div
+                            key={ index }
+                            className="rounded-2xl shadow-md dark:shadow-lg p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex flex-col justify-between transition hover:shadow-xl"
+                        >
+                            <div className="space-y-4">
+                                {/* Inverter */ }
+                                <div className="text-center">
+                                    <Image
+                                        src={ combo.inverter.imageCover }
+                                        alt={ combo.inverter.name }
+                                        width={ 100 }
+                                        height={ 100 }
+                                        className="mx-auto rounded"
+                                    />
+                                    <div className="text-primary dark:text-primary-10 font-semibold mt-2">{ combo.inverter.name }</div>
+                                    <div className="text-sm text-gray-500">
+                                        { combo.inverter.price }$ × 1 = <span className="font-bold text-secondary dark:text-secondary-10">{ combo.inverter.price }$</span>
                                     </div>
-                                    <div className='text-primary dark:text-primary-10'>{ combo.inverter.name }</div>
-                                    <div className='text-secondary dark:text-secondary-10 font-bold'><span className='font-light text-gray-500'>{ combo.inverter.price }$ X 1 = </span> { combo.inverter.price }$ </div>
-                                </td>
-                                <td className='text-center'>
-                                    <div className='flex justify-center'>
-                                        <Image src={ combo.battery.imageCover } alt={ combo.battery.imageCover } width={ 100 } height={ 100 } />
+                                </div>
+
+                                {/* Battery */ }
+                                <div className="text-center">
+                                    <Image
+                                        src={ combo.battery.imageCover }
+                                        alt={ combo.battery.name }
+                                        width={ 100 }
+                                        height={ 100 }
+                                        className="mx-auto rounded"
+                                    />
+                                    <div className="text-primary dark:text-primary-10 font-semibold mt-2">{ combo.battery.name }</div>
+                                    <div className="text-sm text-gray-500">
+                                        { combo.battery.price }$ × { conditionalRound(outputValue.nBattery) } ={ " " }
+                                        <span className="font-bold text-secondary dark:text-secondary-10">
+                                            { combo.battery.price * conditionalRound(outputValue.nBattery) }$
+                                        </span>
                                     </div>
-                                    <div className='text-primary dark:text-primary-10 my-2'>{ combo.battery.name }</div>
-                                    <div className='text-secondary dark:text-secondary-10 font-bold'><span className='font-light text-gray-500'>{ combo.battery.price }$ X 1 = </span> { combo.battery.price }$ </div>
-                                    {/* { combo.battery.name } */ }
-                                </td>
-                                <td className='text-center'>
-                                    <div className='flex justify-center'>
-                                        <Image src={ combo.panel.imageCover } alt={ combo.panel.imageCover } width={ 100 } height={ 100 } />
+                                </div>
+
+                                {/* Panel */ }
+                                <div className="text-center">
+                                    <Image
+                                        src={ combo.panel.imageCover }
+                                        alt={ combo.panel.name }
+                                        width={ 100 }
+                                        height={ 100 }
+                                        className="mx-auto rounded"
+                                    />
+                                    <div className="text-primary dark:text-primary-10 font-semibold mt-2">{ combo.panel.name }</div>
+                                    <div className="text-sm text-gray-500">
+                                        { combo.panel.price }$ × { conditionalRound(outputValue.nPanel) } ={ " " }
+                                        <span className="font-bold text-secondary dark:text-secondary-10">
+                                            { combo.panel.price * conditionalRound(outputValue.nPanel) }$
+                                        </span>
                                     </div>
-                                    <div className='text-primary dark:text-primary-10'>{ combo.panel.name }</div>
-                                    <div className='text-secondary dark:text-secondary-10 font-bold'><span className='font-light text-gray-500'>{ combo.panel.price }$ X 1 = </span> { combo.panel.price }$ </div>
-                                </td>
-                                <td>
-                                    
-                                </td>
-                            </tr>
-                        )) }
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+
+                            {/* Total + Button */ }
+                            <div className="mt-6 flex items-center justify-between">
+                                <div className="text-lg font-bold text-primary dark:text-primary-10">
+                                    Total: <span className="text-green-600">{ combo.totalPrice }$</span>
+                                </div>
+                                <button className="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition text-sm font-medium">
+                                    Add to cart
+                                </button>
+                            </div>
+                        </div>
+                    )) }
+                </div>
+
             </div>
         </div>
     );
