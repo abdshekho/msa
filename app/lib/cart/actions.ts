@@ -11,28 +11,90 @@ import mongoose from 'mongoose';
 export async function getCart() {
   try {
     const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email ||session?.user?.role === 'admin' ) {
+
+    if (!session?.user?.email || session?.user?.role === 'admin') {
       return { items: [], totalPrice: 0 };
     }
-    
+
     await connectToDatabase();
-    
+
     const userId = session.user.id.toString();
-    const cart = await Cart.findOne({ user: new mongoose.Types.ObjectId(userId)})
+    const cart = await Cart.findOne({ user: new mongoose.Types.ObjectId(userId) })
       .populate({
         path: 'items.product',
         select: 'name nameAr price imageCover'
       });
-    
+
     if (!cart) {
       return { items: [], totalPrice: 0 };
     }
-    
+
     return JSON.parse(JSON.stringify(cart));
   } catch (error) {
     console.error('Error fetching cart:', error);
     return { items: [], totalPrice: 0 };
+  }
+}
+interface CartItemInput {
+  productId: string;
+  quantity: number;
+  price: number;
+}
+
+export async function addMultipleToCart(items: CartItemInput[]) {
+  // use in client
+//   await addMultipleToCart([
+//   { productId: '123', quantity: 2, price: 100 },
+//   { productId: '456', quantity: 1, price: 200 },
+// ]);
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      throw new Error('You must be logged in to add items to cart');
+    }
+
+    if (!items || items.length === 0) {
+      throw new Error('No items provided');
+    }
+
+    await connectToDatabase();
+
+    const userId = session.user.id.toString();
+    let cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      cart = new Cart({
+        user: userId,
+        items: [],
+        totalPrice: 0,
+      });
+    }
+
+    for (const item of items) {
+      const { productId, quantity, price } = item;
+
+      const existingItemIndex = cart.items.findIndex(
+        (i) => i.product.toString() === productId
+      );
+
+      if (existingItemIndex > -1) {
+        cart.items[existingItemIndex].quantity += quantity;
+      } else {
+        cart.items.push({
+          product: productId,
+          quantity,
+          price,
+        });
+      }
+    }
+
+    await cart.save();
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error adding multiple items to cart:', error);
+    return { success: false, error: error.message };
   }
 }
 
@@ -40,23 +102,23 @@ export async function getCart() {
 export async function addToCart(productId: string, quantity: number = 1) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       throw new Error('You must be logged in to add items to cart');
     }
-    
+
     await connectToDatabase();
-    
+
     // Get product details
     const product = await Product.findById(productId);
     if (!product) {
       throw new Error('Product not found');
     }
-    
+
     // Find or create cart
     const userId = session.user.id.toString();
     let cart = await Cart.findOne({ user: userId });
-    
+
     if (!cart) {
       cart = new Cart({
         user: userId,
@@ -64,12 +126,12 @@ export async function addToCart(productId: string, quantity: number = 1) {
         totalPrice: 0
       });
     }
-    
+
     // Check if product already in cart
     const existingItemIndex = cart.items.findIndex(
       item => item.product.toString() === productId
     );
-    
+
     if (existingItemIndex > -1) {
       // Update quantity if product already in cart
       cart.items[existingItemIndex].quantity += quantity;
@@ -81,10 +143,10 @@ export async function addToCart(productId: string, quantity: number = 1) {
         price: product.price
       });
     }
-    
+
     // Save cart
     await cart.save();
-    
+
     // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
@@ -97,28 +159,28 @@ export async function addToCart(productId: string, quantity: number = 1) {
 export async function updateCartItem(itemId: string, quantity: number) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       throw new Error('You must be logged in to update cart');
     }
-    
+
     await connectToDatabase();
-    
+
     const userId = session.user.id.toString();
     const cart = await Cart.findOne({ user: userId });
-    
+
     if (!cart) {
       throw new Error('Cart not found');
     }
-    
+
     const itemIndex = cart.items.findIndex(
       item => item._id.toString() === itemId
     );
-    
+
     if (itemIndex === -1) {
       throw new Error('Item not found in cart');
     }
-    
+
     if (quantity <= 0) {
       // Remove item if quantity is 0 or less
       cart.items.splice(itemIndex, 1);
@@ -126,9 +188,9 @@ export async function updateCartItem(itemId: string, quantity: number) {
       // Update quantity
       cart.items[itemIndex].quantity = quantity;
     }
-    
+
     await cart.save();
-    
+
     // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
@@ -141,26 +203,26 @@ export async function updateCartItem(itemId: string, quantity: number) {
 export async function removeFromCart(itemId: string) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       throw new Error('You must be logged in to remove items from cart');
     }
-    
+
     await connectToDatabase();
-    
+
     const userId = session.user.id.toString();
     const cart = await Cart.findOne({ user: userId });
-    
+
     if (!cart) {
       throw new Error('Cart not found');
     }
-    
+
     cart.items = cart.items.filter(
       item => item._id.toString() !== itemId
     );
-    
+
     await cart.save();
-    
+
     // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {
@@ -173,21 +235,21 @@ export async function removeFromCart(itemId: string) {
 export async function clearCart() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       throw new Error('You must be logged in to clear cart');
     }
-    
+
     await connectToDatabase();
-    
+
     const userId = session.user.id.toString();
     const cart = await Cart.findOne({ user: userId });
-    
+
     if (cart) {
       cart.items = [];
       await cart.save();
     }
-    
+
     // revalidatePath('/[lang]/cart');
     return { success: true };
   } catch (error) {

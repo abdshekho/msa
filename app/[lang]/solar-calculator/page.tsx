@@ -12,6 +12,8 @@ import { set } from 'cypress/types/lodash';
 import { getClientDictionary } from '@/get-dictionary-client';
 import { Product } from '@/app/lib/models';
 import Image from 'next/image';
+import { addMultipleToCart, addToCart } from '@/app/lib/cart/actions';
+import { triggerCartUpdate } from '@/app/lib/cart/cartEvents';
 
 const deviceOptions = [
     { name: 'نيون', wattage: 40 },
@@ -69,9 +71,9 @@ export default function SolarCalculator() {
         defaultValues: {
             devices: [
                 { name: 'نيون', wattage: 60, count: 6, morning: 6, evening: 6, isCustom: false },
-                { name: 'نيون', wattage: 150, count: 1, morning: 6, evening: 6, isCustom: false },
-                { name: 'نيون', wattage: 150, count: 1, morning: 6, evening: 6, isCustom: false },
-                { name: 'نيون', wattage: 150, count: 1, morning: 6, evening: 6, isCustom: false },
+                { name: 'براد', wattage: 150, count: 1, morning: 6, evening: 6, isCustom: false },
+                { name: 'مروحة', wattage: 75, count: 2, morning: 6, evening: 6, isCustom: false },
+                { name: 'جهاز مخصص', wattage: 240, count: 1, morning: 6, evening: 6, isCustom: true },
             ]
         },
         resolver: zodResolver(schema),
@@ -161,6 +163,7 @@ export default function SolarCalculator() {
     }
 
     const handlePerfectSystem = async () => {
+        setSubmited2(true)
         try {
             // const products = await response.json();
             const res = await fetch('/api/products/system', {
@@ -214,14 +217,31 @@ export default function SolarCalculator() {
             }
             setCombinationsProducts(combinations)
             console.log('combinations', combinations);
-            setSubmited2(true)
-            redirect('#getProductsButton')
+            // redirect('#getProductsButton')
+            window.location.hash = '#getProductsButton';
 
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
+    const handleAddtoCart = async (combo) => {
+        console.log(combo)
+        // const result1 = await addToCart(combo.inverter._id, 1);
+        // const result2 = await addToCart(combo.battery._id, conditionalRound(outputValue.nBattery));
+        // const result3 = await addToCart(combo.panel._id, conditionalRound(outputValue.nPanel));
 
+        const result = await addMultipleToCart([
+            { productId: combo.inverter._id, quantity: 1, price: combo.inverter.price },
+            { productId: combo.battery._id, quantity: conditionalRound(outputValue.nBattery), price: combo.inverter.price },
+            { productId: combo.panel._id, quantity: conditionalRound(outputValue.nPanel), price: combo.inverter.price },
+        ]);
+        console.log(result);
+        if (result.success) {
+            // Trigger cart update event to refresh cart UI
+            triggerCartUpdate();
+        }
+
+    };
     const onSubmit = (data: FormData) => {
         setSubmited1(true);
         setSubmited2(false);
@@ -270,7 +290,8 @@ export default function SolarCalculator() {
                 Number of battary: ${NumberOfBattery}
                 Number of Panel: ${NumberOfPanel}
             `);
-        redirect('#output1')
+        // redirect('#output1')
+        window.location.hash = '#output1';
     };
 
 
@@ -426,7 +447,7 @@ export default function SolarCalculator() {
                 </button>
             </form>
             <div hidden={ !submited1 }>
-            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
+                <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-30 text-center" dir='ltr' >
                     <div>
                         {/* <ul dir={ lang === 'en' ? 'ltr' : 'rtl' }>
@@ -473,7 +494,7 @@ export default function SolarCalculator() {
                         placeholder={ lang === 'en' ? 'Panel Wattage (W)' : 'قدرة اللوح (واط)' }
                     /> */}
                         <select className='w-full text-center my-4 px-3 py-2.5 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white'
-                            name="" id="" value={ voltageBattery } disabled={ submited2 } onChange={ (e) => handelVotageBatttery(e) }>
+                            name="" value={ voltageBattery } disabled={ submited2 } onChange={ (e) => handelVotageBatttery(e) }>
                             <option value="12.5">12 V</option>
                             <option value="24">24 V</option>
                             <option value="48">48 V</option>
@@ -542,7 +563,7 @@ export default function SolarCalculator() {
 
             </div>
             <div hidden={ !submited2 }>
-            <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
+                <hr className='my-6 border-gray-200 sm:mx-auto dark:border-gray-600 lg:my-8' />
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     { combinationsProdcuts?.map((combo, index) => (
                         <div
@@ -604,10 +625,10 @@ export default function SolarCalculator() {
 
                             {/* Total + Button */ }
                             <div className="mt-6 flex items-center justify-between">
-                                <div className="text-lg font-bold text-primary dark:text-primary-10">
-                                    Total: <span className="text-green-600">{ combo.totalPrice }$</span>
+                                <div className="text-lg font-bold text-green-600">
+                                    Total: <span className="text-secondary dark:text-secondary-10">{ combo.totalPrice }$</span>
                                 </div>
-                                <button className="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition text-sm font-medium">
+                                <button onClick={ () => handleAddtoCart(combo) } className="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition text-sm font-medium">
                                     Add to cart
                                 </button>
                             </div>
